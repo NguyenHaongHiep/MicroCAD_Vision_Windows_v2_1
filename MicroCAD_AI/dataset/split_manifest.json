@@ -1,0 +1,23 @@
+{
+  "source_xml": "C:\\Users\\admin\\Downloads\\Ảnh train\\annotations.xml",
+  "source_images": "C:\\Users\\admin\\Pictures\\Test",
+  "split_note": "Prototype split rải đều trong một phiên chụp; cần test bằng phiên chụp độc lập trước khi đánh giá chính thức.",
+  "validation_indices_zero_based": [
+    2,
+    8,
+    16,
+    21
+  ],
+  "test_indices_zero_based": [
+    4,
+    13,
+    24
+  ],
+  "counts": {
+    "train": 18,
+    "val": 4,
+    "test": 3,
+    "polygons": 71,
+    "negative_images": 1
+  }
+}

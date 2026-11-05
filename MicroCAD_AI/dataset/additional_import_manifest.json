@@ -1,0 +1,399 @@
+{
+  "mode": "commit",
+  "positive_images": 45,
+  "positive_polygons": 136,
+  "negative_images": 12,
+  "errors": [],
+  "positives": [
+    {
+      "name": "WIN_20261104_16_30_42_Pro.jpg",
+      "sha256": "bd518280d969b86f2e7492ca16376bf8d253871ed1d77154f38a8cab951f2e70",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_30_46_Pro.jpg",
+      "sha256": "d3a38680078fc49bfb39878dfdd559da186ef7c1aceae64feb7e0be0ee46cda4",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_30_50_Pro.jpg",
+      "sha256": "d03e47d371c2467d6a3b84131af16127312b295703387073a9dcd05c1f29664f",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_30_55_Pro.jpg",
+      "sha256": "2c5b1d4566d314c00a780d8adbd8570934ebb853ed2b39a48b7759bc2d17b660",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_30_57_Pro.jpg",
+      "sha256": "422d1d5bd48d67cc80c92d83980b5f5774a58cf500376c4eb4ebef37374abc31",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_02_Pro.jpg",
+      "sha256": "58fa8b385ffbca34d6e6fca41805e74302dc2b67d10238c20bdaf4febe12a25f",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_06_Pro.jpg",
+      "sha256": "68a6cd419f7c41bcb79cc7d4a4d45e23400da365d3646cfa6c2743f91985f768",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_13_Pro.jpg",
+      "sha256": "6849447890eb269b0f617827a2dea90b25222fecca666ddb1945701408852b9c",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_17_Pro.jpg",
+      "sha256": "d72d30392fa879d8271c1b32da4fee6472b58e8883e9bc892bb0186b7c573ae5",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_19_Pro.jpg",
+      "sha256": "7004c9ee81d3da07a4387628d63ba0b1af187a7286598a968c84633a10cbaf8c",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_20_Pro.jpg",
+      "sha256": "0234c043ca02601aad76a7450787f71741d6f58c1b7949d8f99ee6543148089b",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_24_Pro.jpg",
+      "sha256": "0afb999603bd94874759f3489f3bebc1bec871faf37cb355bfc7cc112c468690",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_26_Pro.jpg",
+      "sha256": "a531039a9a46cb56c5cb5f8c1f96675445e94387be34426a64c352da96e12564",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_31_52_Pro.jpg",
+      "sha256": "ef6443b92b5534810b6e95d1bd4e9e1b7fc42af458a3e4f953960c44aad2f580",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_01_Pro.jpg",
+      "sha256": "06d25598a45297c52ad11f16ad53e720f6a39f50d7340db3ecc8098138cd33ca",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_03_Pro.jpg",
+      "sha256": "aafa0973cb7b81a7d7b9e80b2e1808dd348b5030d8c9407028f285a631045fcd",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_06_Pro.jpg",
+      "sha256": "a790a2469684f88ad9ec0df035efb6fe5ec72abe11ec199679db2306e9e4a986",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_08_Pro.jpg",
+      "sha256": "9de0b541a5e2d08fb2281b3d7c0c6c9881c1d819c666a76b1f1277e55e87710a",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_10_Pro.jpg",
+      "sha256": "8f568830ed8a03f222b06ed75734e20fc4379bf97360d3143a42aa4f1272ed9a",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_12_Pro.jpg",
+      "sha256": "5f86a41801cbe97ebb7096fb0266c513ddf62e3dd9114631207ad83a5b00fe86",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_14_Pro.jpg",
+      "sha256": "5c4f3348243653fbab832063b92a298f2712897dc52ab2cb8465d37d5a344ca8",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_16_Pro.jpg",
+      "sha256": "1599d3b1ab269aa52501814a7c29f8d47e75eab4cef1ded2efda9562e6f13597",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_19_Pro.jpg",
+      "sha256": "853df9d36dfe5a5b6238d0d33d4e1fc38e722d668484c3b7d62ebdc2c2e90cfa",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_20_Pro.jpg",
+      "sha256": "a7cfe74dfd1dc2ee92e1968da8e34788275abb80b6c8203f1ff90b5366cafa3c",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_23_Pro.jpg",
+      "sha256": "1bf31e4d3dee8f5e0827121f6f45ae305c591fb74015c207b4ff5d1aed858224",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_25_Pro.jpg",
+      "sha256": "6bae12c0802780bbfd03457cfbf1320302092bd3a552dd8e617e6300133a5e71",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_26_Pro.jpg",
+      "sha256": "9946b3fbe7a076a1879cf32f625d4069c67c907e3fa745743f6c5e11788976e1",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_29_Pro.jpg",
+      "sha256": "3b58c21527dae448d640c336528759555d41ac1403530b11bb47f23857e6a4f4",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_33_Pro.jpg",
+      "sha256": "be78f880b0c4b07e35e7f11193a2922b1b47960f595437204c0d72bc68f44c4a",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_40_Pro.jpg",
+      "sha256": "9995d308ea8de889307d3b28dde8abf8c48ae252dac0e4b2240ecf53ebc4df43",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_32_58_Pro.jpg",
+      "sha256": "1bc67ad2a132e0588d77a19918ba8b2e22f144c40b708d4c25779b4b18356274",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_33_02_Pro.jpg",
+      "sha256": "64669f9b6f1bfaaa9c53a4ba4046e8c741ac77d70b696a3fc3b6faf7de08a229",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_33_10_Pro.jpg",
+      "sha256": "cf9cdbfbcd05b6efb59db133322c3a5546ec7e89d88e06610ea155049f0c524e",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_33_15_Pro.jpg",
+      "sha256": "eedfb1081618fcacf9bb167b6d1d1318bb78aeddd850db885473d59ee35e3e58",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_33_58_Pro.jpg",
+      "sha256": "b61fda6445cb18d4d8d7ed2a551623733c30f7cf0d8125156b2dbdd92bbd4a15",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_02_Pro.jpg",
+      "sha256": "87870bf1d9eef3a4313324fa2219e8c3a9241dd3884994220a08a0799d6d49d1",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_05_Pro.jpg",
+      "sha256": "58d1a696ca74a773fbedc9d20d184a7b02b957021515dd2cddcb6d0e5d448c05",
+      "width": 640,
+      "height": 480,
+      "polygons": 4
+    },
+    {
+      "name": "WIN_20261104_16_34_07_Pro.jpg",
+      "sha256": "669c4d45036adf668dc83c7dd2933b9e630803500a9c04d2261fafe62132e564",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_10_Pro.jpg",
+      "sha256": "39fa2f154ae1aea63b96fe9c0e9632f05b7ecac820e41a528a80ea8bf145884b",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_14_Pro.jpg",
+      "sha256": "1ad6b16723694933fb591d6be0b7b1a84dd0b9de9deb679dfd21acf051624f4f",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_22_Pro.jpg",
+      "sha256": "bbf5f58820af81dfbfa17c25da63afca5acbdb25206c844411a6e618bd92cff6",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_24_Pro.jpg",
+      "sha256": "d2c9bf0ba135e9c3e65599cd938ed8a58a2f72939c4ad86d953078d3b03d3255",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_26_Pro.jpg",
+      "sha256": "762185221e727333cb2beeb1e6d2cb2f5c44afe020ca97393d2b862bf8a9dac9",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_28_Pro.jpg",
+      "sha256": "95b8ce289cf951b63145cf1d6df00b78d82d2c12ad58ca370b5c5343a6784862",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    },
+    {
+      "name": "WIN_20261104_16_34_32_Pro.jpg",
+      "sha256": "f03157894a102c91fcc22e484075e6a41f3a91a8c7bfc58f21310d0e3192fa93",
+      "width": 640,
+      "height": 480,
+      "polygons": 3
+    }
+  ],
+  "negatives": [
+    {
+      "name": "823008b89e3dc420184511b2084326.jpg",
+      "sha256": "b0eb33398261dd6650755f700f3476fd5829184d5bc76aa731247f8db62a2eb5",
+      "width": 249,
+      "height": 506
+    },
+    {
+      "name": "A03-1-1.jpg",
+      "sha256": "f9692df7e8dc33df7cd3c35376e89e439262b7fcfbb999fae644ecda554187ae",
+      "width": 1280,
+      "height": 2560
+    },
+    {
+      "name": "A03-2-1.jpg",
+      "sha256": "ddd8ba0e0cc301d1eb1373f199eca9c4fee00d56262c8484207e2b270488af10",
+      "width": 1280,
+      "height": 2560
+    },
+    {
+      "name": "AFe4C60Ot2nEeUgDPKdxte54EnfQI7990j2jck7D.jpg",
+      "sha256": "5bb81efc13c2614e3598776756cdf72d146f97d6dacaf8a26814367d49df4b4e",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "B03-2-1.jpg",
+      "sha256": "3864fade7f088dee7c5667c44b4c45da2eb23c7388ddd3d64f7e842241d7528b",
+      "width": 1280,
+      "height": 2560
+    },
+    {
+      "name": "b06-1-512x1024.jpg",
+      "sha256": "78de1d43c57d27b74dbce3b039fae5e210201e7fc98fd45f28c8e96c8ed503d7",
+      "width": 512,
+      "height": 1024
+    },
+    {
+      "name": "b06-3-400x480.jpg",
+      "sha256": "4ca72c0d83752ef37390d5b29ad88222d2f358939fbb903f039dd82eb6ea5ec0",
+      "width": 400,
+      "height": 480
+    },
+    {
+      "name": "be-mat-vai-dap-noi-trang-800x800.webp",
+      "sha256": "7d34f6ff889e9ccef80eae06264323ee5f935db91bdcc59948f89db0f1270aba",
+      "width": 800,
+      "height": 800
+    },
+    {
+      "name": "cau-truc-be-mat-vai-me-soc.jpg",
+      "sha256": "02bf8ca3d406a26232bc42024f249967649c272048efd3e1d7b89dac2a6d9e1a",
+      "width": 800,
+      "height": 600
+    },
+    {
+      "name": "images (1).jpg",
+      "sha256": "80c4b2fb65ba9c54e9b1bd0a6a43825c79ebfd3a956209bc87bf78867887dce7",
+      "width": 300,
+      "height": 600
+    },
+    {
+      "name": "images.jpg",
+      "sha256": "c475e3956a54e7dd7e9a37867d7a9112d9e11a64265eb950519be220e4d55b1d",
+      "width": 583,
+      "height": 343
+    },
+    {
+      "name": "imitation-microfiber-pu.webp",
+      "sha256": "74612a22ae19f874a5665809985ca18c8ce54860bda2450fe9ab79dfe9d2f35f",
+      "width": 1000,
+      "height": 952
+    }
+  ],
+  "committed_at_utc": "2026-11-05T05:15:55.496045+00:00"
+}

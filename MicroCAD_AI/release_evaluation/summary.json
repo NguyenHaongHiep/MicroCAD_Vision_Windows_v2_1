@@ -1,0 +1,100 @@
+[
+  {
+    "model": "new",
+    "checkpoint": "C:\\Users\\admin\\Documents\\App codex\\MicroCAD_Vision_Windows_v2_1\\MicroCAD_Vision_Windows_v2_1\\MicroCAD_AI\\runs\\segment\\hole_inner-2\\weights\\best.pt",
+    "sha256": "747649ffb8ac395a6f79753444da3e1ed79e7ee22e1eb3d3e24ddb47c24a18fd",
+    "class_mapping": {
+      "0": "hole_inner"
+    },
+    "conf": 0.25,
+    "imgsz": 640,
+    "test_images": 3,
+    "gt_instances": 6,
+    "tp": 6,
+    "fp": 0,
+    "fn": 0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "false_positives_per_image": 0.0,
+    "mean_mask_iou": 0.9259645139464583,
+    "median_mask_iou": 0.9331634016703975,
+    "mean_diameter_abs_error_px": 1.6069415665346891,
+    "max_diameter_abs_error_px": 3.8081844809333347,
+    "mean_center_error_px": 2.4503861890050587,
+    "mean_circle_fit_error_px": 1.354951892696486,
+    "mean_inference_ms": 1640.8537333336426,
+    "load_seconds": 0.03786989999935031,
+    "memory_before": {
+      "system_total_mb": 16088.546875,
+      "system_available_mb": 3912.75390625,
+      "system_used_percent": 75.7,
+      "process_rss_mb": 425.59375
+    },
+    "memory_after": {
+      "system_total_mb": 16088.546875,
+      "system_available_mb": 3124.1484375,
+      "system_used_percent": 80.6,
+      "process_rss_mb": 1274.78125
+    },
+    "process_rss_delta_mb": 849.1875,
+    "cuda_peak_allocated_mb": 70.33544921875,
+    "cuda_peak_reserved_mb": 90.0,
+    "memory_after_release": {
+      "system_total_mb": 16088.546875,
+      "system_available_mb": 3121.3515625,
+      "system_used_percent": 80.6,
+      "process_rss_mb": 1274.2421875
+    },
+    "cuda_allocated_after_release_mb": 32.0,
+    "cuda_reserved_after_release_mb": 32.0
+  },
+  {
+    "model": "old",
+    "checkpoint": "C:\\Users\\admin\\Documents\\App codex\\MicroCAD_Vision_Windows_v2_1\\MicroCAD_Vision_Windows_v2_1\\MicroCAD_AI\\runs\\segment\\hole_inner\\weights\\best.pt",
+    "sha256": "f0d296145205e90fd17fb5cf464737d9dcf48d9e400cef4661d67c3ad50f75c6",
+    "class_mapping": {
+      "0": "hole_inner"
+    },
+    "conf": 0.25,
+    "imgsz": 640,
+    "test_images": 3,
+    "gt_instances": 6,
+    "tp": 0,
+    "fp": 0,
+    "fn": 6,
+    "precision": 0,
+    "recall": 0.0,
+    "false_positives_per_image": 0.0,
+    "mean_mask_iou": null,
+    "median_mask_iou": null,
+    "mean_diameter_abs_error_px": null,
+    "max_diameter_abs_error_px": null,
+    "mean_center_error_px": null,
+    "mean_circle_fit_error_px": null,
+    "mean_inference_ms": 140.41733332851436,
+    "load_seconds": 0.20817139999417122,
+    "memory_before": {
+      "system_total_mb": 16088.546875,
+      "system_available_mb": 3121.4765625,
+      "system_used_percent": 80.6,
+      "process_rss_mb": 1274.2421875
+    },
+    "memory_after": {
+      "system_total_mb": 16088.546875,
+      "system_available_mb": 3128.09375,
+      "system_used_percent": 80.6,
+      "process_rss_mb": 1275.76953125
+    },
+    "process_rss_delta_mb": 1.52734375,
+    "cuda_peak_allocated_mb": 69.4560546875,
+    "cuda_peak_reserved_mb": 88.0,
+    "memory_after_release": {
+      "system_total_mb": 16088.546875,
+      "system_available_mb": 3128.2578125,
+      "system_used_percent": 80.6,
+      "process_rss_mb": 1275.16796875
+    },
+    "cuda_allocated_after_release_mb": 32.0,
+    "cuda_reserved_after_release_mb": 32.0
+  }
+]

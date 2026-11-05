@@ -1,0 +1,185 @@
+﻿MICROCAD VISION 2.1 — MỚI NGÀY 26/10/2026
+
+SHORTCUT NHƯ ỨNG DỤNG WINDOWS
+Tính năng cập nhật 02/11/2026: chuẩn mới tự áp cho toàn bộ ảnh và ảnh thêm sau;
+Ø NHIỀU [M] khớp đường tròn từ 3–64 điểm, hiển thị độ lệch RMS; Q bật kính lúp.
+Nhãn tự tránh chồng nhau; ZIP mang tên MicroCAD_DD-MM-YYYY.zip.
+Trên máy hiện tại: shortcut “MicroCAD Vision” sẽ trỏ đến bản 2.1 này.
+Trên máy khác: giải nén gói vào thư mục cố định, chạy TAO_SHORTCUT_DESKTOP.bat
+một lần. Sau đó mở biểu tượng MicroCAD Vision trên Desktop.
+Shortcut mở trực tiếp cửa sổ ứng dụng Edge/Chrome, không cần đi tìm file HTML.
+Không cần Python hoặc quyền quản trị để tạo shortcut.
+Giữ nguyên vị trí thư mục ứng dụng; nếu chuyển thư mục, chạy lại trình tạo shortcut.
+START_MicroCAD.bat cũng mở bằng chế độ cửa sổ ứng dụng riêng.
+Không thay đổi chế độ nhấp chuột chung của Windows: Desktop dùng nhấp đúp theo
+cài đặt mặc định. Muốn mở bằng một cú bấm: mở ứng dụng, nhấp phải biểu tượng trên
+thanh tác vụ rồi chọn ghim vào thanh tác vụ (Pin to taskbar).
+
+ĐO ĐƯỜNG KÍNH VÀ MÉP HAI ĐƯỜNG TRÒN
+B / Ø + MÉP: bấm 3 điểm trên vành lỗ 1, rồi 3 điểm trên vành lỗ 2.
+Phần mềm vẽ cả hai đường kính và khe mép giữa hai đường tròn trong một thao tác.
+Ctrl+Z hoàn tác cả nhóm. Esc hủy các điểm đang chọn, chưa tạo phép đo dở dang.
+
+G / MÉP 2Ø: dùng khi đã có hai đường tròn (đo bằng C).
+Bấm lần lượt vành hoặc bên trong hai đường tròn; cũng có thể chọn hai mục đường
+tròn trong danh sách kích thước. Không được chọn cùng một đường tròn hai lần.
+Chọn trên danh sách giúp phân biệt hai đường tròn chồng nhau/đồng tâm.
+
+Hai đường tròn rời nhau: khe = khoảng cách hai tâm - bán kính 1 - bán kính 2.
+Hai đường tròn giao/tiếp xúc/trùng nhau: khoảng cách giữa hai đường biên bằng 0.
+Một đường tròn nằm hoàn toàn trong đường tròn khác: khe = chênh lệch hai bán kính
+- khoảng cách hai tâm. Hai đường tròn đồng tâm khác bán kính dùng phương ngang
+để minh họa một cặp điểm gần nhất.
+Đường gióng và mũi tên đặt trên hai điểm gần nhau nhất của hai đường tròn đã dựng.
+Đây là kết quả hình học của các đường tròn dựng bằng điểm người dùng chọn;
+KHÔNG tự dò biên ảnh thực. RMS của Ø NHIỀU chỉ tóm tắt độ lệch so với vòng tròn.
+
+E / 2 ĐIỂM: vẫn giữ phép đo hai điểm thủ công của bản trước.
+Xóa một đường tròn sẽ xóa các khe mép liên quan; Ctrl+Z khôi phục cả nhóm.
+PNG và ZIP hiển thị hai đường kính cùng khe mép. CSV thêm ID đường tròn, đường
+kính theo pixel và quan hệ hình học. Dự án mới dùng JSON v3 và đọc được v1/v2/v3;
+bản 2.0 không đọc được dự án v3. Khoảng cách khe được tính lại khi mở dự án,
+không tin số liệu khoảng cách dẫn xuất lưu trong tệp.
+Xem VI_DU_DUONG_KINH_VA_MEP.json để thử nhanh với dữ liệu tổng hợp.
+
+============================================================
+HƯỚNG DẪN CÁC TÍNH NĂNG CÒN LẠI
+============================================================
+
+MICROCAD VISION 2.1 — ĐO LỖ VÀ XUẤT BỘ ẢNH
+Ngày phát hành: 26/10/2026
+
+1. CHẠY TRÊN WINDOWS
+Giải nén toàn bộ gói ZIP, mở START_MicroCAD.bat hoặc nhấp đúp MicroCAD_Vision.html.
+Ứng dụng chạy ngoại tuyến bằng Microsoft Edge hoặc Google Chrome. Nếu Windows mở
+HTML bằng ứng dụng khác: nhấp phải HTML > Open with > Microsoft Edge.
+Đo ảnh, nhập thư mục, lưu PNG/ZIP/CSV/JSON không cần Python và không cần cài đặt.
+Đây là ứng dụng HTML chạy trong trình duyệt, không phải tệp EXE độc lập.
+Không cần tải thư viện, font hoặc gửi ảnh lên mạng.
+
+2. NHẬP NHIỀU ẢNH
+- Bấm “Nhập ảnh”, dùng Ctrl/Shift chọn nhiều tệp cùng lúc.
+- Hoặc bấm “Thư mục”, chọn thư mục chứa ảnh; các thư mục con cũng được duyệt.
+- Có thể kéo nhiều tệp ảnh vào vùng vẽ. Kéo thư mục trực tiếp chưa được hỗ trợ.
+- Hỗ trợ PNG, JPG/JPEG, WEBP, BMP. Chuyển TIFF, HEIC, GIF, SVG sang PNG trước.
+- Danh sách “Bộ ảnh” nằm ở bảng bên phải. Chọn một ảnh hoặc dùng nút ← / →.
+- Mỗi ảnh giữ riêng phép đo, vị trí nhãn, khung nhìn và Undo. Chuẩn mới nhất tự
+  áp dụng cho toàn bộ ảnh hiện có và ảnh thêm sau.
+- Nhập thêm ảnh sẽ bổ sung vào bộ ảnh, không xóa ảnh đang có.
+- Tệp trùng tên vẫn là những ảnh riêng. PNG xuất được thêm số thứ tự để tránh đè.
+- Giới hạn: 300 ảnh; 64 MB/tệp; tổng 100 triệu pixel; dữ liệu ảnh nhúng 256 MB.
+  Mỗi chiều ảnh từ 32 đến 16384 pixel. Bộ lớn hơn nên chia thành nhiều dự án.
+
+3. HIỆU CHUẨN mm/px
+- Mở ảnh có đoạn chuẩn bằng “Ảnh chuẩn”, hoặc chọn ảnh đã nhập có thước chuẩn.
+- Chọn công cụ CHUẨN / phím K. Bấm hai đầu đoạn có chiều dài thật đã biết.
+- Nhập chiều dài và đơn vị mm hoặc µm rồi bấm “Áp dụng chuẩn”.
+- Hệ số mm/px = chiều dài thực (mm) / khoảng cách giữa hai điểm (pixel).
+  Ví dụ: đoạn 200 px tương ứng 1 mm => 0,005 mm/px = 5 µm/px.
+- Xác nhận lấy chuẩn sẽ tự thay chuẩn trên TẤT CẢ ảnh đã nhập, kể cả ảnh có chuẩn
+  cũ. Kích thước hiển thị và xuất ra được tính lại theo chuẩn mới.
+- Ảnh nhập hoặc chụp sau tự dùng chuẩn mới nhất. Nếu chưa từng lấy chuẩn thì
+  ảnh vẫn chỉ có đơn vị pixel. Có thể Undo chuẩn riêng trên từng ảnh.
+- Chỉ dùng chung chuẩn nếu cùng độ phóng đại, khoảng cách làm việc, độ phân giải
+  và không thay đổi tỷ lệ ảnh. Cùng số pixel không chứng minh cùng độ phóng đại.
+- Ảnh dùng chuẩn từ ảnh khác hiện cảnh báo. Khi đổi thiết lập chụp, hiệu chuẩn lại.
+- Khi thay đổi điều kiện chụp, lấy chuẩn lại trước khi tin kết quả đo.
+
+4. CÁC PHÉP ĐO
+Ø LỖ / C: bấm 3 điểm cách xa nhau trên cùng một vành lỗ. Phần mềm tính đường tròn
+đi qua ba điểm và đường kính. Ba điểm thẳng hàng hoặc gần thẳng hàng bị từ chối.
+
+Ø NHIỀU / M: đánh dấu từ 3 đến 64 điểm trên cùng một vành lỗ rồi nhấn Enter
+hoặc “Hoàn tất lỗ”. Backspace bỏ điểm cuối, Esc hủy. Phần mềm khớp một đường
+tròn bình phương tối thiểu và hiện độ lệch RMS của các điểm tới vòng tròn (px).
+Ø là đường kính vòng tròn khớp, không phải đường kính lớn nhất/nhỏ nhất của lỗ méo.
+
+MÉP–MÉP / E: bấm một điểm trên mép lỗ thứ nhất, rồi bấm một điểm trên mép lỗ thứ hai.
+Hai điểm xác định phương đo. Kết quả là độ dài đoạn thẳng giữa hai điểm đã chọn:
+sqrt((x2-x1)^2 + (y2-y1)^2), nhân hệ số mm/px nếu đã hiệu chuẩn.
+Đây là ĐO THỦ CÔNG HAI ĐIỂM MÉP, KHÔNG tự dò biên và KHÔNG tự tìm khoảng cách tối
+thiểu giữa hai lỗ. Người đo tự chọn cặp điểm gần nhau theo phương muốn kiểm tra.
+Công cụ này không hút điểm vào tâm, ngay cả khi SNAP đang bật.
+Dimension có hai đường gióng, mũi tên và nhãn. Nhãn CSV ghi rõ phương pháp thủ công.
+
+DÀI / L: khoảng cách giữa hai điểm bất kỳ.
+TÂM / D: khoảng cách tâm–tâm; SNAP chỉ dùng cho công cụ này, hút vào tâm các đường
+tròn đã đo. Khi không hút được tâm, điểm bấm được dùng trực tiếp.
+GÓC / A: bấm điểm cạnh thứ nhất > đỉnh góc > điểm cạnh thứ hai, kết quả 0–180 độ.
+
+V: chọn và kéo nhãn để tránh che lỗ; chọn phép đo trong danh sách để đổi tên/xóa.
+H hoặc giữ Space/chuột phải/chuột giữa: kéo ảnh. Cuộn chuột: phóng to/thu nhỏ.
+FIT: đưa toàn ảnh vào khung. Esc: hủy các điểm đang chọn hoặc hộp hiệu chuẩn.
+Q hoặc nút KÍNH LÚP: bật/tắt vùng phóng đại quanh con trỏ khi chọn điểm.
+Ctrl+Z: hoàn tác trong ảnh hiện tại. Delete: xóa phép đo đang chọn.
+Đơn vị hiển thị chọn mm hoặc µm ở bảng bên phải. CSV luôn có cả hai cột này.
+Các điểm đo và độ dài tính theo pixel ảnh gốc; zoom/pan không thay đổi số đo.
+
+5. SAVE ALL — LƯU TOÀN BỘ MỘT LẦN
+- Bấm “Save All · ZIP”. Mặc định xuất mọi ảnh có ít nhất một phép đo.
+- Muốn xuất cả ảnh chưa đo, đánh dấu “Xuất cả ảnh chưa đo vào ZIP”.
+- ZIP chứa các PNG có số thứ tự, measurements.csv tổng hợp và README.txt.
+- Tên ZIP tự lấy ngày trên máy đang chạy: MicroCAD_DD-MM-YYYY.zip.
+- PNG có đúng chiều rộng/cao pixel ảnh gốc. Chỉ có ảnh và dimension, không có
+  nền lưới, khung canvas, thước giao diện, dấu hiệu chuẩn REF hay tiêu đề trang.
+- Nhãn ở ngoài ảnh được đưa vào bên trong khi xuất để không bị cắt chữ. Với ảnh
+  nhỏ hoặc nhiều nhãn, kiểm tra ảnh xuất và kéo lại nhãn nếu bị chồng lên nhau.
+- “Lưu ảnh PNG” chỉ xuất ảnh đang chọn. Nút CSV xuất số liệu mọi ảnh đã đo.
+- Có thanh tiến độ và nút Hủy. Hủy ZIP trước khi tải xuống không làm mất phép đo.
+- PNG đã được nén; ZIP dùng chế độ lưu nguyên dữ liệu, giới hạn khoảng 512 MB.
+- Tệp tải xuống ở thư mục Downloads hoặc vị trí do trình duyệt hỏi. Đừng đóng
+  cửa sổ trước khi trình duyệt hoàn tất tải tệp.
+
+CSV: UTF-8 có BOM, phân cách dấu phẩy, số thập phân dùng dấu chấm.
+Nếu Excel không tách cột/số đúng theo thiết lập Việt Nam: Data > From Text/CSV,
+chọn UTF-8, delimiter Comma; đặt kiểu số với dấu thập phân dấu chấm.
+Cột Value_px_or_deg: pixel cho chiều dài/đường kính, độ cho phép đo góc.
+Cột Value_mm / Value_um: để trống nếu chưa chuẩn hoặc là phép đo góc.
+Calibration = UNCALIBRATED nghĩa là không có kết quả mm/µm.
+CSV giữ tọa độ điểm, tên ảnh nguồn, tên PNG, chuẩn và tên ảnh tham chiếu.
+Với phép đo lỗ, Point_count, Fit_RMS_px và All_edge_points_json ghi số điểm,
+độ lệch RMS và toàn bộ tọa độ điểm đã chọn.
+Tên/ghi chú bắt đầu bằng ký tự công thức Excel được thêm dấu ' để giữ dạng chữ.
+
+6. LƯU VÀ MỞ LẠI DỰ ÁN
+- Bấm “Lưu JSON” ở mục Dự án, hoặc Ctrl+S.
+- JSON v3 chứa toàn bộ ảnh gốc nhúng, chuẩn mới nhất và phép đo của từng ảnh, cùng đơn vị
+  và khung nhìn. Sao chép tệp này sang máy khác là có thể tiếp tục đo.
+- “Mở dự án” kiểm tra toàn bộ dữ liệu trước rồi mới hỏi thay bộ ảnh hiện tại.
+- Hỗ trợ mở dự án JSON v1 một ảnh và v2 nhiều ảnh từ bản cũ. Vị trí nhãn v1 chỉ quy đổi gần đúng
+  vì bản cũ lưu độ lệch theo màn hình và không lưu mức zoom gốc.
+- Lịch sử Undo chỉ giữ trong phiên đang mở, không được lưu vào JSON.
+- Phần mềm KHÔNG tự lưu bộ ảnh qua lần đóng/tải lại trang. Hãy lưu JSON và kiểm
+  tra tệp tải xuống trước khi đóng cửa sổ. Có cảnh báo khi còn thay đổi chưa lưu.
+- ZIP/CSV/PNG là kết quả xuất; dùng JSON để tiếp tục chỉnh sửa phép đo.
+
+7. USB CAMERA
+Giữ chức năng USB Camera và Chụp ảnh từ bản nguồn. Chụp ảnh tạo một mục mới trong
+bộ ảnh; ảnh cũ và phép đo vẫn giữ. Ảnh chụp mới dùng chuẩn mới nhất; hãy lấy chuẩn
+lại nếu độ phóng đại, độ phân giải hoặc thiết lập chụp thay đổi.
+Camera cần được Windows nhận và trình duyệt cấp quyền. Nếu HTML mở trực tiếp
+không xin được quyền, dùng start_camera_server.bat (cần Python có trong PATH),
+mở địa chỉ localhost hiển thị, rồi bấm USB Camera. Đóng cửa sổ máy chủ để dừng.
+Máy chủ chỉ nghe trên 127.0.0.1; không cần mở cổng mạng. Không chọn thư mục khác
+làm thư mục phục vụ. Chỉ đưa gói phần mềm và ảnh mẫu vào thư mục này.
+Kiểm thử phát hành dùng camera mô phỏng nếu nêu trong BAO_CAO_KIEM_THU.txt;
+chưa kiểm chứng kính hiển vi USB thật của bạn.
+
+8. GIỚI HẠN PHÉP ĐO
+Độ chính xác số học của công thức không đồng nghĩa độ chính xác của hệ đo thật.
+Sai số còn phụ thuộc vị trí bấm mép, nét ảnh, độ méo ống kính, góc chụp, vật chuẩn
+và độ ổn định phóng đại. Ứng dụng chưa hiệu chỉnh méo, chưa tự phân đoạn/dò biên.
+Phép đo nhiều điểm cũng giả định một vòng tròn khớp, không mô tả đầy đủ lỗ méo
+hoặc biên gồ ghề. RMS cho biết mức lệch của các điểm được chọn với vòng tròn.
+Kiểm chứng bằng vật chuẩn và phép đo lặp trước khi dùng để kiểm định.
+Đã hỗ trợ giảm animation theo thiết lập giảm chuyển động của hệ điều hành.
+Thiết kế chính cho Windows; khuyên dùng màn hình từ 1024 px chiều ngang.
+Màn hình hẹp có thể cuộn ngang thanh lệnh và bấm nút bảng thuộc tính.
+
+9. TỆP ĐI KÈM
+- MicroCAD_Vision.html: ứng dụng và toàn bộ mã nguồn, không phụ thuộc mạng.
+- START_MicroCAD.bat: mở ứng dụng bằng trình duyệt mặc định.
+- start_camera_server.bat: máy chủ localhost tùy chọn cho camera.
+- VI_DU_Bo_Anh.json: 3 ảnh tổng hợp để thử; không phải dữ liệu đo thực tế.
+- BAO_CAO_KIEM_THU.txt: phạm vi và kết quả kiểm thử.
+- CHANGELOG.txt: các thay đổi so với bản nguồn v1.

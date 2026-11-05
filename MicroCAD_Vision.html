@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MicroCAD Vision</title>
+<style>
+:root{--bg:#0b111b;--panel:#111a28;--panel2:#151f2e;--panel3:#1b2738;--line:#273449;--muted:#889bb2;--text:#eaf2fc;--cyan:#50e5dc;--green:#b3f476;--amber:#f1c66d;--blue:#79a8ff;--danger:#fc8298;--shadow:0 18px 60px #02091466}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);font-size:13px}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+#app{height:100vh;display:grid;grid-template-rows:61px minmax(0,1fr) 31px}
+.top{background:#111a28;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:13px;padding:0 18px;z-index:5;min-width:0}.brand{display:flex;gap:10px;align-items:center;min-width:204px}.brand-mark{width:35px;height:35px;display:grid;place-items:center;border:1px solid #367e85;background:linear-gradient(140deg,#114453,#17314a);border-radius:11px;box-shadow:0 0 22px #13b6b51b;color:var(--cyan);font-size:22px}.brand-name{font-size:15px;font-weight:850;letter-spacing:.04em;white-space:nowrap}.brand-sub{color:#94a8bd;font-size:10px;letter-spacing:.1em;margin-top:3px}.separator{height:25px;width:1px;background:var(--line);flex-shrink:0}.top-actions{display:flex;gap:7px;align-items:center;min-width:0;flex:1;overflow-x:auto;scrollbar-width:none}.top-actions::-webkit-scrollbar{display:none}.spacer{flex:1;min-width:2px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #33445b;background:#1a2636;color:#dce8f8;border-radius:9px;min-height:33px;padding:0 11px;font-weight:650;white-space:nowrap;transition:background .15s,border .15s,transform .15s,box-shadow .15s}.btn:hover{background:#27374e;border-color:#52718a;transform:translateY(-1px)}.btn:active{transform:translateY(0)}.btn.primary{border-color:#39b5ad;background:linear-gradient(120deg,#176e77,#185365);color:#d8fffc}.btn.primary:hover{box-shadow:0 0 0 3px #44e1d51a}.btn.ghost{background:transparent;border-color:transparent}.btn.small{min-height:28px;padding:0 9px;font-size:11px}.btn:disabled{opacity:.38;cursor:not-allowed;transform:none}.kbd{font-family:Consolas,monospace;font-size:10px;border:1px solid #43536a;padding:1px 4px;border-radius:4px;color:#b0c2d2}.session{white-space:nowrap;color:#94a9bf;font-size:11px;display:flex;align-items:center;gap:7px}.signal{height:7px;width:7px;border-radius:100%;background:#7f90a4;box-shadow:0 0 0 4px #7f90a418}.signal.live{background:var(--green);box-shadow:0 0 0 4px #b3f47619;animation:pulse 2s infinite}@keyframes pulse{50%{box-shadow:0 0 0 7px #b3f47608}}
+.workspace{min-height:0;min-width:0;display:grid;grid-template-columns:63px minmax(0,1fr) 316px}.tools{background:#101b2a;border-right:1px solid var(--line);display:flex;align-items:center;flex-direction:column;gap:7px;padding:13px 8px;z-index:3}.tool{position:relative;width:43px;height:43px;border:1px solid transparent;border-radius:11px;background:transparent;color:#a2b5c8;font-size:20px;display:grid;place-items:center;transition:background .18s,color .18s,transform .18s}.tool:hover{background:#24364a;color:white;transform:translateX(2px)}.tool.active{background:#143c49;border-color:#277c89;color:var(--cyan);box-shadow:inset 3px 0 0 var(--cyan),0 0 16px #22cbb818}.tool span{font-size:18px;font-weight:600}.tool .tool-label{font-size:8px;font-weight:700;letter-spacing:.05em;position:absolute;bottom:2px;left:0;right:0;text-align:center;white-space:nowrap}.tool-sep{height:1px;width:34px;background:#2a3b50;margin:6px 0}.tool-spacer{flex:1}.canvas-area{position:relative;min-width:0;min-height:0;background:#0c141f;overflow:hidden}.canvas-area:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 100px #01050b44}#stage{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair}.canvas-head{position:absolute;top:15px;left:17px;right:18px;display:flex;justify-content:space-between;gap:12px;pointer-events:none;z-index:2}.glass{background:#111e30d9;backdrop-filter:blur(11px);border:1px solid #354860b0;box-shadow:0 6px 22px #0004;border-radius:9px}.docname{max-width:65%;min-width:0;padding:10px 13px;display:flex;gap:10px;align-items:center}.doc-chip{display:inline-flex;justify-content:center;align-items:center;flex-shrink:0;padding:4px 7px;border-radius:5px;background:#204256;color:var(--cyan);font-size:9px;letter-spacing:.12em;font-weight:900}.file-name{font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.doc-sub{font-size:10px;color:var(--muted);margin-top:2px}.view-chip{padding:10px 12px;color:var(--muted);font-size:11px;display:flex;align-items:center;gap:11px;white-space:nowrap}.cross{color:var(--cyan);font-size:14px}.viewport-bottom{position:absolute;left:16px;right:16px;bottom:15px;display:flex;align-items:flex-end;justify-content:space-between;gap:14px;pointer-events:none;z-index:3}.command{max-width:690px;min-width:280px;padding:10px 13px;pointer-events:auto}.command-head{font:700 10px Consolas,monospace;color:var(--cyan);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}.command-text{font-size:12px;line-height:1.35;color:#cbd8e9}.legend{padding:10px 12px;color:#a2b5c8;white-space:nowrap;font:12px Consolas,monospace}.legend b{color:var(--green);font-weight:700}.floating{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(460px,85%);text-align:center;z-index:3;pointer-events:auto}.welcome-graphic{width:118px;height:118px;border-radius:25px;margin:auto;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#184c58 0,#163245 54%,#102334 70%);border:1px solid #2c8290;box-shadow:0 0 0 14px #3ce8d606,0 0 0 35px #3ce8d602;animation:float 4s ease-in-out infinite}@keyframes float{50%{transform:translateY(-8px)}}.reticle{position:relative;width:62px;height:62px;border:2px solid var(--cyan);border-radius:50%;box-shadow:0 0 0 9px #58dbdc19,inset 0 0 19px #32ccc32a}.reticle:before,.reticle:after{content:"";position:absolute;background:var(--cyan)}.reticle:before{width:90px;height:1px;top:29px;left:-16px}.reticle:after{height:90px;width:1px;left:29px;top:-16px}.reticle i{position:absolute;inset:19px;border:1px solid #b5f779;border-radius:50%}.welcome h2{margin:35px 0 9px;font-size:24px;letter-spacing:-.03em}.welcome p{line-height:1.7;color:#9fb2c7;font-size:13px;margin:0 10px 24px}.welcome-btns{display:flex;gap:9px;justify-content:center}.demo-link{margin-top:19px;background:none;border:0;color:var(--cyan);text-decoration:underline;text-underline-offset:3px;font-size:12px}
+.side{background:#111a29;border-left:1px solid #29384c;overflow-y:auto;scrollbar-color:#354a60 transparent;z-index:4}.side-head{display:flex;align-items:center;justify-content:space-between;padding:20px 18px 15px;border-bottom:1px solid #293649}.side-title{font-size:13px;font-weight:850;letter-spacing:.04em}.side-section{padding:17px 16px;border-bottom:1px solid #293649}.sec-label{color:#99aabe;font-size:10px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin:0 0 13px;display:flex;align-items:center;justify-content:space-between}.status-pill{color:var(--amber);background:#71551b2d;border:1px solid #7b662b;padding:3px 7px;border-radius:6px;font-size:9px;font-weight:800}.status-pill.good{color:var(--green);border-color:#4f7847;background:#345e312b}.cal-card{padding:13px;background:#172438;border:1px solid #30445a;border-radius:11px}.micro-row{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}.dim-label{font-size:11px;color:#95aac0}.dim-value{font-family:Consolas,monospace;font-size:12px;color:#e2f1fc;font-weight:700}.scale-big{font:800 23px Consolas,monospace;color:var(--cyan);margin:6px 0 8px;letter-spacing:-.06em}.scale-sub{color:#8ba2b7;font-size:11px;line-height:1.6}.side-acts{display:flex;gap:6px;margin-top:11px}.side-acts .btn{flex:1}.warning{margin-top:12px;background:#382b1e;border:1px solid #755434;border-radius:9px;color:#f2ce91;padding:10px;font-size:11px;line-height:1.55;display:none}.warning.visible{display:block}.unit-select{display:flex;align-items:center;gap:8px}.unit-select select,.field,select.field{background:#0e1928;color:#e7f3fd;border:1px solid #395068;border-radius:8px;min-height:33px;padding:6px 9px;max-width:100%}.field{width:100%}.list-empty{font-size:12px;line-height:1.55;color:#899db3;text-align:center;padding:22px 9px;border:1px dashed #35445b;border-radius:10px}.meas-list{display:flex;flex-direction:column;gap:8px}.meas-item{border:1px solid #304358;border-radius:10px;background:#172436;padding:10px 10px 10px 12px;cursor:pointer;transition:border .18s,background .18s}.meas-item:hover{border-color:#54718a;background:#1b2b40}.meas-item.selected{border-color:#38bdb2;background:#133944}.meas-top{display:flex;gap:7px;align-items:center;margin-bottom:7px}.meas-type{color:var(--cyan);font:800 10px Consolas,monospace;padding:4px 6px;border:1px solid #3a7d8b;border-radius:5px}.meas-name{font-size:11px;color:#b5c6d9;font-weight:750;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.iconbtn{border:0;background:transparent;color:#859ab1;border-radius:5px;padding:3px 5px}.iconbtn:hover{background:#334154;color:var(--danger)}.meas-val{font:800 20px Consolas,monospace;color:#e9f9ff;letter-spacing:-.04em}.meas-foot{color:#8196ac;font:11px Consolas,monospace;margin-top:3px}.muted{font-size:11px;color:#8a9eb6;line-height:1.5}.edit-box{margin-top:11px;border-top:1px solid #34455b;padding-top:11px;display:none}.edit-box.visible{display:block}.edit-row{display:flex;gap:6px;margin-top:6px}.edit-row .btn{min-width:64px}.tips{padding:13px;background:#162236;border:1px solid #2b4056;border-radius:10px;line-height:1.7;font-size:11px;color:#9caec4}.tips strong{color:#cfdeed}.footer{border-top:1px solid #2a3b4c;background:#0e1825;display:flex;align-items:center;padding:0 14px;gap:18px;color:#8c9fb3;font:11px Consolas,monospace;overflow:hidden}.footer .foot-item{white-space:nowrap}.footer b{font-weight:700;color:#d3e6f3}.footer .end{margin-left:auto;color:#5f8392}.toast{position:fixed;bottom:53px;left:50%;transform:translate(-50%,16px);min-width:290px;max-width:610px;padding:12px 15px;background:#183248;border:1px solid #3a8090;color:#e6f7ff;border-radius:10px;box-shadow:var(--shadow);opacity:0;transition:opacity .23s,transform .23s;z-index:15;pointer-events:none;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}.toast.err{background:#48232e;border-color:#bd5f69}.modal{position:fixed;inset:0;background:#030910c9;display:none;place-items:center;z-index:12;backdrop-filter:blur(6px);animation:fadein .15s}.modal.open{display:grid}@keyframes fadein{from{opacity:0}to{opacity:1}}.modal-card{width:min(460px,calc(100vw - 30px));padding:24px;background:#152237;border:1px solid #416075;border-radius:16px;box-shadow:var(--shadow)}.modal-title{font-size:21px;font-weight:850;letter-spacing:-.025em}.modal-desc{color:#a5b5c9;line-height:1.6;margin:10px 0 19px}.modal-row{display:flex;align-items:center;gap:10px}.modal-row input{flex:1;min-width:0}.modal-row select{width:89px}.modal-foot{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}.tiny{font-size:11px;color:#88a3b9;line-height:1.5;margin-top:9px}.blink{animation:blink .65s ease-in-out 1}@keyframes blink{50%{box-shadow:0 0 0 4px #36d3c73f}}
+@media(max-width:1140px){.workspace{grid-template-columns:58px minmax(0,1fr) 287px}.side-section{padding:14px 12px}.brand{min-width:169px}.brand-sub{display:none}.session{display:none}.top{gap:7px;padding:0 9px}.btn{padding:0 8px}}@media(max-width:900px){.workspace{grid-template-columns:53px minmax(0,1fr)}.side{position:absolute;right:0;top:61px;bottom:31px;width:275px;box-shadow:-15px 0 30px #0005;display:none}.side.visible{display:block}.top-actions .btn span.subtext{display:none}.mobile-side{display:inline-flex!important}.tools{padding-left:4px;padding-right:4px}.tool{width:42px}}
+
+.image-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;color:var(--cyan);font:12px Consolas,monospace}.image-list{max-height:190px;overflow:auto;margin-bottom:10px;display:grid;gap:5px}.image-entry{display:grid;grid-template-columns:42px minmax(0,1fr);gap:9px;align-items:center;width:100%;padding:8px;text-align:left;background:#172436;color:#eaf2fc;border:1px solid #35485f;border-radius:8px;transition:background .16s,border-color .16s}.image-entry:hover{background:#25384c}.image-entry[aria-current="true"]{border-color:var(--cyan);background:#143944}.image-entry img{width:42px;height:34px;object-fit:cover;border-radius:3px}.image-entry strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.image-entry small{display:block;color:#b5c6d9;font-size:11px;margin-top:4px}.image-section .muted{display:block;margin-top:8px}.image-section input{vertical-align:middle}#busyPanel{position:fixed;inset:0;z-index:30;background:#020914bb;display:grid;place-items:center}#busyPanel[hidden]{display:none}#busyPanel>div{width:min(440px,90vw);padding:24px;display:grid;gap:18px}progress{width:100%;accent-color:#50e5dc}.top-actions{scrollbar-width:thin;padding-bottom:3px}.btn:hover,.tool:hover{transform:none}.muted,.tiny,.scale-sub,.meas-foot{color:#a9bdd1}.tools{overflow-y:auto}.tool{flex-shrink:0}.legend{display:none}@media(max-width:600px){.brand{min-width:0}.brand-name{font-size:12px}.brand-mark,.top>.separator{display:none}.top{padding:0 5px}.command{min-width:0;max-width:100%}.docname{max-width:100%}.view-chip{display:none}.welcome h2{font-size:20px}.welcome-graphic{width:85px;height:85px}.side{width:min(316px,calc(100vw - 58px))}.footer{gap:8px}.footer .foot-item:first-child{display:none}.top-actions .btn span.subtext{display:inline}.canvas-head{left:32px}.viewport-bottom{left:32px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.magnifier{position:absolute;width:160px;height:160px;border:2px solid #e9f5ff;border-radius:50%;box-shadow:0 5px 25px #000b,0 0 0 3px #102231;pointer-events:none;z-index:6;display:none;image-rendering:pixelated;animation:lens-in .16s ease-out}@keyframes lens-in{from{opacity:0;scale:.92}to{opacity:1;scale:1}}
+.finish-circle{display:none;margin-top:8px}.finish-circle.visible{display:inline-flex}
+.meas-item{border-left:3px solid var(--measure-color,#50e5dc)}.meas-type{color:var(--measure-color,#50e5dc);border-color:var(--measure-color,#50e5dc)}
+.ai-note{margin-top:9px;color:#9db1c6;font-size:10px;line-height:1.5}.legacy-score{color:var(--green)}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="top">
+  <div class="brand"><div class="brand-mark">◎</div><div><div class="brand-name">MicroCAD <span style="color:var(--cyan)">Vision</span></div><div class="brand-sub">PRECISION IMAGE MEASUREMENT</div></div></div>
+ <div class="separator"></div>
+<div class="top-actions">
+  <button class="btn" id="openImageBtn" title="Nhập nhiều ảnh cùng lúc (Ctrl hoặc Shift để chọn)">▣ <span class="subtext">Nhập ảnh</span></button>
+  <button class="btn" id="openFolderBtn" title="Nhập ảnh trong thư mục và các thư mục con">▤ Thư mục</button>
+  <button class="btn" id="openRefBtn" title="Tải ảnh có vật chuẩn đo">◇ <span class="subtext">Ảnh chuẩn</span></button>
+  <button class="btn" id="openProjectBtn" title="Mở dự án JSON">▤ <span class="subtext">Mở dự án</span></button>
+  <div class="separator"></div>
+  <button class="btn" id="cameraBtn">◉ <span class="subtext">USB Camera</span></button>
+  <button class="btn primary" id="snapshotBtn" style="display:none">◎ Chụp ảnh</button>
+  <div class="spacer"></div>
+  <button class="btn" id="exportCsvBtn" title="Xuất dữ liệu đo dạng CSV">↧ CSV</button>
+  <button class="btn primary" id="exportPngBtn" title="Lưu ảnh gốc kèm kích thước">↓ Lưu ảnh PNG</button>
+  <button class="btn primary" id="exportAllBtn" title="Xuất tất cả ảnh đã đo và CSV trong một ZIP">↓ Save All · ZIP</button>
+  <button class="btn small mobile-side" id="mobileSideBtn" style="display:none">☷</button>
+ </div>
+ <div class="separator"></div>
+ <div class="session"><span class="signal" id="signal"></span><span id="sessionText">SẴN SÀNG</span></div>
+</header>
+<div class="workspace">
+<nav class="tools" aria-label="Thanh công cụ đo">
+ <button class="tool active" data-tool="select" title="Chọn và kéo vị trí nhãn [V]"><span>⌖</span><span class="tool-label">CHỌN</span></button>
+ <button class="tool" data-tool="pan" title="Di chuyển ảnh [H]"><span>✥</span><span class="tool-label">PAN</span></button>
+ <div class="tool-sep"></div>
+ <button class="tool" data-tool="calibrate" title="Lấy chuẩn chiều dài bằng 2 điểm [K]"><span>⤢</span><span class="tool-label">CHUẨN</span></button>
+ <button class="tool" data-tool="distance" title="Đo khoảng cách 2 điểm [L]"><span>╱</span><span class="tool-label">DÀI</span></button>
+ <button class="tool" data-tool="circlePair" title="Đo 2 đường kính và khe mép cùng lúc: 3 điểm mỗi lỗ [B]"><span>Ø↔Ø</span><span class="tool-label">Ø + MÉP</span></button>
+ <button class="tool" data-tool="circleGap" title="Đo khoảng cách mép của hai đường tròn đã đo [G]"><span>◯↔</span><span class="tool-label">MÉP 2Ø</span></button>
+ <button class="tool" data-tool="edges" title="Đo thủ công hai điểm trên hai mép lỗ [E]"><span>↔</span><span class="tool-label">2 ĐIỂM</span></button>
+ <button class="tool" data-tool="circle" title="Đo đường kính bằng 3 điểm trên vành lỗ [C]"><span>◯</span><span class="tool-label">Ø 3 ĐIỂM</span></button>
+ <button class="tool" data-tool="circleMulti" title="Đo lỗ nhiều điểm; Enter để hoàn tất [M]"><span>◉</span><span class="tool-label">Ø NHIỀU</span></button>
+ <button class="tool" data-tool="centers" title="Đo khoảng cách tâm - tâm [D]"><span>⊙</span><span class="tool-label">TÂM</span></button>
+ <div class="tool-sep"></div>
+ <button class="tool" data-tool="angle" title="Đo góc bằng 3 điểm: cạnh - đỉnh - cạnh [A]"><span>∠</span><span class="tool-label">GÓC</span></button>
+ <div class="tool-spacer"></div>
+ <button class="tool" id="fitBtn" title="Vừa khung hình"><span>⛶</span><span class="tool-label">FIT</span></button>
+ <button class="tool" id="magnifierBtn" title="Bật hoặc tắt kính lúp [Q]" aria-label="Bật kính lúp" aria-pressed="false"><span>⊕</span><span class="tool-label">KÍNH LÚP</span></button>
+ <button class="tool" id="undoBtn" title="Hoàn tác [Ctrl+Z]"><span>↶</span><span class="tool-label">UNDO</span></button>
+</nav>
+<section class="canvas-area" id="viewport">
+ <canvas id="stage" aria-label="Ảnh và bản vẽ đo"></canvas>
+ <canvas id="magnifier" class="magnifier" width="160" height="160" aria-hidden="true"></canvas>
+ <div class="canvas-head"><div class="glass docname"><span class="doc-chip" id="docKind">NO IMAGE</span><div style="min-width:0"><div class="file-name" id="docName">Chưa tải ảnh</div><div class="doc-sub" id="docDetails">Mở ảnh từ kính hiển vi hoặc tải ảnh chuẩn</div></div></div><div class="glass view-chip"><span><span class="cross">✛</span> <span id="zoomText">100%</span></span><span id="imageSizeText">— px</span></div></div>
+ <div id="welcome" class="floating welcome"><div class="welcome-graphic"><div class="reticle"><i></i></div></div><h2>Đo lỗ chính xác từ ảnh</h2><p>Tải ảnh từ kính hiển vi, hiệu chuẩn theo vật mẫu có kích thước đã biết rồi ghi kích thước giống AutoCAD.</p><div class="welcome-btns"><button class="btn primary" id="welcomeOpen">▣ Mở ảnh</button><button class="btn" id="welcomeCamera">◉ Bật camera</button></div><button class="demo-link" id="demoBtn">Dùng ảnh minh hoạ để trải nghiệm →</button></div>
+ <div class="viewport-bottom"><div class="glass command"><div class="command-head">▸ Command line · <span id="toolMode">SELECT</span></div><div class="command-text" id="toolHint">Chọn công cụ ở bên trái hoặc mở một ảnh để bắt đầu.</div><button class="btn small primary finish-circle" id="finishCircleBtn">✓ Hoàn tất lỗ (Enter)</button></div><div class="glass legend"><span id="coordinateText">X: — &nbsp; Y: —</span></div></div>
+</section>
+<aside class="side" id="sidePanel">
+ <div class="side-head"><div class="side-title">BẢNG THUỘC TÍNH</div><span class="kbd" title="Phiên bản thử nghiệm">v2.3 AUTO BATCH</span></div>
+ <section class="side-section image-section"><div class="sec-label">Bộ ảnh <span id="imageCount">0 ảnh</span></div>
+ <div class="image-nav"><button class="btn small" id="prevImage" aria-label="Ảnh trước">←</button><span id="imagePosition">0 / 0</span><button class="btn small" id="nextImage" aria-label="Ảnh sau">→</button></div>
+ <div id="imageList" class="image-list" aria-label="Danh sách ảnh"></div>
+ <label class="muted"><input type="checkbox" id="includeUnmeasured"> Xuất cả ảnh chưa đo vào ZIP</label>
+ <div class="muted">Chuẩn mới nhất tự áp dụng cho toàn bộ bộ ảnh và ảnh nhập sau. Chỉ dùng khi cùng độ phóng đại và tỷ lệ pixel.</div>
+ </section>
+ <section class="side-section"><div class="sec-label">01 / Hiệu chuẩn ảnh <span class="status-pill" id="calStatus">CHƯA CHUẨN</span></div><div class="cal-card"><div class="dim-label">Hệ số chiều dài / pixel</div><div class="scale-big" id="scaleValue">—</div><div class="scale-sub" id="scaleInfo">Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.</div><div class="side-acts"><button class="btn small primary" id="calBtn">⤢ Lấy chuẩn</button><button class="btn small" id="newRefBtn">Mở ảnh chuẩn</button></div><div class="tiny">Lấy chuẩn xong sẽ tự áp dụng cho mọi ảnh trong bộ.</div></div><div class="warning" id="calWarning">⚠ Chuẩn được lấy từ ảnh khác. Chỉ tái sử dụng hệ số khi cùng độ phóng đại, khoảng cách làm việc, thiết lập ảnh và tỷ lệ pixel.</div></section>
+ <section class="side-section"><div class="sec-label">02 / Cài đặt bản vẽ</div><div class="micro-row"><span class="dim-label">Đơn vị hiển thị</span><div class="unit-select"><select id="unitSelect" aria-label="Đơn vị"><option value="um">µm</option><option value="mm">mm</option></select></div></div><div class="micro-row"><span class="dim-label">Bám tâm đường tròn</span><label style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px"><input id="snapToggle" type="checkbox" checked> SNAP</label></div><div class="micro-row" style="margin-bottom:0"><span class="dim-label">Đối tượng đang chọn</span><strong id="selectedCount" style="font-family:Consolas,monospace">0</strong></div></section>
+ <section class="side-section"><div class="sec-label">03 / Danh sách kích thước <span id="measCount">0</span></div><div class="tips" style="margin-bottom:10px"><b>Ø NHIỀU [M]</b>: chọn ít nhất 3 điểm trên vành lỗ; Enter để khớp vòng tròn. Độ lệch RMS cho biết mức méo so với vòng tròn.<br><b>Ø + MÉP [B]</b>: chọn 3 điểm mỗi lỗ rồi tính khe giữa hai đường tròn.<br><b>MÉP 2Ø [G]</b>: chọn hai đường tròn đã đo. Khe tính từ đường tròn khớp, không dò biên ảnh.</div><div id="measureList" class="meas-list"><div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div></div><div class="edit-box" id="editBox"><div class="dim-label">Tên/ghi chú kích thước</div><div class="edit-row"><input class="field" id="measNameEdit" maxlength="40" placeholder="Ví dụ: Lỗ số 1"><button class="btn small" id="updateNameBtn">Lưu</button></div><button class="btn small" id="deleteMeasureBtn" style="width:100%;margin-top:8px;border-color:#573a4c;color:#f0a2b4">× Xóa phép đo đang chọn</button></div></section>
+ <section class="side-section"><div class="sec-label">04 / Dự án</div><div style="display:flex;gap:7px"><button class="btn small" style="flex:1" id="saveProjectBtn">↓ Lưu JSON</button><button class="btn small" style="flex:1" id="saveCsvBtn">↓ Lưu CSV</button></div><div class="muted" style="margin-top:11px">Save All tạo ZIP gồm PNG và CSV tổng hợp. Lưu JSON giữ toàn bộ ảnh gốc, phép đo và chuẩn để mở lại. Lưu dự án trước khi đóng cửa sổ.</div></section>
+ <section class="side-section"><div class="sec-label">Hướng dẫn nhanh</div><div class="tips"><strong>1.</strong> Mở ảnh cần đo hoặc ảnh chuẩn.<br><strong>2.</strong> Bấm <b>K</b>, chọn hai đầu đoạn chuẩn, nhập chiều dài thực. Chuẩn tự áp dụng toàn bộ ảnh.<br><strong>3.</strong> Trong <b>AI DETECT · YOLO</b>, chạy phát hiện cho ảnh này hoặc toàn bộ ảnh.<br><strong>4.</strong> Kiểm tra vòng cyan, confidence và trạng thái review; chỉ bấm <b>Chấp nhận</b> với kết quả đúng.<br><strong>5.</strong> Dùng <b>M</b> để đo hoặc bổ sung thủ công khi cần.<br><strong>6.</strong> Bấm <b>Save All · ZIP</b> để xuất PNG và CSV toàn bộ bộ ảnh.<br><br>Cuộn chuột để zoom, <b>H</b> để pan, <b>Esc</b> để hủy thao tác.</div><div class="tiny">AI YOLO là công cụ thử nghiệm. Confidence không phải độ chính xác kích thước; luôn kiểm tra trực quan và xác nhận bằng mẫu chuẩn trước khi dùng kết quả kiểm định.</div></section>
+</aside>
+</div>
+<footer class="footer"><div class="foot-item">MODEL <b>2D IMAGE METROLOGY</b></div><div class="foot-item">SCALE <b id="footerScale">UNCALIBRATED</b></div><div class="foot-item">MEASUREMENTS <b id="footerCount">0</b></div><div class="foot-item">TOOL <b id="footerTool">SELECT</b></div><div class="end">MICROCAD VISION · OFFLINE READY</div></footer>
+</div>
+<div id="busyPanel" hidden role="status" aria-live="polite"><div class="glass"><b id="busyText">Đang xử lý…</b><progress id="batchProgress" max="1" value="0"></progress><button id="cancelBatch" class="btn">Hủy</button></div></div>
+<div class="toast" id="toast" role="status"></div>
+<div class="modal" id="calModal" role="dialog" aria-modal="true" aria-label="Nhập kích thước chuẩn"><div class="modal-card"><div class="modal-title">Hiệu chuẩn thước đo</div><div class="modal-desc">Bạn đã chọn hai đầu của đoạn chuẩn dài <b id="calPxValue" style="color:var(--cyan)">— px</b>. Nhập chiều dài thực tế của đoạn này.</div><label for="calLength" class="dim-label">Chiều dài thực tế của đoạn chuẩn</label><div class="modal-row" style="margin-top:8px"><input class="field" type="number" min="0.000001" step="any" id="calLength" value="1"><select class="field" id="calLengthUnit"><option value="mm">mm</option><option value="um">µm</option></select></div><div class="tiny">Ví dụ: đoạn dài 1 mm → nhập 1 và chọn mm. Hệ số đo = chiều dài thực tế / độ dài tính bằng pixel.</div><div class="modal-foot"><button class="btn" id="cancelCalBtn">Hủy</button><button class="btn primary" id="confirmCalBtn">✓ Áp dụng chuẩn</button></div></div></div>
+<input id="fileImage" type="file" accept="image/*" multiple hidden>
+<input id="fileFolder" type="file" accept="image/*" webkitdirectory multiple hidden>
+<input id="fileReference" type="file" accept="image/*" hidden>
+<input id="fileProject" type="file" accept=".json,application/json" hidden>
+<video id="cameraVideo" autoplay playsinline muted style="display:none"></video>
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id), canvas=$('stage'), viewport=$('viewport'), ctx=canvas.getContext('2d');
+const doc={source:null,dataUrl:null,imgName:'',imgId:0,role:'image',width:0,height:0,cal:null,measures:[],aiPending:[],selected:null,tool:'select',pending:[],hover:null,view:{z:1,x:0,y:0},camera:false,stream:null,mouse:{down:false,mode:'',x:0,y:0},snap:true,unit:'um',history:[],lastLabelBoxes:[],ready:false};
+let width=800,height=600,dpr=1,framePending=false,toastTimer=null,calPair=null,spacePressed=false,requestId=0;
+const COLORS={rowSpacing:'#f4d35e',circleGap:'#ffbd59',edges:'#ff8765',distance:'#f87fb4',centers:'#a997ff',line:'#f87fb4',circle:'#4de1f3',legacyCircle:'#a7f36a',center:'#a997ff',angle:'#ffe27a',cal:'#ffffff'};
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y), pt=(x,y)=>({x,y}), mid=(a,b)=>pt((a.x+b.x)/2,(a.y+b.y)/2);
+const typeName={rowSpacing:'2 HÀNG',circleGap:'MÉP 2Ø',edges:'EDGE (thủ công)',distance:'DIST',circle:'DIAM',centers:'C-C',angle:'ANGLE'};
+const toolTitles={rowSpacing:'Khoảng cách 2 hàng',circleGap:'Mép hai đường tròn',circlePair:'Hai đường kính và khe mép',edges:'Mép - mép thủ công',select:'Chọn',pan:'Di chuyển',calibrate:'Hiệu chuẩn',distance:'Đo chiều dài',circle:'Đo Ø lỗ',circleMulti:'Đo Ø nhiều điểm',centers:'Tâm - tâm',angle:'Đo góc'};
+const helpers={circleGap:'Chọn hai đường tròn đã đo: bấm vành, bên trong hoặc mục đường tròn trong danh sách. Tính khe nhỏ nhất giữa hai đường tròn đã dựng, không dò biên ảnh.',circlePair:'Bấm 3 điểm trên vành lỗ 1, rồi 3 điểm trên vành lỗ 2. Tạo hai đường kính và khe mép giữa hai đường tròn trong một lần.',edges:'Chọn 2 điểm trên hai mép lỗ khác nhau, theo phương bạn muốn đo. Khoảng cách thẳng thủ công; không tự tìm cực tiểu. Không bám tâm.',select:'Nhấn chọn một nhãn kích thước và kéo để di chuyển. Xóa bằng Delete.',pan:'Giữ chuột và kéo để di chuyển ảnh. Cuộn chuột để phóng to / thu nhỏ.',calibrate:'Nhấn hai điểm đầu và cuối của một đoạn chuẩn có chiều dài thực đã biết.',distance:'Chọn điểm đầu rồi chọn điểm cuối để tạo Dimension theo 2 điểm.',circle:'Chọn chính xác ba điểm nằm trên cùng một biên của lỗ. Tự tính tâm và Ø.',circleMulti:'Chọn từ 3 đến 64 điểm trên vành lỗ, rồi nhấn Enter hoặc Hoàn tất lỗ. Backspace bỏ điểm cuối.',centers:'Chọn hai tâm lỗ. Bật SNAP để hút vào tâm các đường tròn đã đo.',angle:'Chọn điểm thứ nhất → đỉnh góc → điểm thứ ba để tính góc.'};
+helpers.rowSpacing='Chọn ít nhất 2 tâm cho Hàng 1, chuyển sang Hàng 2, chọn ít nhất 2 tâm rồi bấm Tính khoảng cách.';
+function escapeHTML(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function toast(s,err=false){let e=$('toast');e.textContent=s;e.className='toast show'+(err?' err':'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.className='toast',3500)}
+function num(n,nDigits=1){return Number(n).toLocaleString('vi-VN',{minimumFractionDigits:nDigits,maximumFractionDigits:nDigits})}
+function screen(p,v=doc.view){return {x:v.x+p.x*v.z,y:v.y+p.y*v.z}}
+function world(p,v=doc.view){return {x:(p.x-v.x)/v.z,y:(p.y-v.y)/v.z}}
+function eventPos(e){let r=canvas.getBoundingClientRect();return pt(e.clientX-r.left,e.clientY-r.top)}
+function inImage(p){return doc.source&&p.x>=0&&p.y>=0&&p.x<=doc.width&&p.y<=doc.height}
+function setStatus(s){$('toolHint').textContent=s}
+function updateHeader(){
+ $('welcome').style.display=doc.source?'none':'block';$('docName').textContent=doc.imgName||'Chưa tải ảnh';$('docDetails').textContent=doc.source?`${doc.width} × ${doc.height} px · ${doc.camera?'Truyền hình trực tiếp':doc.role==='reference'?'Ảnh tham chiếu':'Ảnh đo'}`:'Mở ảnh từ kính hiển vi hoặc tải ảnh chuẩn';
+ $('docKind').textContent=doc.camera?'LIVE':doc.source?(doc.role==='reference'?'REFERENCE':'IMAGE'):'NO IMAGE';$('imageSizeText').textContent=doc.source?`${doc.width}×${doc.height} px`:'— px';$('signal').classList.toggle('live',doc.camera);$('sessionText').textContent=doc.camera?'CAMERA LIVE':doc.source?'IMAGE LOADED':'SẴN SÀNG';
+ $('snapshotBtn').style.display=doc.camera?'inline-flex':'none';$('cameraBtn').innerHTML=doc.camera?'■ Dừng camera':'◉ <span class="subtext">USB Camera</span>';
+}
+function updateUI(){
+ $('calStatus').textContent=doc.cal?'ĐÃ CHUẨN':'CHƯA CHUẨN';$('calStatus').classList.toggle('good',!!doc.cal);
+ $('scaleValue').textContent=doc.cal?num(doc.cal.mmPerPx*1000,3)+' µm/px':'—';
+ $('scaleInfo').textContent=doc.cal?`${num(doc.cal.mmPerPx,6)} mm/px · Chuẩn từ: ${doc.cal.refName}`:'Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.';
+ let warn=doc.cal&&(doc.cal.refId!==doc.imgId);
+ $('calWarning').classList.toggle('visible',!!warn);
+ $('footerScale').textContent=doc.cal?num(doc.cal.mmPerPx*1000,4)+' µm/px':'UNCALIBRATED';$('footerCount').textContent=String(doc.measures.length);$('footerTool').textContent=doc.tool.toUpperCase();$('measCount').textContent=String(doc.measures.length);$('selectedCount').textContent=doc.selected===null?'0':'1';
+ $('exportPngBtn').disabled=!doc.source||doc.camera;$('exportCsvBtn').disabled=!doc.measures.length;$('saveCsvBtn').disabled=!doc.measures.length;$('saveProjectBtn').disabled=!doc.source||doc.camera;
+ if($('aiEngineStatus'))setAiState(aiOnline,$('aiEngineStatus').textContent);
+ renderList();renderAiReviewPanel();renderImageList();
+}
+function formatMeasurement(m){
+ let p=m.type==='circle'?m.r*2:m.type==='angle'?m.angle:dist(m.p1,m.p2);
+ if(m.type==='angle')return `${num(p,2)}°`;
+ if(!doc.cal)return `${num(p,1)} px`;
+ let z=p*doc.cal.mmPerPx*(doc.unit==='um'?1000:1);
+ return `${num(z,doc.unit==='um'?1:4)} ${doc.unit==='um'?'µm':'mm'}`;
+}
+function basePx(m){return m.type==='circle'?m.r*2:m.type==='angle'?m.angle:dist(m.p1,m.p2)}
+function mLabel(m){const prefix=m.type==='circle'?'Ø ':m.type==='centers'?'C–C ':m.type==='angle'?'∠ ':'';return `${m.name?m.name+' · ':''}${prefix}${formatMeasurement(m)}`}
+function renderList(){
+ const list=$('measureList');if(!doc.measures.length){list.innerHTML='<div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div>';}
+ else list.innerHTML=doc.measures.map((m,i)=>`<div class="meas-item ${m.id===doc.selected?'selected':''}" style="--measure-color:${m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type]}" data-id="${m.id}"><div class="meas-top"><span class="meas-type">${m.ai?'AI Ø':m.auto?'LEGACY Ø':typeName[m.type]}</span><span class="meas-name" title="${escapeHTML(m.name)}">${escapeHTML(m.name)||'Phép đo '+(i+1)}</span><button class="iconbtn remove-one" data-id="${m.id}" title="Xóa">✕</button></div><div class="meas-val">${escapeHTML((m.type==='circle'?'Ø ':m.type==='angle'?'∠ ':'')+formatMeasurement(m))}</div><div class="meas-foot">${m.type==='angle'?'Góc · '+num(basePx(m),2)+'°':num(basePx(m),2)+' px'} · ${m.type==='rowSpacing'?`${m.row1Ids.length} + ${m.row2Ids.length} tâm · lệch ${num(m.angleDifferenceDeg,2)}°`:m.type==='circle'?`${m.ai?`AI ${Math.round((m.autoConfidence||0)*100)}% · `:m.auto?`<span class="legacy-score">Legacy ${Math.round((m.autoConfidence||0)*100)}%</span> · `:''}${m.edgePts?.length||3} điểm · lệch RMS ${num(m.fitRms||0,2)} px`:m.type==='circleGap'?gapRelations[m.relation]:m.type==='centers'?'Tâm đến tâm':'2 điểm'}</div></div>`).join('');
+ document.querySelectorAll('.meas-item').forEach(e=>e.addEventListener('click',evt=>{if(evt.target.closest('.remove-one'))return;const id=Number(e.dataset.id);if(doc.tool==='rowSpacing'){toggleRowCircle(id);return;}if(doc.tool==='circleGap'){chooseGapCircle(id);return;}doc.selected=id;updateUI();render()}));
+ document.querySelectorAll('.remove-one').forEach(e=>e.addEventListener('click',evt=>{evt.stopPropagation();deleteMeasurement(Number(e.dataset.id))}));
+ const selected=doc.measures.find(m=>m.id===doc.selected);$('editBox').classList.toggle('visible',!!selected);if(selected)$('measNameEdit').value=selected.name||'';
+}
+function historyPush(){dirty=true;doc.history.push(JSON.stringify({measures:doc.measures,cal:doc.cal,selected:doc.selected,aiPending:doc.aiPending}));if(doc.history.length>75)doc.history.shift()}
+function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];setStatus(helpers[doc.tool]);let p=JSON.parse(doc.history.pop());doc.measures=p.measures;doc.cal=p.cal;doc.selected=p.selected;doc.aiPending=p.aiPending??[];updateUI();render();toast('Đã hoàn tác')}
+function setTool(t){if($('calModal').classList.contains('open'))return;doc.tool=t;doc.pending=[];circleSelection=[];doc.selected=t==='select'?doc.selected:null;document.querySelectorAll('[data-tool]').forEach(b=>(b.classList.toggle('active',b.dataset.tool===t),b.setAttribute('aria-pressed',String(b.dataset.tool===t))));$('toolMode').textContent=t.toUpperCase();setStatus(helpers[t]);$('finishCircleBtn').classList.remove('visible');updateUI();render()}
+function fit(){if(!doc.source)return;let pad=85;doc.view.z=Math.max(.05,Math.min((width-pad*2)/doc.width,(height-pad*2)/doc.height));doc.view.x=(width-doc.width*doc.view.z)/2;doc.view.y=(height-doc.height*doc.view.z)/2;updateZoom();render()}
+function updateZoom(){$('zoomText').textContent=num(doc.view.z*100,0)+'%'}
+function resize(){let rect=viewport.getBoundingClientRect();width=Math.max(1,rect.width);height=Math.max(1,rect.height);dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);render()}
+function arrow(ctx,p,dir,col){let a=Math.atan2(dir.y,dir.x),len=10,wid=4.1;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-len*Math.cos(a)+wid*Math.sin(a),p.y-len*Math.sin(a)-wid*Math.cos(a));ctx.lineTo(p.x-len*Math.cos(a)-wid*Math.sin(a),p.y-len*Math.sin(a)+wid*Math.cos(a));ctx.closePath();ctx.fill()}
+function cross(ctx,p,size,color){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.x-size,p.y);ctx.lineTo(p.x+size,p.y);ctx.moveTo(p.x,p.y-size);ctx.lineTo(p.x,p.y+size);ctx.stroke();ctx.restore()}
+function pill(ctx,text,x,y,color,selected=false,boxes=null,id=null,manual=false){
+ ctx.save();ctx.font='700 13px Consolas,monospace';let tw=ctx.measureText(text).width,ph=28;
+ const bounds=exportBounds||{w:width,h:height},pw=Math.min(tw+20,Math.max(30,bounds.w-8));
+ const edge=exportBounds?4:32,topEdge=exportBounds?4:68,bottomEdge=exportBounds?4:68;
+ const clamp=(n,lo,hi)=>Math.max(lo,Math.min(hi,n));
+ const preferred={x,y};
+ function candidate(cx,cy){cx=clamp(cx,pw/2+edge,Math.max(pw/2+edge,bounds.w-pw/2-edge));cy=clamp(cy,ph/2+topEdge,Math.max(ph/2+topEdge,bounds.h-ph/2-bottomEdge));let left=cx-pw/2,top=cy-ph/2,penalty=Math.hypot(cx-preferred.x,cy-preferred.y)*.12;for(const b of boxes||[]){let overlap=Math.max(0,Math.min(left+pw,b.right+5)-Math.max(left,b.left-5))*Math.max(0,Math.min(top+ph,b.bottom+5)-Math.max(top,b.top-5));penalty+=overlap*10;}return {x:cx,y:cy,left,top,penalty};}
+ let best=candidate(x,y);
+ if(boxes&&!manual){for(let row=0;row<=7;row++)for(const sign of row===0?[1]:[-1,1])for(const col of [0,-1,1,-2,2]){let c=candidate(x+col*(pw*.6+10),y+sign*row*(ph+7));if(c.penalty<best.penalty)best=c;}}
+ ({x,y}=best);let {left,top}=best;
+ ctx.fillStyle=selected?'#124a56ef':'#0a1926ee';ctx.strokeStyle=selected?'#81f8df':color;ctx.lineWidth=selected?1.7:1.05;
+ ctx.beginPath();ctx.roundRect(left,top,pw,ph,7);ctx.fill();ctx.stroke();ctx.fillStyle=selected?'#ffffff':'#f0f7fa';ctx.textBaseline='middle';ctx.textAlign='center';ctx.fillText(text,x,y+1,Math.max(1,pw-12));ctx.restore();if(boxes&&id!==null)boxes.push({id,left,top,right:left+pw,bottom:top+ph,autoShift:{x:(x-preferred.x)/doc.view.z,y:(y-preferred.y)/doc.view.z}});return {x,y,w:pw,h:ph};
+}
+function drawSegment(ctx,a,b,color,width=1.5,dash=[]){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore()}
+function drawLeader(ctx,from,to,color){let dx=to.x-from.x,dy=to.y-from.y,d=Math.hypot(dx,dy);if(d<24)return;const ux=dx/d,uy=dy/d,margin=Math.min((to.w/2+3)/Math.max(1e-9,Math.abs(ux)),(to.h/2+3)/Math.max(1e-9,Math.abs(uy)));if(d>margin+3)drawSegment(ctx,from,pt(to.x-ux*margin,to.y-uy*margin),color,1,[3,3]);}
+function dimLine(ctx,p1,p2,label,color,selected,shift,boxes,id){
+ let a=screen(p1),b=screen(p2);let dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;let n=pt(-dy/len,dx/len),off=30;
+ if(exportBounds&&[a,b].some(p=>p.x+n.x*(off+7)<0||p.x+n.x*(off+7)>exportBounds.w||p.y+n.y*(off+7)<0||p.y+n.y*(off+7)>exportBounds.h)){n=pt(-n.x,-n.y);}
+ let a2=pt(a.x+n.x*off,a.y+n.y*off),b2=pt(b.x+n.x*off,b.y+n.y*off);
+ drawSegment(ctx,a,pt(a2.x+n.x*7,a2.y+n.y*7),color,1,[]);drawSegment(ctx,b,pt(b2.x+n.x*7,b2.y+n.y*7),color,1,[]);drawSegment(ctx,a2,b2,color,1.25);
+ let unit=pt(dx/len,dy/len);arrow(ctx,a2,unit,color);arrow(ctx,b2,pt(-unit.x,-unit.y),color);cross(ctx,a,4,color);cross(ctx,b,4,color);
+ let tx=(a2.x+b2.x)/2+n.x*20+(shift?.x||0)*doc.view.z,ty=(a2.y+b2.y)/2+n.y*20+(shift?.y||0)*doc.view.z;
+ const labelPos=pill(ctx,label,tx,ty,color,selected,boxes,id,!!(shift&&(shift.x||shift.y)));
+ if(dist(mid(a2,b2),labelPos)>25)drawLeader(ctx,mid(a2,b2),labelPos,color);
+}
+function dimCircle(ctx,m,label,color,selected,shift,boxes){
+ let c=screen(m.c),r=m.r*doc.view.z;ctx.save();ctx.strokeStyle=color;ctx.lineWidth=selected?2.1:1.5;ctx.beginPath();ctx.arc(c.x,c.y,Math.abs(r),0,2*Math.PI);ctx.stroke();ctx.restore();cross(ctx,c,9,color);
+ let an=-.6,u=pt(Math.cos(an),Math.sin(an));let p1=pt(c.x-u.x*r,c.y-u.y*r),p2=pt(c.x+u.x*r,c.y+u.y*r);
+ drawSegment(ctx,p1,p2,color,1.1);arrow(ctx,p1,u,color);arrow(ctx,p2,pt(-u.x,-u.y),color);
+ let anchor=pt(c.x+u.x*(r+17),c.y+u.y*(r+17));drawSegment(ctx,p2,anchor,color,1.1);
+ let tx=c.x+u.x*(r+71)+(shift?.x||0)*doc.view.z,ty=c.y+u.y*(r+71)+(shift?.y||0)*doc.view.z;
+ const labelPos=pill(ctx,label,tx,ty,color,selected,boxes,m.id,!!(shift&&(shift.x||shift.y)));drawLeader(ctx,anchor,labelPos,color);
+}
+function dimAngle(ctx,m,label,color,selected,shift,boxes){
+ let a=screen(m.p1),v=screen(m.p2),b=screen(m.p3);let r=Math.min(75,Math.max(22,Math.min(dist(a,v),dist(b,v))*.5));let th1=Math.atan2(a.y-v.y,a.x-v.x),th2=Math.atan2(b.y-v.y,b.x-v.x);
+ drawSegment(ctx,v,a,color);drawSegment(ctx,v,b,color);cross(ctx,v,5,color);
+ let delta=Math.atan2(Math.sin(th2-th1),Math.cos(th2-th1));ctx.save();ctx.strokeStyle=color;ctx.lineWidth=1.4;ctx.beginPath();ctx.arc(v.x,v.y,r,th1,th1+delta,delta<0);ctx.stroke();ctx.restore();let th=th1+delta/2;
+ let tx=v.x+Math.cos(th)*(r+43)+(shift?.x||0)*doc.view.z,ty=v.y+Math.sin(th)*(r+43)+(shift?.y||0)*doc.view.z;const labelPos=pill(ctx,label,tx,ty,color,selected,boxes,m.id,!!(shift&&(shift.x||shift.y)));if(dist(v,labelPos)>r+45)drawLeader(ctx,v,labelPos,color);
+}
+function drawGrid(ctx,w,h){ctx.fillStyle='#0b1521';ctx.fillRect(0,0,w,h);ctx.save();ctx.lineWidth=1;ctx.strokeStyle='#172435';ctx.beginPath();const g=30;for(let x=0;x<=w;x+=g){ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,h)}for(let y=0;y<=h;y+=g){ctx.moveTo(0,y+.5);ctx.lineTo(w,y+.5)}ctx.stroke();ctx.fillStyle='#264054';for(let x=0;x<w;x+=g)for(let y=0;y<h;y+=g)ctx.fillRect(x-1,y-1,2,2);ctx.restore()}
+function drawRulers(ctx,w,h,v){
+ if(!doc.source)return;ctx.save();ctx.fillStyle='#121f2fe0';ctx.fillRect(0,0,w,25);ctx.fillRect(0,0,28,h);ctx.strokeStyle='#2e4259';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,25.5);ctx.lineTo(w,25.5);ctx.moveTo(27.5,0);ctx.lineTo(27.5,h);ctx.stroke();ctx.fillStyle='#91a2b8';ctx.font='10px Consolas,monospace';
+ const candidates=[1,2,5];let step=100;for(let pow=-3;pow<9;pow++){let found=false;for(let c of candidates){let q=c*Math.pow(10,pow);if(q*v.z>=62){step=q;found=true;break}}if(found)break}
+ let left=Math.max(0,Math.floor((-v.x)/v.z/step)*step),right=Math.min(doc.width,(w-v.x)/v.z);for(let i=left;i<=right;i+=step){let px=v.x+i*v.z;if(px<28||px>w)continue;ctx.beginPath();ctx.moveTo(px+.5,25);ctx.lineTo(px+.5,15);ctx.stroke();ctx.fillText(String(Math.round(i)),px+4,11)}
+ let top=Math.max(0,Math.floor((-v.y)/v.z/step)*step),bottom=Math.min(doc.height,(h-v.y)/v.z);for(let i=top;i<=bottom;i+=step){let py=v.y+i*v.z;if(py<25||py>h)continue;ctx.beginPath();ctx.moveTo(27,py+.5);ctx.lineTo(17,py+.5);ctx.stroke();ctx.save();ctx.translate(9,py+4);ctx.rotate(-Math.PI/2);ctx.fillText(String(Math.round(i)),0,0);ctx.restore()}ctx.restore()
+}
+function drawScene(context,w,h,v,{exportMode=false,includePreview=true}={}){
+  if(!exportMode)drawGrid(context,w,h);else context.clearRect(0,0,w,h);
+ if(doc.source){
+  let xx=v.x,yy=v.y,ww=doc.width*v.z,hh=doc.height*v.z;
+  if(!exportMode){context.save();context.shadowColor='#000b';context.shadowBlur=30;context.fillStyle='#192330';context.fillRect(xx-3,yy-3,ww+6,hh+6);context.restore();}
+  context.save();context.beginPath();context.rect(xx,yy,ww,hh);context.clip();context.imageSmoothingEnabled=v.z<1.5;
+  try{context.drawImage(doc.source,xx,yy,ww,hh)}catch(e){}
+  context.restore();if(!exportMode){context.strokeStyle='#677e98';context.lineWidth=1;context.strokeRect(xx-.5,yy-.5,ww+1,hh+1);}
+ }
+ const currentView=doc.view;doc.view=v;
+ let boxes=[];if(!exportMode)drawAiProposals(context);for(let m of doc.measures){let color=m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type],sel=!exportMode&&m.id===doc.selected;if(m.type==='circle')dimCircle(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='rowSpacing')drawRowSpacing(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='circleGap')drawCircleGap(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='angle')dimAngle(context,m,mLabel(m),color,sel,m.shift,boxes);else dimLine(context,m.p1,m.p2,mLabel(m),color,sel,m.shift,boxes,m.id)}
+ if(!exportMode&&doc.cal&&doc.cal.refId===doc.imgId&&doc.cal.p1&&doc.cal.p2){let a=screen(doc.cal.p1),b=screen(doc.cal.p2);drawSegment(context,a,b,COLORS.cal,2,[6,3]);cross(context,a,7,COLORS.cal);cross(context,b,7,COLORS.cal);let m=mid(a,b);pill(context,'REF '+num(doc.cal.lengthMm,4)+' mm',m.x,m.y-30,COLORS.cal,false)}
+ if(includePreview&&!exportMode)drawCircleToolPreview(context);
+ if(includePreview&&doc.pending.length){let arr=doc.pending;let hover=doc.hover;for(let p of arr)cross(context,screen(p),9,'#fff18a');if(hover&&inImage(hover)){
+  let s=screen(hover);if(arr.length===1&&(doc.tool==='calibrate'||doc.tool==='distance'||doc.tool==='edges'||doc.tool==='centers'))drawSegment(context,screen(arr[0]),s,'#ffffff',1,[6,4]);
+  if(doc.tool==='circle'||doc.tool==='circleMulti'){if(arr.length>=2){let cc=doc.tool==='circleMulti'?fitCircle([...arr,hover]):circumcircle(arr[0],arr[1],hover);if(cc&&cc.r<=Math.max(doc.width,doc.height)*2){context.save();context.strokeStyle='#ffffff';context.lineWidth=1.25;context.setLineDash([5,4]);let c=screen(cc.c);context.beginPath();context.arc(c.x,c.y,cc.r*v.z,0,Math.PI*2);context.stroke();context.restore()}}else if(arr.length===1)drawSegment(context,screen(arr[0]),s,'#fff18a',1,[6,4])}
+  if(doc.tool==='angle')drawSegment(context,screen(arr[arr.length-1]),s,'#ffffff',1,[6,4]);
+ }}
+ doc.view=currentView;
+ if(!exportMode){doc.lastLabelBoxes=boxes;drawRulers(context,w,h,v)}
+}
+function render(){if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,width,height,doc.view);if(doc.camera)render()})}
+function circumcircle(a,b,c){
+ // Translate to the first point to avoid cancellation at large image coordinates.
+ const bx=b.x-a.x,by=b.y-a.y,cx=c.x-a.x,cy=c.y-a.y,d=2*(bx*cy-by*cx);
+ if(Math.abs(d)<1e-8*Math.max(1,Math.hypot(bx,by)*Math.hypot(cx,cy)))return null;
+ const bb=bx*bx+by*by,cc=cx*cx+cy*cy;
+ const center=pt(a.x+(cy*bb-by*cc)/d,a.y+(bx*cc-cx*bb)/d);
+ return {c:center,r:dist(center,a)};
+}
+function fitCircle(points){
+ if(points.length===3){const fit=circumcircle(...points);return fit&&{...fit,fitRms:0};}
+ const n=points.length,mx=points.reduce((s,p)=>s+p.x,0)/n,my=points.reduce((s,p)=>s+p.y,0)/n;
+ let xx=0,yy=0,xy=0,xz=0,yz=0;
+ for(const p of points){const x=p.x-mx,y=p.y-my,z=x*x+y*y;xx+=x*x;yy+=y*y;xy+=x*y;xz+=x*z;yz+=y*z;}
+ const det=xx*yy-xy*xy;if(det<=1e-10*Math.max(1,xx*yy))return null;
+ const cx=(xz*yy-yz*xy)/(2*det)+mx,cy=(yz*xx-xz*xy)/(2*det)+my,c=pt(cx,cy);
+ const r=points.reduce((s,p)=>s+dist(p,c),0)/n;
+ const fitRms=Math.sqrt(points.reduce((s,p)=>s+(dist(p,c)-r)**2,0)/n);
+ return Number.isFinite(r)&&Number.isFinite(fitRms)?{c,r,fitRms}:null;
+}
+function pushRecordHistory(record){record.history??=[];record.history.push(JSON.stringify({measures:record.measures,cal:record.cal,selected:record.selected,aiPending:record.aiPending??[]}));if(record.history.length>75)record.history.shift();}
+function finishMultiCircle(){
+ if(doc.tool!=='circleMulti')return;
+ const points=doc.pending.slice();if(points.length<3){toast('Cần ít nhất 3 điểm trên vành lỗ.',true);return;}
+ const sol=fitCircle(points);
+ if(!sol||sol.r<.5||sol.r>Math.max(doc.width,doc.height)*2){toast('Không thể khớp vòng tròn từ các điểm này. Hãy bỏ điểm sai và thử lại.',true);return;}
+ addMeasure({type:'circle',...sol,edgePts:points});$('finishCircleBtn').classList.remove('visible');
+}
+function snapPoint(p){if(!doc.snap||doc.tool!=='centers')return p;let winner=p,best=14/doc.view.z;for(let m of doc.measures){if(m.type!=='circle')continue;let dd=dist(p,m.c);if(dd<best){best=dd;winner=m.c}}return winner}
+function nextPoint(p){if(!inImage(p))return;if(doc.camera){toast('Hãy chụp ảnh trước khi đo để cố định khung hình',true);return}if(doc.tool==='circleGap'){pickGapCircle(p);return;}if(doc.tool==='circlePair'){comboPoint(p);return;}if(doc.tool==='circleMulti'&&doc.pending.length>=64){toast('Tối đa 64 điểm cho một lỗ. Nhấn Enter để hoàn tất.');return;}p=snapPoint(p);doc.pending.push(p);
+ let tool=doc.tool,n=doc.pending.length;
+ if(tool==='calibrate'&&n===2){let [a,b]=doc.pending,px=dist(a,b);if(px<2){doc.pending=[];toast('Đoạn chuẩn phải dài ít nhất 2 pixel',true);return}calPair={p1:a,p2:b,px};$('calPxValue').textContent=num(px,2)+' px';$('calModal').classList.add('open');$('calLength').focus();$('calLength').select();}
+ if((tool==='distance'||tool==='edges'||tool==='centers')&&n===2){let [a,b]=doc.pending;if(dist(a,b)<1){doc.pending=[];toast('Khoảng cách quá nhỏ',true);return}addMeasure({type:tool,p1:a,p2:b})}
+ if(tool==='circle'&&n===3){let [a,b,c]=doc.pending,sol=circumcircle(a,b,c);if(!sol||sol.r>Math.max(doc.width,doc.height)*2||sol.r<.5){doc.pending=[];toast('Ba điểm gần thẳng hàng hoặc vòng tròn không hợp lệ. Chọn lại.',true);return}addMeasure({type:'circle',c:sol.c,r:sol.r,edgePts:[a,b,c]})}
+ if(tool==='circleMulti'&&n>=3)$('finishCircleBtn').classList.add('visible');
+ if(tool==='angle'&&n===3){let [a,v,b]=doc.pending,va=pt(a.x-v.x,a.y-v.y),vb=pt(b.x-v.x,b.y-v.y);if(Math.hypot(va.x,va.y)<1||Math.hypot(vb.x,vb.y)<1){doc.pending=[];toast('Cạnh góc quá ngắn',true);return}let cos=(va.x*vb.x+va.y*vb.y)/(Math.hypot(va.x,va.y)*Math.hypot(vb.x,vb.y));addMeasure({type:'angle',p1:a,p2:v,p3:b,angle:Math.acos(Math.max(-1,Math.min(1,cos)))*180/Math.PI})}
+ if(doc.pending.length){let target=tool==='circleMulti'?'64':tool==='circle'||tool==='angle'?3:2;setStatus(`Đã chọn ${doc.pending.length}/${target} điểm · ${helpers[tool]}`)}render()
+}
+let idSeed=1;
+function addMeasure(m){historyPush();let id=idSeed++;m.id=id;m.name=`${m.type==='circle'?'Lỗ':m.type==='edges'?'Mép–mép':m.type==='distance'?'Khoảng cách':m.type==='centers'?'Tâm-tâm':'Góc'} ${doc.measures.filter(x=>x.type===m.type).length+1}`;m.shift={x:0,y:0};doc.measures.push(m);doc.pending=[];setStatus(helpers[doc.tool]);doc.selected=id;updateUI();render();toast(`Đã thêm ${typeName[m.type]}: ${formatMeasurement(m)}`)}
+function deleteMeasurement(id){let index=doc.measures.findIndex(m=>m.id===id);if(index<0)return;historyPush();const removed=doc.measures.filter(m=>m.id===id||m.type==='circleGap'&&m.circleIds.includes(id)||m.type==='rowSpacing'&&[...(m.row1Ids||[]),...(m.row2Ids||[])].includes(id)).map(m=>m.id);doc.measures=doc.measures.filter(m=>!removed.includes(m.id));circleSelection=[];rowSelection=rowSelection.map(ids=>ids.filter(x=>x!==id));if(removed.includes(doc.selected))doc.selected=null;updateUI();render();toast(removed.length>1?'Đã xóa đường tròn và các phép đo phụ thuộc. Ctrl+Z để khôi phục.':'Đã xóa phép đo')}
+function stopCamera(){doc.camera=false;if(doc.stream){doc.stream.getTracks().forEach(t=>t.stop());doc.stream=null}let v=$('cameraVideo');v.pause();v.srcObject=null;updateHeader();render()}
+function resetForNewImage(img,url,name,mode){stashActive(); activeId=null;stopCamera();doc.cal=latestCalibration?structuredClone(latestCalibration):null;doc.source=img;doc.dataUrl=url;doc.width=img.naturalWidth;doc.height=img.naturalHeight;doc.imgName=name;doc.role=mode;doc.imgId=++requestId;doc.measures=[];doc.aiPending=[];doc.selected=null;doc.pending=[];doc.history=[];doc.ready=true;doc.thumb=null;activeId=doc.imgId;images.push(snapshotDoc());dirty=true;
+ fit();updateHeader();updateUI();setTool(mode==='reference'?'calibrate':'select');if(doc.cal&&mode==='image')toast('Đã áp dụng hệ số từ ảnh chuẩn. Hãy kiểm tra điều kiện phóng đại trước khi đo.');else toast(mode==='reference'?'Chọn K và lấy 2 điểm chuẩn trên ảnh':'Đã mở ảnh · bắt đầu đo');
+}
+function readDataUrl(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('Không đọc được tệp'));r.readAsDataURL(file)})}
+function createImg(data){return new Promise((res,rej)=>{let i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error('Không đọc được định dạng ảnh'));i.src=data})}
+async function openImage(file,mode){if(!file)return;try{const data=await readDataUrl(file),image=await createImg(data);resetForNewImage(image,data,file.name,mode)}catch(e){toast(e.message,true)}}
+async function cameraToggle(){stashActive();if(doc.camera){stopCamera();doc.source=null;doc.dataUrl=null;doc.imgName='';doc.width=0;doc.height=0;doc.measures=[];doc.pending=[];doc.selected=null;updateHeader();updateUI();render();if(images.length)activateImage(images[images.length-1].imgId);toast('Đã ngắt camera');return}if(!navigator.mediaDevices?.getUserMedia){toast('Không mở được camera: hãy dùng Chrome/Edge tại localhost hoặc môi trường cho phép camera.',true);return}try{
+ let stream=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:25}},audio:false});let v=$('cameraVideo');v.srcObject=stream;await v.play();if(!v.videoWidth)await new Promise(r=>v.addEventListener('loadedmetadata',r,{once:true}));
+ activeId=null;doc.cal=null;doc.stream=stream;doc.camera=true;doc.source=v;doc.dataUrl=null;doc.imgId=++requestId;doc.width=v.videoWidth;doc.height=v.videoHeight;doc.imgName='USB Microscope · Live';doc.role='live';doc.measures=[];doc.pending=[];doc.selected=null;doc.history=[];fit();setTool('select');updateHeader();updateUI();render();toast('Đã kết nối camera · bấm Chụp ảnh để đo');
+ }catch(e){toast('Không kết nối được camera: '+(e?.message||'hãy kiểm tra quyền truy cập hoặc kết nối USB'),true)}}
+async function capture(){if(!doc.camera)return;let off=document.createElement('canvas');off.width=doc.width;off.height=doc.height;off.getContext('2d').drawImage($('cameraVideo'),0,0,doc.width,doc.height);let data=off.toDataURL('image/png'),image=await createImg(data),timestamp=new Date().toISOString().replace(/[:.]/g,'-');resetForNewImage(image,data,'Microscope_'+timestamp+'.png','image')}
+function confirmCalibration(){if(!calPair)return;let n=Number($('calLength').value);if(!Number.isFinite(n)||n<=0){toast('Chiều dài chuẩn phải lớn hơn 0',true);$('calLength').focus();return}let mm=n*($('calLengthUnit').value==='um'?.001:1),mmPerPx=mm/calPair.px;if(!Number.isFinite(mmPerPx)||mmPerPx<=0)return;
+ historyPush();const cal={mmPerPx,p1:calPair.p1,p2:calPair.p2,lengthMm:mm,refName:doc.imgName,refW:doc.width,refH:doc.height,refId:doc.imgId};
+ stashActive();for(const r of images){if(r.imgId!==doc.imgId){r.history.push(JSON.stringify({measures:r.measures,cal:r.cal,selected:r.selected}));if(r.history.length>75)r.history.shift();}r.cal=structuredClone(cal);}
+ doc.cal=structuredClone(cal);latestCalibration=structuredClone(cal);dirty=true;
+ $('calModal').classList.remove('open');calPair=null;doc.pending=[];setTool('circleMulti');updateUI();render();toast(`Đã áp chuẩn mới cho ${images.length} ảnh: ${num(mmPerPx*1000,4)} µm/pixel`)}
+function pointerDown(e){if(busy||$('calModal').classList.contains('open')||!doc.source)return;e.preventDefault();let pos=eventPos(e);canvas.setPointerCapture?.(e.pointerId);doc.mouse.down=true;doc.mouse.x=pos.x;doc.mouse.y=pos.y;
+ if(e.button===1||e.button===2||spacePressed||doc.tool==='pan'){doc.mouse.mode='pan';canvas.style.cursor='grabbing';return}
+ if(doc.tool==='rowSpacing'){const p=world(pos),threshold=14/doc.view.z;let winner=doc.measures.filter(m=>m.type==='circle').map(m=>({m,d:Math.min(dist(p,m.c),Math.abs(dist(p,m.c)-m.r))})).filter(x=>x.d<=threshold).sort((a,b)=>a.d-b.d)[0]?.m;if(winner)toggleRowCircle(winner.id);else toast('Bấm vào tâm, vành hoặc mục đường tròn trong danh sách.',true);return;}
+ if(doc.tool==='select'){
+  let hit=[...doc.lastLabelBoxes].reverse().find(b=>pos.x>=b.left-5&&pos.x<=b.right+5&&pos.y>=b.top-5&&pos.y<=b.bottom+5);
+  if(hit){doc.selected=hit.id;doc.mouse.mode='label';historyPush();const m=doc.measures.find(m=>m.id===hit.id);if(m){m.shift.x+=hit.autoShift.x;m.shift.y+=hit.autoShift.y;}}else{doc.selected=null;doc.mouse.mode='';}
+  updateUI();render();return;
+ }
+ doc.mouse.mode='tool';nextPoint(world(pos))
+}
+function pointerMove(e){let pos=eventPos(e),w=world(pos);doc.hover=w;$('coordinateText').textContent=inImage(w)?`X: ${num(w.x,1)} px    Y: ${num(w.y,1)} px`:'X: —    Y: —';
+ updateMagnifier(pos);
+ if(doc.mouse.down){let dx=pos.x-doc.mouse.x,dy=pos.y-doc.mouse.y;if(doc.mouse.mode==='pan'){doc.view.x+=dx;doc.view.y+=dy;render()}else if(doc.mouse.mode==='label'&&doc.selected!==null){let m=doc.measures.find(m=>m.id===doc.selected);if(m){m.shift.x+=dx/doc.view.z;m.shift.y+=dy/doc.view.z;dirty=true;render()}}}
+ doc.mouse.x=pos.x;doc.mouse.y=pos.y;
+ if(doc.pending.length||circleSelection.length)render()
+}
+function pointerUp(){doc.mouse.down=false;doc.mouse.mode='';canvas.style.cursor=doc.tool==='pan'?'grab':doc.tool==='select'?'default':'crosshair'}
+function updateMagnifier(pos){
+ const lens=$('magnifier'),p=world(pos);if(!magnifierEnabled||!inImage(p)||!doc.source){lens.style.display='none';return;}
+ const size=160,half=12,g=lens.getContext('2d');lens.style.display='block';
+ lens.style.left=Math.max(3,Math.min(width-size-3,pos.x+25+(pos.x+size+28>width?-size-50:0)))+'px';
+ lens.style.top=Math.max(3,Math.min(height-size-3,pos.y+25+(pos.y+size+28>height?-size-50:0)))+'px';
+ g.imageSmoothingEnabled=false;g.fillStyle='#0a1926';g.fillRect(0,0,size,size);
+ try{g.drawImage(doc.source,p.x-half,p.y-half,half*2,half*2,0,0,size,size);}catch(e){lens.style.display='none';return;}
+ g.strokeStyle='#041018';g.lineWidth=3;g.beginPath();g.moveTo(80,55);g.lineTo(80,105);g.moveTo(55,80);g.lineTo(105,80);g.stroke();
+ g.strokeStyle='#fff';g.lineWidth=1;g.stroke();g.strokeStyle='#ff5d72';g.strokeRect(76.5,76.5,7,7);
+}
+function toggleMagnifier(){magnifierEnabled=!magnifierEnabled;const b=$('magnifierBtn');b.classList.toggle('active',magnifierEnabled);b.setAttribute('aria-pressed',String(magnifierEnabled));b.setAttribute('aria-label',magnifierEnabled?'Tắt kính lúp':'Bật kính lúp');if(!magnifierEnabled)$('magnifier').style.display='none';else if(doc.hover)updateMagnifier(screen(doc.hover));toast(magnifierEnabled?'Kính lúp đã bật · rê chuột để ngắm điểm':'Kính lúp đã tắt');}
+function zoomWheel(e){if(!doc.source)return;e.preventDefault();let p=eventPos(e),old=doc.view.z;let factor=Math.exp(-e.deltaY*.0014),next=Math.min(25,Math.max(.015,old*factor));doc.view.x=p.x-(p.x-doc.view.x)*(next/old);doc.view.y=p.y-(p.y-doc.view.y)*(next/old);doc.view.z=next;updateZoom();render()}
+function downloadBlob(blob,name){let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),15000)}
+function fileBase(){return (doc.imgName||'measurement').replace(/\.[^.]+$/,'').replace(/[^\wÀ-ỹ-]+/g,'_').slice(0,55)||'measurement'}
+// Batch document state. All geometry and label shifts use original-image pixels.
+let images=[],activeId=null,busy=false,cancelRequested=false,dirty=false,exportBounds=null,latestCalibration=null,magnifierEnabled=false;
+const DOC_KEYS=['source','dataUrl','imgName','imgId','role','width','height','cal','measures','aiPending','selected','view','history','ready','thumb'];
+const LIMITS={images:300,pixels:100000000,file:64*1024*1024,total:256*1024*1024};
+function snapshotDoc(){const r={};for(const k of DOC_KEYS)r[k]=doc[k];r.view={...doc.view};return r;}
+function stashActive(){if(activeId===null||doc.camera)return;const i=images.findIndex(r=>r.imgId===activeId);if(i>=0)images[i]=snapshotDoc();}
+function makeThumb(img){const c=document.createElement('canvas');c.width=84;c.height=64;const g=c.getContext('2d');g.fillStyle='#192330';g.fillRect(0,0,84,64);const z=Math.min(84/img.naturalWidth,64/img.naturalHeight);g.drawImage(img,(84-img.naturalWidth*z)/2,(64-img.naturalHeight*z)/2,img.naturalWidth*z,img.naturalHeight*z);return c.toDataURL('image/jpeg',.65);}
+function activateImage(id){
+ if(busy||$('calModal').classList.contains('open'))return;
+ stashActive();const target=images.find(r=>r.imgId===id);if(!target)return;
+ stopCamera();Object.assign(doc,target);activeId=id;
+ doc.pending=[];doc.hover=null;doc.mouse.down=false;doc.lastLabelBoxes=[];
+ calPair=null;$('calModal').classList.remove('open');
+ if(!target.view||!target.view.z){doc.view={z:1,x:0,y:0};fit();}else updateZoom();
+ updateHeader();setTool('select');render();
+}
+function renderImageList(){
+ stashActive();const list=$('imageList');if(!list)return;
+ const index=images.findIndex(r=>r.imgId===activeId);
+ $('imageCount').textContent=images.length+' ảnh';$('imagePosition').textContent=(index+1)+' / '+images.length;
+ $('prevImage').disabled=index<=0;$('nextImage').disabled=index<0||index>=images.length-1;
+ $('exportAllBtn').disabled=!images.length||doc.camera;
+ $('saveProjectBtn').disabled=!images.length||doc.camera;
+ $('exportCsvBtn').disabled=$('saveCsvBtn').disabled=!images.some(r=>r.measures.length);
+ const signature=JSON.stringify(images.map(r=>[r.imgId,r.imgName,r.measures.length,!!r.cal,r.imgId===activeId]));
+ if(list.dataset.signature===signature)return;
+ const priorScroll=list.scrollTop,priorActive=list.dataset.active;
+ list.dataset.signature=signature;list.dataset.active=String(activeId);
+ list.replaceChildren();if(!images.length){list.textContent='Chọn Nhập ảnh hoặc Thư mục để bắt đầu.';return;}
+ for(const r of images){
+  if(!r.thumb)r.thumb=makeThumb(r.source);if(r.imgId===activeId)doc.thumb=r.thumb;
+  const b=document.createElement('button');b.className='image-entry';b.setAttribute('aria-current',String(r.imgId===activeId));b.title=r.imgName;
+  const img=document.createElement('img');img.src=r.thumb;img.alt='';
+  const content=document.createElement('span'),name=document.createElement('strong'),meta=document.createElement('small');name.textContent=r.imgName;meta.textContent=`${r.measures.length} phép đo · ${r.cal?'Đã chuẩn':'Chưa chuẩn'}`;
+  content.append(name,meta);b.append(img,content);b.onclick=()=>activateImage(r.imgId);list.append(b);
+ }
+ list.scrollTop=priorScroll;
+ if(priorActive!==String(activeId)){
+  const current=list.querySelector('[aria-current="true"]');
+  if(current){const a=current.getBoundingClientRect(),b=list.getBoundingClientRect();if(a.top<b.top)list.scrollTop-=b.top-a.top;else if(a.bottom>b.bottom)list.scrollTop+=a.bottom-b.bottom;}
+ }
+}
+function setBusy(value,text='Đang xử lý…',current=0,total=1){
+ busy=value;$('app').inert=value;$('busyPanel').hidden=!value;$('busyText').textContent=text;
+ $('batchProgress').max=Math.max(1,total);$('batchProgress').value=current;
+ if(value)$('cancelBatch').focus();
+}
+const breathe=()=>new Promise(r=>setTimeout(r,0));
+function fileSupported(file){return /\.(png|jpe?g|webp|bmp)$/i.test(file.name);}
+async function importImages(files,role='image'){
+ if(busy)return;files=files.filter(fileSupported).sort((a,b)=>(a.webkitRelativePath||a.name).localeCompare(b.webkitRelativePath||b.name,'vi',{numeric:true}));
+ if(!files.length){toast('Chọn ảnh PNG, JPG, JPEG, WEBP hoặc BMP. Định dạng khác chưa được hỗ trợ.',true);return;}
+ stashActive();let pixels=images.reduce((s,r)=>s+r.width*r.height,0),bytes=images.reduce((s,r)=>s+r.dataUrl.length,0);
+ if(images.length+files.length>LIMITS.images){toast('Tối đa 300 ảnh mỗi dự án. Hãy chia thành các bộ nhỏ hơn.',true);return;}
+ cancelRequested=false;let added=0,failed=[],first=null;
+ try{
+  for(let i=0;i<files.length;i++){
+   if(cancelRequested)break;const f=files[i];setBusy(true,`Đang nhập ${i+1}/${files.length}: ${f.name}`,i,files.length);await breathe();
+   try{
+    if(f.size>LIMITS.file)throw new Error('vượt 64 MB/tệp');
+    const data=await readDataUrl(f);if(bytes+data.length>LIMITS.total)throw new Error('vượt 256 MB dữ liệu ảnh');
+    const img=await createImg(data),w=img.naturalWidth,h=img.naturalHeight;
+    if(w<32||h<32||w>16384||h>16384||pixels+w*h>LIMITS.pixels)throw new Error('ảnh quá nhỏ, quá lớn hoặc tổng vượt 100 triệu pixel');
+    const id=++requestId;
+    images.push({source:img,dataUrl:data,imgName:f.webkitRelativePath||f.name,imgId:id,role,width:w,height:h,cal:latestCalibration?structuredClone(latestCalibration):null,measures:[],aiPending:[],selected:null,view:null,history:[],ready:true,thumb:makeThumb(img)});
+    first??=id;pixels+=w*h;bytes+=data.length;added++;
+   }catch(e){failed.push(f.name+': '+e.message);}
+  }
+ }finally{setBusy(false);}
+ if(first!==null){dirty=true;activateImage(first);if(role==='reference')setTool('calibrate');}
+ renderImageList();toast(`${cancelRequested?'Đã dừng. ':''}Đã nhập ${added} ảnh${failed.length?`; bỏ qua ${failed.length} tệp lỗi`:''}.`,!!failed.length);
+ if(failed.length)alert('Các tệp không nhập được:\n'+failed.join('\n'));
+}
+function cleanName(name){return String(name).replace(/\.[^./\\]+$/,'').replace(/[<>:"/\\|?*\x00-\x1f]/g,'_').replace(/[. ]+$/g,'').slice(0,90)||'image';}
+function outputName(r,index){return String(index+1).padStart(4,'0')+'_'+cleanName(r.imgName)+'_dimension.png';}
+function canvasBlob(c){return new Promise((resolve,reject)=>c.toBlob(b=>b?resolve(b):reject(new Error('Không tạo được PNG. Hãy giảm kích thước ảnh.')),'image/png'));}
+async function buildPNG(record){
+ const saved=snapshotDoc(),selected=doc.selected,off=document.createElement('canvas');off.width=record.width;off.height=record.height;
+ const c=off.getContext('2d');if(!c)throw new Error('Không đủ bộ nhớ tạo ảnh xuất');
+ try{Object.assign(doc,record);exportBounds={w:record.width,h:record.height};drawScene(c,off.width,off.height,{z:1,x:0,y:0},{exportMode:true,includePreview:false});}
+ finally{Object.assign(doc,saved);doc.selected=selected;exportBounds=null;}
+ try{return await canvasBlob(off);}finally{off.width=1;off.height=1;}
+}
+async function exportPNG(){
+ if(!doc.source||doc.camera||busy)return;stashActive();setBusy(true,'Đang tạo PNG đúng kích thước ảnh gốc…');
+ try{const blob=await buildPNG(snapshotDoc());downloadBlob(blob,cleanName(doc.imgName)+'_dimension.png');toast('Đã tạo PNG chỉ có ảnh gốc và dimension, không có khung.');}catch(e){toast(e.message,true);}finally{setBusy(false);}
+}
+function csvEscape(value){let t=String(value??'');if(/^[\s]*[=+@-]/.test(t))t="'"+t;return '"'+t.replace(/"/g,'""')+'"';}
+function makeCSV(records){
+ const headers=['Image_index','Image_name','PNG_file','Width_px','Height_px','Measurement_id','Type','Name','Value_px_or_deg','Value_mm','Value_um','mm_per_px','Calibration','Reference_image','Method','P1_x_px','P1_y_px','P2_x_px','P2_y_px','P3_x_px','P3_y_px','Center_x_px','Center_y_px','Radius_px','Circle_A_id','Circle_B_id','Circle_A_diameter_px','Circle_B_diameter_px','Circle_relation','Point_count','Fit_RMS_px','Auto_confidence','All_edge_points_json'];
+ const lines=[headers.map(csvEscape).join(',')];
+ records.forEach((r,index)=>{
+  if(!r.measures.length)lines.push([index+1,r.imgName,outputName(r,index),r.width,r.height,'','','','','','','',r.cal?'CALIBRATED':'UNCALIBRATED',r.cal?.refName||'','NO_MEASUREMENTS'].map(csvEscape).join(','));
+  for(const m of r.measures){const p=basePx(m),mm=r.cal&&m.type!=='angle'?p*r.cal.mmPerPx:'';
+   const points=m.edgePts||[m.p1,m.p2,m.p3];
+   lines.push([index+1,r.imgName,outputName(r,index),r.width,r.height,m.id,m.type,m.name,p,mm,mm===''?'':mm*1000,r.cal?.mmPerPx??'',r.cal?'CALIBRATED':'UNCALIBRATED',r.cal?.refName||'',m.type==='rowSpacing'?`TLS_PCA_SHARED_NORMAL_${m.row1Ids.length}_${m.row2Ids.length}_CENTERS_ANGLE_${m.angleDifferenceDeg}`:m.type==='circleGap'?'MINIMUM_BETWEEN_FITTED_CIRCLES_NOT_IMAGE_EDGE_DETECTION':m.type==='edges'?'MANUAL_TWO_EDGE_POINTS_NOT_AUTOMATIC_MINIMUM':m.type==='circle'?(m.ai?'AI_YOLO_SEGMENTATION_CIRCLE_FIT':m.auto?'LEGACY_AUTO_INNER_EDGE_ROBUST_CIRCLE':m.edgePts?.length>3?'MANUAL_MULTIPOINT_LEAST_SQUARES_CIRCLE':'MANUAL_THREE_POINT_CIRCLE'):m.type==='angle'?'MANUAL_THREE_POINT_ANGLE':'MANUAL_TWO_POINTS',points[0]?.x??'',points[0]?.y??'',points[1]?.x??'',points[1]?.y??'',points[2]?.x??'',points[2]?.y??'',m.c?.x??'',m.c?.y??'',m.r??'',m.circleIds?.[0]??'',m.circleIds?.[1]??'',m.circleIds?r.measures.find(c=>c.id===m.circleIds[0]).r*2:'',m.circleIds?r.measures.find(c=>c.id===m.circleIds[1]).r*2:'',m.relation??'',m.type==='circle'?m.edgePts?.length||3:'',m.type==='circle'?m.fitRms||0:'',(m.ai||m.auto)?m.autoConfidence:'',m.type==='circle'?JSON.stringify(m.edgePts||[]):''].map(csvEscape).join(','));
+  }
+ });return '\ufeff'+lines.join('\r\n');
+}
+function exportCSV(){stashActive();const records=images.filter(r=>r.measures.length);if(!records.length){toast('Chưa có phép đo');return;}downloadBlob(new Blob([makeCSV(records)],{type:'text/csv;charset=utf-8'}),'MicroCAD_measurements.csv');toast('Đã xuất CSV tổng hợp toàn bộ ảnh đã đo.');}
+// ZIP STORE writer: UTF-8 names, CRC-32, no network dependencies.
+const crcTable=Uint32Array.from({length:256},(_,n)=>{for(let k=0;k<8;k++)n=n&1?0xedb88320^(n>>>1):n>>>1;return n>>>0;});
+function crc32(bytes){let crc=0xffffffff;for(const b of bytes)crc=crcTable[(crc^b)&255]^(crc>>>8);return (crc^0xffffffff)>>>0;}
+class ZipStore{
+ constructor(){this.parts=[];this.central=[];this.offset=0;}
+ add(name,bytes){
+  const n=new TextEncoder().encode(name),size=bytes.length,crc=crc32(bytes);
+  if(this.offset+size>512*1024*1024)throw new Error('ZIP vượt giới hạn 512 MB. Hãy chia bộ ảnh thành các dự án nhỏ hơn.');
+  const local=new Uint8Array(30+n.length),v=new DataView(local.buffer);v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);v.setUint16(12,33,true);v.setUint32(14,crc,true);v.setUint32(18,size,true);v.setUint32(22,size,true);v.setUint16(26,n.length,true);local.set(n,30);
+  const central=new Uint8Array(46+n.length),c=new DataView(central.buffer);c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x800,true);c.setUint16(14,33,true);c.setUint32(16,crc,true);c.setUint32(20,size,true);c.setUint32(24,size,true);c.setUint16(28,n.length,true);c.setUint32(42,this.offset,true);central.set(n,46);
+  this.parts.push(local,bytes);this.central.push(central);this.offset+=local.length+size;
+ }
+ finish(){const end=new Uint8Array(22),v=new DataView(end.buffer),size=this.central.reduce((sum,b)=>sum+b.length,0);v.setUint32(0,0x06054b50,true);v.setUint16(8,this.central.length,true);v.setUint16(10,this.central.length,true);v.setUint32(12,size,true);v.setUint32(16,this.offset,true);return new Blob([...this.parts,...this.central,end],{type:'application/zip'});}
+}
+async function exportAll(){
+ if(busy||doc.camera)return;stashActive();const records=images.filter(r=>$('includeUnmeasured').checked||r.measures.length);
+ if(!records.length){toast('Chưa có ảnh đã đo. Có thể bật “Xuất cả ảnh chưa đo vào ZIP”.');return;}
+ cancelRequested=false;const zip=new ZipStore();
+ try{
+  for(let i=0;i<records.length;i++){
+   if(cancelRequested)throw new Error('Đã hủy xuất ZIP. Bộ ảnh và phép đo vẫn được giữ nguyên.');
+   setBusy(true,`Đang xuất PNG ${i+1}/${records.length}`,i,records.length);await breathe();
+   const blob=await buildPNG(records[i]);zip.add(outputName(records[i],i),new Uint8Array(await blob.arrayBuffer()));
+  }
+  if(cancelRequested)throw new Error('Đã hủy xuất ZIP.');
+  zip.add('measurements.csv',new TextEncoder().encode(makeCSV(records)));
+  zip.add('README.txt',new TextEncoder().encode('MicroCAD Vision 2.3 — AI Experimental Mode\r\nAI: YOLO Instance Segmentation tạo đề xuất cần người dùng duyệt trước khi thành phép đo. Confidence không phải độ chính xác kích thước.\r\nLEGACY_AUTO: dữ liệu cũ được giữ nguyên để tương thích, nhưng không thể tạo mới từ giao diện này.\r\nCIRCLE GAP: khe nhỏ nhất giữa hai đường tròn dựng từ điểm người dùng; không dò biên ảnh.\r\nPNG giữ đúng kích thước pixel gốc; chỉ ảnh và dimension.\r\nEDGE: đo thủ công đoạn thẳng giữa hai điểm mép do người dùng chọn; không tự tìm khoảng cách tối thiểu.\r\nUNCALIBRATED: chỉ có pixel, cột mm/µm để trống.\r\nĐọc CSV UTF-8, dấu phân cách dấu phẩy, số thập phân dấu chấm.\r\n'));
+  const today=new Date(),dateName=[String(today.getDate()).padStart(2,'0'),String(today.getMonth()+1).padStart(2,'0'),today.getFullYear()].join('-');
+  downloadBlob(zip.finish(),`MicroCAD_${dateName}.zip`);toast(`Đã tạo MicroCAD_${dateName}.zip: ${records.length} PNG và CSV tổng hợp.`);
+ }catch(e){toast(e.message,true);}finally{setBusy(false);render();}
+}
+function projectData(){stashActive();return {app:'MicroCAD Vision',version:3,unit:doc.unit,latestCalibration,activeIndex:images.findIndex(r=>r.imgId===activeId),images:images.map(r=>({imgName:r.imgName,imgId:r.imgId,imageDataUrl:r.dataUrl,width:r.width,height:r.height,role:r.role,cal:r.cal,measures:r.measures,view:r.view}))};}
+function saveProject(){
+ if(!images.length||busy)return;
+ try{downloadBlob(new Blob([JSON.stringify(projectData())],{type:'application/json'}),'MicroCAD_batch_project.json');dirty=false;toast('Đã tạo dự án JSON gồm toàn bộ bộ ảnh. Kiểm tra tệp trong Downloads.');}catch(e){toast('Không lưu được dự án: '+e.message,true);}
+}
+function finite(n){return typeof n==='number'&&Number.isFinite(n);}
+function validPoint(p){return p&&finite(p.x)&&finite(p.y)&&Math.abs(p.x)<1e7&&Math.abs(p.y)<1e7;}
+function validateMeasures(raw,w,h,legacy){
+ if(!Array.isArray(raw)||raw.length>10000)throw new Error('Danh sách phép đo không hợp lệ');
+ const point=p=>{if(!validPoint(p)||p.x<0||p.y<0||p.x>w||p.y>h)throw new Error('Điểm đo nằm ngoài ảnh hoặc không hợp lệ');return {x:p.x,y:p.y};};
+ const used=new Set();
+ const validated=raw.map(input=>{
+  if(!input||!['circle','circleGap','rowSpacing','distance','centers','edges','angle'].includes(input.type))throw new Error('Loại phép đo không hợp lệ');
+  if(!Number.isSafeInteger(input.id)||input.id<1||used.has(input.id))throw new Error('ID phép đo không hợp lệ hoặc trùng');used.add(input.id);idSeed=Math.max(idSeed,input.id+1);
+  let m={id:input.id,type:input.type,name:String(input.name||'').slice(0,100),shift:{x:0,y:0}};
+  if(input.shift){if(!validPoint(input.shift))throw new Error('Vị trí nhãn không hợp lệ');m.shift={...input.shift};}
+  if(legacy){const z=Math.max(.05,Math.min((width-170)/w,(height-170)/h));m.shift.x/=z;m.shift.y/=z;}
+  if(m.type==='rowSpacing'){
+   if(!Array.isArray(input.row1Ids)||!Array.isArray(input.row2Ids)||input.row1Ids.length<2||input.row2Ids.length<2||[...input.row1Ids,...input.row2Ids].some(id=>!Number.isSafeInteger(id))||new Set([...input.row1Ids,...input.row2Ids]).size!==input.row1Ids.length+input.row2Ids.length)throw new Error('Danh sách tâm của hai hàng không hợp lệ');m.row1Ids=[...input.row1Ids];m.row2Ids=[...input.row2Ids];
+  }else if(m.type==='circleGap'){
+   if(!Array.isArray(input.circleIds)||input.circleIds.length!==2||input.circleIds[0]===input.circleIds[1])throw new Error('Cần hai đường tròn khác nhau cho phép đo mép');m.circleIds=[...input.circleIds];
+  }else if(m.type==='circle'){
+   if(input.edgePts!==undefined){if(!Array.isArray(input.edgePts)||input.edgePts.length<3||input.edgePts.length>64)throw new Error('Số điểm đường tròn không hợp lệ');m.edgePts=input.edgePts.map(point);const sol=fitCircle(m.edgePts);if(!sol)throw new Error('Các điểm đường tròn không hợp lệ');m.c=sol.c;m.r=sol.r;m.fitRms=sol.fitRms;}
+   else{if(!validPoint(input.c)||!finite(input.r))throw new Error('Đường tròn không hợp lệ');m.c={...input.c};m.r=input.r;}
+   if(m.r<.5||m.r>Math.max(w,h)*2)throw new Error('Bán kính không hợp lệ');
+   if(input.ai===true){m.ai=true;m.autoConfidence=finite(input.autoConfidence)?Math.max(0,Math.min(1,input.autoConfidence)):0;m.reviewRequired=input.reviewRequired===true;m.angularCoverage=finite(input.angularCoverage)?input.angularCoverage:undefined;m.modelVersion=typeof input.modelVersion==='string'?input.modelVersion:undefined;}
+   else if(input.auto===true){m.auto=true;m.autoConfidence=finite(input.autoConfidence)?Math.max(0,Math.min(1,input.autoConfidence)):0;}
+  }else{
+   m.p1=point(input.p1);m.p2=point(input.p2);if(dist(m.p1,m.p2)<1)throw new Error('Đoạn đo quá ngắn');
+   if(m.type==='angle'){m.p3=point(input.p3);if(dist(m.p2,m.p3)<1)throw new Error('Cạnh góc quá ngắn');const a=pt(m.p1.x-m.p2.x,m.p1.y-m.p2.y),b=pt(m.p3.x-m.p2.x,m.p3.y-m.p2.y);m.angle=Math.acos(Math.max(-1,Math.min(1,(a.x*b.x+a.y*b.y)/(Math.hypot(a.x,a.y)*Math.hypot(b.x,b.y)))))*180/Math.PI;}
+  }return m;
+ });
+ for(const m of validated)if(m.type==='circleGap'){const [a,b]=m.circleIds.map(id=>validated.find(c=>c.id===id&&c.type==='circle'));if(!a||!b)throw new Error('Phép đo mép tham chiếu đường tròn không tồn tại');Object.assign(m,circleGapGeometry(a,b));}else if(m.type==='rowSpacing'){const rows=[m.row1Ids,m.row2Ids].map(ids=>ids.map(id=>validated.find(c=>c.id===id&&c.type==='circle')));if(rows.some(r=>r.some(x=>!x)))throw new Error('Phép đo hai hàng tham chiếu tâm không tồn tại');Object.assign(m,rowSpacingGeometry(rows[0].map(x=>x.c),rows[1].map(x=>x.c)));}
+ return validated;
+}
+function validateCal(raw){
+ if(raw==null)return null;
+ if(!finite(raw.mmPerPx)||raw.mmPerPx<=0||raw.mmPerPx>1e9)throw new Error('Hệ số chuẩn phải hữu hạn và lớn hơn 0');
+ const c={mmPerPx:raw.mmPerPx,refName:String(raw.refName||''),refW:raw.refW,refH:raw.refH,refId:raw.refId??-1};
+ if(raw.p1||raw.p2){if(!validPoint(raw.p1)||!validPoint(raw.p2)||!finite(raw.lengthMm)||raw.lengthMm<=0)throw new Error('Đoạn chuẩn không hợp lệ');c.p1={...raw.p1};c.p2={...raw.p2};c.lengthMm=raw.lengthMm;const px=dist(c.p1,c.p2);if(px<2||Math.abs(c.lengthMm/px-c.mmPerPx)>Math.max(1e-12,c.mmPerPx*1e-8))throw new Error('Hệ số không khớp với đoạn chuẩn');}
+ return c;
+}
+async function loadProject(file){
+ if(!file||busy)return;cancelRequested=false;let loaded=[];
+ try{
+  if(file.size>LIMITS.total*1.1)throw new Error('Dự án quá lớn (giới hạn khoảng 280 MB)');
+  setBusy(true,'Đang kiểm tra dự án…');const data=JSON.parse(await file.text());
+  if(data.app!=='MicroCAD Vision'||![1,2,3].includes(data.version))throw new Error('Không đúng dự án MicroCAD Vision phiên bản 1, 2 hoặc 3');
+  const rows=data.version===1?[data]:data.images;if(!Array.isArray(rows)||!rows.length||rows.length>LIMITS.images)throw new Error('Số ảnh không hợp lệ');
+  let pixels=0,bytes=0;const idMap=new Map();
+  for(let i=0;i<rows.length;i++){
+   if(cancelRequested)throw new Error('Đã hủy mở dự án. Dự án hiện tại giữ nguyên.');
+   setBusy(true,`Kiểm tra ảnh ${i+1}/${rows.length}`,i,rows.length);await breathe();const r=rows[i];
+   if(!r||!/^data:image\/(png|jpeg|webp|bmp);base64,/i.test(r.imageDataUrl||''))throw new Error('Định dạng ảnh nhúng không hỗ trợ');
+   bytes+=r.imageDataUrl.length;if(bytes>LIMITS.total)throw new Error('Dữ liệu ảnh vượt 256 MB');
+   const img=await createImg(r.imageDataUrl),w=img.naturalWidth,h=img.naturalHeight;pixels+=w*h;
+   if(w<32||h<32||w>16384||h>16384||pixels>LIMITS.pixels)throw new Error('Kích thước ảnh vượt giới hạn');
+   if(r.width!==w||r.height!==h)throw new Error('Kích thước khai báo khác ảnh gốc');
+   const id=++requestId;if(r.imgId!==undefined){if(idMap.has(r.imgId))throw new Error('ID ảnh bị trùng');idMap.set(r.imgId,id);}
+   const cal=validateCal(r.cal),measures=validateMeasures(r.measures,w,h,data.version===1);
+   let view=null;if(r.view&&finite(r.view.x)&&finite(r.view.y)&&finite(r.view.z)&&r.view.z>=.015&&r.view.z<=25)view={...r.view};
+   loaded.push({source:img,dataUrl:r.imageDataUrl,imgName:String(r.imgName||'Ảnh').slice(0,300),imgId:id,role:r.role==='reference'?'reference':'image',width:w,height:h,cal,measures,aiPending:[],selected:null,view,history:[],ready:true,thumb:makeThumb(img)});
+  }
+  for(const r of loaded)if(r.cal){const old=r.cal.refId;r.cal.refId=idMap.get(old)??(data.version===1&&r.cal.refName===r.imgName&&r.cal.refW===r.width&&r.cal.refH===r.height?r.imgId:-1);}
+  const restoredLatest=data.latestCalibration?validateCal(data.latestCalibration):loaded.findLast(r=>r.cal)?.cal||null;
+  if(restoredLatest&&data.latestCalibration)restoredLatest.refId=idMap.get(restoredLatest.refId)??-1;
+  if(cancelRequested)throw new Error('Đã hủy mở dự án.');
+  if(images.length&&!confirm('Thay bộ ảnh hiện tại bằng dự án đã chọn? Hãy lưu JSON trước nếu còn thay đổi cần giữ.'))return;
+  stopCamera();images=loaded;latestCalibration=restoredLatest;activeId=null;doc.unit=data.unit==='mm'?'mm':'um';$('unitSelect').value=doc.unit;
+  const index=Number.isInteger(data.activeIndex)?Math.max(0,Math.min(loaded.length-1,data.activeIndex)):0;
+  setBusy(false);activateImage(loaded[index].imgId);dirty=false;toast(`Đã khôi phục ${loaded.length} ảnh và các phép đo.`);
+ }catch(e){toast('Không mở được dự án: '+e.message,true);}finally{setBusy(false);}
+}
+function initBatch(){
+ $('exportAllBtn').onclick=exportAll;
+ $('cancelBatch').onclick=()=>{cancelRequested=true;$('busyText').textContent='Đang dừng sau ảnh hiện tại…';};
+ $('prevImage').onclick=()=>{const i=images.findIndex(r=>r.imgId===activeId);if(i>0)activateImage(images[i-1].imgId);};
+ $('nextImage').onclick=()=>{const i=images.findIndex(r=>r.imgId===activeId);if(i>=0&&i<images.length-1)activateImage(images[i+1].imgId);};
+ window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
+ // Keep keyboard focus in the existing calibration dialog.
+ $('calModal').addEventListener('keydown',e=>{if(e.key!=='Tab')return;const focusable=[...$('calModal').querySelectorAll('input,select,button')];const first=focusable[0],last=focusable.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}});
+ $('calLengthUnit').setAttribute('aria-label','Đơn vị đoạn chuẩn');$('measNameEdit').setAttribute('aria-label','Tên hoặc ghi chú kích thước');$('mobileSideBtn').setAttribute('aria-label','Mở hoặc đóng bảng thuộc tính');
+}
+
+function makeDemo(){let w=1400,h=850,c=document.createElement('canvas');c.width=w;c.height=h;let g=c.getContext('2d');let seed=1837;function rand(){seed=(seed*1664525+1013904223)>>>0;return seed/4294967296}
+ g.fillStyle='#acb0ae';g.fillRect(0,0,w,h);for(let y=0;y<h;y+=7){g.strokeStyle=`rgba(235,239,234,${.14+rand()*.1})`;g.lineWidth=2.6;g.beginPath();g.moveTo(0,y);g.lineTo(w,y+rand()*3);g.stroke()}for(let x=0;x<w;x+=8){g.strokeStyle=`rgba(57,68,73,${.09+rand()*.06})`;g.lineWidth=2.1;g.beginPath();g.moveTo(x,0);g.lineTo(x+rand()*3,h);g.stroke()}
+ for(let i=0;i<12500;i++){let x=rand()*w,y=rand()*h;g.fillStyle=rand()>.5?'#d4d9d3':'#7a8485';g.globalAlpha=.12+rand()*.15;g.fillRect(x,y,1+rand()*4,1+rand()*3)}g.globalAlpha=1;
+ const holes=[[235,270,61],[545,255,69],[865,282,66],[1180,271,60],[245,535,57],[560,533,64],[878,534,60],[1185,539,65]];
+ for(let [x,y,r] of holes){let halo=g.createRadialGradient(x,y,r*.75,x,y,r*1.45);halo.addColorStop(0,'#7d6960a0');halo.addColorStop(.65,'#6d56404a');halo.addColorStop(1,'#7c675000');g.fillStyle=halo;g.beginPath();g.arc(x,y,r*1.48,0,Math.PI*2);g.fill();let ring=g.createRadialGradient(x-r*.2,y-r*.2,1,x,y,r);ring.addColorStop(0,'#1b2429');ring.addColorStop(.73,'#182326');ring.addColorStop(.91,'#252725');ring.addColorStop(1,'#826e60');g.fillStyle=ring;g.beginPath();g.arc(x,y,r,0,2*Math.PI);g.fill();g.lineWidth=5;g.strokeStyle='#6c6150a0';g.stroke();}
+ g.fillStyle='#1e2529e6';g.fillRect(82,704,345,95);g.strokeStyle='#f8e6ba';g.lineWidth=3;g.beginPath();g.moveTo(130,750);g.lineTo(330,750);g.stroke();for(let x=130;x<=330;x+=50){g.beginPath();g.moveTo(x,741);g.lineTo(x,759);g.stroke()}g.fillStyle='#f5efe0';g.font='bold 17px Segoe UI';g.fillText('DEMO REFERENCE : 1.00 mm',109,785);g.font='bold 16px Consolas';g.fillText('SYNTHETIC DEMO - NOT METROLOGY DATA',830,788);
+ let url=c.toDataURL('image/jpeg',.9);createImg(url).then(i=>resetForNewImage(i,url,'laser_fabric_DEMO.jpg','reference')).then(()=>toast('Mẫu: bấm 2 đầu vạch vàng dài 200 px, nhập 1 mm, sau đó đo lỗ.'))}
+function keyboard(e){if(busy)return;let tag=e.target?.tagName;if(e.key==='Escape'){$('calModal').classList.remove('open');calPair=null;doc.pending=[];circleSelection=[];$('finishCircleBtn').classList.remove('visible');setStatus(helpers[doc.tool]);render();return}if($('calModal').classList.contains('open')||tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA')return;
+ if(doc.tool==='circleMulti'&&e.key==='Enter'){e.preventDefault();finishMultiCircle();return}
+ if(doc.tool==='circleMulti'&&e.key==='Backspace'&&doc.pending.length){e.preventDefault();doc.pending.pop();$('finishCircleBtn').classList.toggle('visible',doc.pending.length>=3);setStatus(`${doc.pending.length}/64 điểm · ${helpers.circleMulti}`);render();return}
+ if(e.code==='Space'){spacePressed=true;canvas.style.cursor='grab';e.preventDefault()}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undo();return}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveProject();return}
+ if((e.key==='Delete'||e.key==='Backspace')&&doc.selected!==null){deleteMeasurement(doc.selected);return}
+ if(e.key.toLowerCase()==='q'){toggleMagnifier();return}
+ let tool={v:'select',h:'pan',k:'calibrate',l:'distance',c:'circle',m:'circleMulti',d:'centers',e:'edges',g:'circleGap',b:'circlePair',a:'angle',r:'rowSpacing'}[e.key.toLowerCase()];if(tool)setTool(tool)
+}
+function init(){
+ $('openImageBtn').onclick=$('welcomeOpen').onclick=()=>$('fileImage').click();$('openRefBtn').onclick=$('newRefBtn').onclick=()=>$('fileReference').click();$('openProjectBtn').onclick=()=>$('fileProject').click();$('cameraBtn').onclick=$('welcomeCamera').onclick=cameraToggle;$('snapshotBtn').onclick=capture;
+ $('fileImage').onchange=e=>{importImages([...e.target.files]);e.target.value=''};$('openFolderBtn').onclick=()=>$('fileFolder').click();$('fileFolder').onchange=e=>{importImages([...e.target.files]);e.target.value=''};$('fileReference').onchange=e=>{importImages([...e.target.files],'reference');e.target.value=''};$('fileProject').onchange=e=>{loadProject(e.target.files[0]);e.target.value=''};
+ $('calBtn').onclick=()=>setTool('calibrate');$('exportPngBtn').onclick=exportPNG;$('exportCsvBtn').onclick=$('saveCsvBtn').onclick=exportCSV;$('saveProjectBtn').onclick=saveProject;$('demoBtn').onclick=makeDemo;
+ $('fitBtn').onclick=fit;$('undoBtn').onclick=undo;$('magnifierBtn').onclick=toggleMagnifier;$('finishCircleBtn').onclick=finishMultiCircle;$('unitSelect').onchange=e=>{doc.unit=e.target.value;dirty=true;updateUI();render()};$('snapToggle').onchange=e=>{doc.snap=e.target.checked};
+ $('confirmCalBtn').onclick=confirmCalibration;$('cancelCalBtn').onclick=()=>{$('calModal').classList.remove('open');calPair=null;doc.pending=[];render()};$('calLength').addEventListener('keydown',e=>{if(e.key==='Enter')confirmCalibration()});
+ document.querySelectorAll('[data-tool]').forEach(e=>e.onclick=()=>setTool(e.dataset.tool));
+ $('deleteMeasureBtn').onclick=()=>{if(doc.selected!==null)deleteMeasurement(doc.selected)};$('updateNameBtn').onclick=()=>{let m=doc.measures.find(m=>m.id===doc.selected);if(!m)return;historyPush();m.name=$('measNameEdit').value.trim();updateUI();render();toast('Đã cập nhật nhãn')};
+ $('mobileSideBtn').onclick=()=>$('sidePanel').classList.toggle('visible');
+ canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerleave',()=>{$('magnifier').style.display='none'});canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('wheel',zoomWheel,{passive:false});canvas.addEventListener('contextmenu',e=>e.preventDefault());
+ window.addEventListener('keydown',keyboard);window.addEventListener('keyup',e=>{if(e.code==='Space'){spacePressed=false;canvas.style.cursor=doc.tool==='pan'?'grab':'crosshair'}});
+ viewport.addEventListener('dragover',e=>{e.preventDefault();e.dataTransfer.dropEffect='copy'});viewport.addEventListener('drop',e=>{e.preventDefault();if(!busy)importImages([...e.dataTransfer.files])});
+ initBatch();new ResizeObserver(resize).observe(viewport);setTool('select');updateHeader();updateUI();resize()
+}
+// Circle-to-circle dimensions use fitted mathematical circumferences, not image edge detection.
+let circleSelection=[];
+const gapRelations={separate:'Hai đường tròn rời nhau',contained:'Một đường tròn nằm trong đường tròn kia',intersect:'Hai đường tròn giao nhau',tangent:'Hai đường tròn tiếp xúc',coincident:'Hai đường tròn trùng nhau'};
+function circleGapGeometry(a,b){
+ const dx=b.c.x-a.c.x,dy=b.c.y-a.c.y,d=Math.hypot(dx,dy),sum=a.r+b.r,diff=Math.abs(a.r-b.r);
+ const tol=1e-10*Math.max(1,d,sum),u=d>0?pt(dx/d,dy/d):pt(1,0);
+ const at=(c,r,sign=1)=>pt(c.x+sign*u.x*r,c.y+sign*u.y*r);
+ if(d>sum+tol)return {p1:at(a.c,a.r),p2:at(b.c,b.r,-1),relation:'separate'};
+ if(d<diff-tol){const sign=a.r>=b.r?1:-1;return {p1:at(a.c,a.r,sign),p2:at(b.c,b.r,sign),relation:'contained'};}
+ if(d<=tol&&diff<=tol){const p=at(a.c,a.r);return {p1:p,p2:{...p},relation:'coincident'};}
+ const along=(a.r*a.r-b.r*b.r+d*d)/(2*d),h=Math.sqrt(Math.max(0,a.r*a.r-along*along));
+ const p=pt(a.c.x+u.x*along-u.y*h,a.c.y+u.y*along+u.x*h);
+ return {p1:p,p2:{...p},relation:Math.abs(d-sum)<=tol||Math.abs(d-diff)<=tol?'tangent':'intersect'};
+}
+function makeCircleGap(a,b){return {id:idSeed++,type:'circleGap',name:`Khe Ø${a.id}–Ø${b.id}`,circleIds:[a.id,b.id],...circleGapGeometry(a,b),shift:{x:0,y:0}};}
+function chooseGapCircle(id){
+ const circle=doc.measures.find(m=>m.id===id&&m.type==='circle');if(!circle){toast('Hãy chọn một đường tròn đã đo.',true);return;}
+ if(circleSelection.includes(id)){toast('Hãy chọn đường tròn thứ hai, khác đường tròn đã chọn.',true);return;}
+ circleSelection.push(id);doc.selected=id;
+ if(circleSelection.length===2){
+  const [a,b]=circleSelection.map(id=>doc.measures.find(m=>m.id===id));historyPush();const gap=makeCircleGap(a,b);doc.measures.push(gap);doc.selected=gap.id;circleSelection=[];
+  setStatus(helpers.circleGap);toast(`Mép hai đường tròn: ${formatMeasurement(gap)} · ${gapRelations[gap.relation]}`);
+ }else setStatus(`Đã chọn ${circle.name}. Chọn đường tròn thứ hai trên ảnh hoặc trong danh sách kích thước.`);
+ updateUI();render();
+}
+function pickGapCircle(p){
+ const threshold=14/doc.view.z,candidates=doc.measures.filter(m=>m.type==='circle');
+ let winner=candidates.map(m=>({m,edge:Math.abs(dist(p,m.c)-m.r)})).filter(x=>x.edge<=threshold).sort((a,b)=>a.edge-b.edge)[0]?.m;
+ if(!winner)winner=candidates.filter(m=>dist(p,m.c)<m.r).sort((a,b)=>dist(p,a.c)-dist(p,b.c))[0];
+ if(winner)chooseGapCircle(winner.id);else toast('Chọn vành hoặc bên trong một đường tròn đã đo. Có thể chọn ở danh sách bên phải.',true);
+}
+function comboPoint(p){
+ doc.pending.push(p);const n=doc.pending.length;
+ if(n===3||n===6){
+  const points=doc.pending.slice(n-3,n),sol=circumcircle(...points);
+  if(!sol||sol.r<.5||sol.r>Math.max(doc.width,doc.height)*2){doc.pending.splice(n-3,3);toast('Ba điểm không tạo được đường tròn hợp lệ. Chọn lại ba điểm của lỗ này.',true);render();return;}
+ }
+ if(n===6){
+  const points=doc.pending.slice(),first=circumcircle(...points.slice(0,3)),second=circumcircle(...points.slice(3,6));
+  historyPush();const count=doc.measures.filter(m=>m.type==='circle').length;
+  const a={id:idSeed++,type:'circle',name:'Lỗ '+(count+1),...first,edgePts:points.slice(0,3),shift:{x:0,y:0}},b={id:idSeed++,type:'circle',name:'Lỗ '+(count+2),...second,edgePts:points.slice(3,6),shift:{x:0,y:0}};
+  const gap=makeCircleGap(a,b);doc.measures.push(a,b,gap);doc.pending=[];doc.selected=gap.id;updateUI();setStatus(helpers.circlePair);toast(`Đã thêm 2 đường kính và khe mép: ${formatMeasurement(gap)}.`);
+ }else setStatus(n<3?`Lỗ 1: ${n}/3 điểm. ${helpers.circlePair}`:`Lỗ 1 đã xác định. Lỗ 2: ${n-3}/3 điểm. Chọn ba điểm trên vành lỗ thứ hai.`);
+ render();
+}
+function drawCircleToolPreview(context){
+ context.save();context.lineWidth=2;context.setLineDash([6,4]);context.strokeStyle=COLORS.circle;
+ function ring(c,r){const p=screen(c);context.beginPath();context.arc(p.x,p.y,r*doc.view.z,0,Math.PI*2);context.stroke();}
+ if(doc.tool==='circleGap')for(const id of circleSelection){const c=doc.measures.find(m=>m.id===id);if(c)ring(c.c,c.r);}
+ if(doc.tool==='circlePair'){
+  if(doc.pending.length>=3){const a=circumcircle(...doc.pending.slice(0,3));if(a)ring(a.c,a.r);}
+  const group=doc.pending.slice(doc.pending.length>=3?3:0);
+  if(group.length===2&&doc.hover&&inImage(doc.hover)){const a=circumcircle(...group,doc.hover);if(a&&a.r<=Math.max(doc.width,doc.height)*2)ring(a.c,a.r);}
+ }
+ if(doc.tool==='rowSpacing')for(let i=0;i<2;i++){context.strokeStyle=i===0?'#f4d35e':'#c77dff';for(const circle of rowCircles(rowSelection[i])){const p=screen(circle.c);context.beginPath();context.arc(p.x,p.y,Math.max(9,circle.r*doc.view.z),0,Math.PI*2);context.stroke();cross(context,p,7,context.strokeStyle);}}
+ context.restore();
+}
+function drawCircleGap(context,m,label,color,selected,shift,boxes){
+ if(dist(m.p1,m.p2)>1e-8){dimLine(context,m.p1,m.p2,label,color,selected,shift,boxes,m.id);return;}
+ const p=screen(m.p1),q=pt(p.x+65+(shift?.x||0)*doc.view.z,p.y+45+(shift?.y||0)*doc.view.z);
+ cross(context,p,7,color);drawSegment(context,p,q,color,1.2);pill(context,label+' · '+gapRelations[m.relation],q.x,q.y,color,selected,boxes,m.id);
+}
+
+// Two-row center distance: user-confirmed circle centers, TLS/PCA fits, shared normal.
+let rowSelection=[[],[]],activeRow=0;
+function fitCenterRow(points){
+ if(!Array.isArray(points)||points.length<2||points.some(p=>!validPoint(p)))throw new Error('Mỗi hàng cần ít nhất 2 tâm hợp lệ.');
+ const n=points.length,mx=points.reduce((s,p)=>s+p.x,0)/n,my=points.reduce((s,p)=>s+p.y,0)/n;
+ let xx=0,yy=0,xy=0;for(const p of points){const x=p.x-mx,y=p.y-my;xx+=x*x;yy+=y*y;xy+=x*y;}
+ if(xx+yy<1e-12)throw new Error('Các tâm trùng nhau nên không thể khớp đường thẳng.');
+ const angle=.5*Math.atan2(2*xy,xx-yy);return {c:pt(mx,my),u:pt(Math.cos(angle),Math.sin(angle)),angle};
+}
+function rowSpacingGeometry(row1,row2,maxAngleDeg=5){
+ const a=fitCenterRow(row1),b=fitCenterRow(row2);let dot=a.u.x*b.u.x+a.u.y*b.u.y;
+ if(dot<0){b.u.x*=-1;b.u.y*=-1;dot=-dot;}
+ const delta=Math.acos(Math.max(-1,Math.min(1,dot)))*180/Math.PI;
+ if(delta>maxAngleDeg)throw new Error(`Hai hàng lệch ${num(delta,2)}°; vượt giới hạn ${maxAngleDeg}° nên không có một khoảng cách cố định.`);
+ let ux=a.u.x+b.u.x,uy=a.u.y+b.u.y,len=Math.hypot(ux,uy);if(len<1e-12)throw new Error('Không xác định được hướng chung của hai hàng.');ux/=len;uy/=len;
+ let nx=-uy,ny=ux,signed=(b.c.x-a.c.x)*nx+(b.c.y-a.c.y)*ny;if(signed<0){nx=-nx;ny=-ny;signed=-signed;}
+ const along=((b.c.x-a.c.x)*ux+(b.c.y-a.c.y)*uy)/2,p1=pt(a.c.x+ux*along,a.c.y+uy*along),p2=pt(p1.x+nx*signed,p1.y+ny*signed);
+ return {p1,p2,distancePx:signed,angleDifferenceDeg:delta,direction:pt(ux,uy),normal:pt(nx,ny),centroid1:a.c,centroid2:b.c};
+}
+function rowCircles(ids){return ids.map(id=>doc.measures.find(m=>m.id===id&&m.type==='circle')).filter(Boolean);}
+function toggleRowCircle(id){
+ const circle=doc.measures.find(m=>m.id===id&&m.type==='circle');if(!circle){toast('Chỉ có thể chọn tâm từ đường tròn đã đo hoặc AI đã chấp nhận.',true);return;}
+ const other=1-activeRow;if(rowSelection[other].includes(id)){toast(`Tâm này đã thuộc Hàng ${other+1}.`,true);return;}
+ rowSelection[activeRow]=rowSelection[activeRow].includes(id)?rowSelection[activeRow].filter(x=>x!==id):[...rowSelection[activeRow],id];renderRowPanel();render();
+}
+function calculateRowSpacing(){
+ try{const circles=rowSelection.map(rowCircles);if(circles.some(r=>r.length<2))throw new Error('Chọn ít nhất 2 tâm cho mỗi hàng.');
+  const g=rowSpacingGeometry(circles[0].map(x=>x.c),circles[1].map(x=>x.c));historyPush();const id=idSeed++;
+  doc.measures.push({id,type:'rowSpacing',name:`Khoảng cách 2 hàng ${doc.measures.filter(x=>x.type==='rowSpacing').length+1}`,row1Ids:[...rowSelection[0]],row2Ids:[...rowSelection[1]],...g,shift:{x:0,y:0}});doc.selected=id;rowSelection=[[],[]];activeRow=0;setTool('select');updateUI();render();toast(`Khoảng cách 2 hàng: ${formatMeasurement(doc.measures.find(x=>x.id===id))}. Ctrl+Z để hoàn tác.`);
+ }catch(e){toast(e.message,true);renderRowPanel();}
+}
+function cancelRowSpacing(){rowSelection=[[],[]];activeRow=0;setTool('select');renderRowPanel();render();}
+function renderRowPanel(){const p=$('rowSpacingPanel');if(!p)return;p.querySelector('[data-row="0"]').textContent=`Hàng 1 (${rowSelection[0].length})`;p.querySelector('[data-row="1"]').textContent=`Hàng 2 (${rowSelection[1].length})`;p.querySelectorAll('[data-row]').forEach(b=>b.classList.toggle('primary',Number(b.dataset.row)===activeRow));}
+function installRowSpacingUI(){
+ const nav=document.querySelector('.tools'),anchor=nav.querySelector('[data-tool="angle"]');const button=document.createElement('button');button.className='tool';button.dataset.tool='rowSpacing';button.title='Đo khoảng cách vuông góc giữa hai hàng tâm lỗ [R]';button.innerHTML='<span>⋮↔⋮</span><span class="tool-label">2 HÀNG</span>';nav.insertBefore(button,anchor.parentElement===nav?anchor:nav.firstChild);
+ const panel=document.createElement('section');panel.id='rowSpacingPanel';panel.className='side-section';panel.innerHTML='<div class="sec-label">Khoảng cách 2 hàng <span class="status-pill">TLS / PCA</span></div><div class="muted">Chọn công cụ, chọn các đường tròn của từng hàng. Chỉ tâm AI đã chấp nhận và đường tròn thủ công mới được dùng.</div><div class="side-acts"><button class="btn small primary" data-row="0">Hàng 1 (0)</button><button class="btn small" data-row="1">Hàng 2 (0)</button></div><div class="side-acts"><button class="btn small primary" id="rowCalculateBtn">Tính khoảng cách</button><button class="btn small" id="rowCancelBtn">Hủy</button></div><div class="tiny">Yêu cầu ≥2 tâm/hàng · giới hạn lệch góc 5°.</div>';
+ const listSection=$('measureList').closest('.side-section');$('sidePanel').insertBefore(panel,listSection);panel.querySelectorAll('[data-row]').forEach(b=>b.onclick=()=>{activeRow=Number(b.dataset.row);setTool('rowSpacing');renderRowPanel();});$('rowCalculateBtn').onclick=calculateRowSpacing;$('rowCancelBtn').onclick=cancelRowSpacing;renderRowPanel();
+}
+function drawRowSpacing(context,m,label,color,selected,shift,boxes){
+ const ids=[m.row1Ids||[],m.row2Ids||[]],rows=ids.map(rowCircles);if(rows.some(r=>!r.length))return;context.save();context.lineWidth=2;context.setLineDash([9,6]);
+ const extent=Math.max(doc.width,doc.height)*1.5;for(let i=0;i<2;i++){context.strokeStyle=i===0?'#f4d35e':'#c77dff';const c=i===0?m.centroid1:m.centroid2,a=screen(pt(c.x-m.direction.x*extent,c.y-m.direction.y*extent)),b=screen(pt(c.x+m.direction.x*extent,c.y+m.direction.y*extent));drawSegment(context,a,b,context.strokeStyle,2,[9,6]);for(const circle of rows[i])cross(context,screen(circle.c),7,context.strokeStyle);}
+ context.setLineDash([]);const a=screen(m.p1),b=screen(m.p2),d=pt(b.x-a.x,b.y-a.y);drawSegment(context,a,b,color,selected?3:2);arrow(context,a,d,color);arrow(context,b,pt(-d.x,-d.y),color);const q=mid(a,b);pill(context,label,q.x+(shift?.x||0)*doc.view.z,q.y+(shift?.y||0)*doc.view.z,color,selected,boxes,m.id);context.restore();
+}
+
+// Experimental local AI: proposals are previewed first and become measurements only after explicit acceptance.
+const AI_API='http://127.0.0.1:8000',AI_CONF=.25,AI_IMGSZ=640;
+let aiOnline=false,aiHealthTimer=null,aiProposalSeed=1;
+function installAiUI(){
+ const badge=document.createElement('span');badge.id='aiEngineStatus';badge.className='status-pill';badge.textContent='AI OFFLINE';badge.setAttribute('role','status');badge.setAttribute('aria-live','polite');badge.style.marginLeft='5px';document.querySelector('.session').append(badge);
+ const panel=document.createElement('section');panel.className='side-section';panel.id='aiReviewPanel';panel.innerHTML='<div class="sec-label">AI DETECT · YOLO <span class="status-pill" id="aiProposalCount">0 đề xuất</span></div><div class="side-acts" style="margin:9px 0"><button class="btn small primary" id="aiDetectBtn" title="Chỉ tạo đề xuất AI; cần xác nhận trước khi thêm phép đo">AI Detect · Ảnh này</button><button class="btn small" id="aiBatchBtn" title="Tạo đề xuất AI cho từng ảnh; không tự chấp nhận">AI Batch Detect · Tất cả ảnh</button></div><div id="aiReviewList" class="muted">Chạy AI Detect để tạo vòng preview. Kết quả không thay đổi phép đo cho đến khi bạn bấm Chấp nhận.</div><div id="aiReviewActions" class="side-acts" style="display:none"><button class="btn small primary" id="aiAcceptAllBtn">Chấp nhận tất cả</button><button class="btn small" id="aiRejectAllBtn">Loại bỏ tất cả</button></div><div class="ai-note">AI là thử nghiệm. Confidence khác với độ chính xác đo; các kết quả cần review phải kiểm tra thủ công.</div>';
+ const sections=[...$('sidePanel').querySelectorAll('.side-section')],listSection=sections.find(x=>x.querySelector('#measureList'));$('sidePanel').insertBefore(panel,listSection||null);
+ $('aiDetectBtn').onclick=aiDetectCurrent;$('aiBatchBtn').onclick=aiDetectAll;$('aiAcceptAllBtn').onclick=()=>acceptAiProposals((doc.aiPending||[]).map(x=>x.proposalId));$('aiRejectAllBtn').onclick=()=>rejectAiProposals((doc.aiPending||[]).map(x=>x.proposalId));
+ checkAiHealth();aiHealthTimer=setInterval(checkAiHealth,5000);
+}
+async function checkAiHealth(){try{const response=await fetch(AI_API+'/health',{signal:AbortSignal.timeout(1500)}),data=await response.json();aiOnline=response.ok&&data.status==='online'&&data.model_ready===true;setAiState(aiOnline,aiOnline?`AI ONLINE · ${data.device}`:'AI OFFLINE / MODEL');}catch{aiOnline=false;setAiState(false,'AI OFFLINE');}}
+function setAiState(ready,text){const badge=$('aiEngineStatus');if(!badge)return;badge.textContent=text;badge.classList.toggle('good',ready);$('aiDetectBtn').disabled=!ready||!doc.source||doc.camera;$('aiBatchBtn').disabled=!ready||!images.length||doc.camera;}
+async function recordBlob(record){const response=await fetch(record.dataUrl);return response.blob();}
+function normalizeAiDetections(record,result){
+ if(result.width!==record.width||result.height!==record.height)throw new Error('Kích thước API không khớp ảnh gốc');
+ return result.detections.filter(f=>[f.center_x,f.center_y,f.radius_px,f.fit_error,f.confidence].every(Number.isFinite)&&f.radius_px>0).map(f=>({...f,proposalId:aiProposalSeed++,modelVersion:result.model_version,createdAt:Date.now()}));
+}
+function applyAiDetections(record,detections){let added=0;for(const f of detections){const duplicate=record.measures.some(m=>m.type==='circle'&&dist(m.c,{x:f.center_x,y:f.center_y})<Math.max(m.r,f.radius_px)*.45&&Math.abs(m.r-f.radius_px)<Math.max(m.r,f.radius_px)*.35);if(duplicate)continue;const id=idSeed++,count=record.measures.filter(m=>m.type==='circle').length+1,review=!!f.review_required;record.measures.push({id,type:'circle',name:`${review?'⚠ Kiểm tra · ':''}Lỗ AI ${count}`,c:{x:f.center_x,y:f.center_y},r:f.radius_px,edgePts:(f.polygon||[]).slice(0,64).map(p=>({x:p[0],y:p[1]})),fitRms:f.fit_error,ai:true,autoConfidence:f.confidence,angularCoverage:f.angular_coverage,reviewRequired:review,modelVersion:f.modelVersion,shift:{x:0,y:0}});record.selected=id;added++;}return added;}
+function drawAiProposals(context){const pending=doc.aiPending||[];if(!pending.length)return;context.save();context.strokeStyle='#50e5dc';context.fillStyle='#50e5dc';context.lineWidth=2;context.setLineDash([5,4]);for(const p of pending){const c=screen({x:p.center_x,y:p.center_y}),r=p.radius_px*doc.view.z;context.beginPath();context.arc(c.x,c.y,r,0,Math.PI*2);context.stroke();context.setLineDash([]);context.font='700 11px Consolas,monospace';const review=p.review_required?' · REVIEW':'';context.fillText(`AI ${(p.confidence*100).toFixed(0)}%${review}`,c.x+r+5,c.y-5);context.setLineDash([5,4]);}context.restore();}
+function renderAiReviewPanel(){const list=$('aiReviewList'),actions=$('aiReviewActions'),count=$('aiProposalCount');if(!list||!count)return;const pending=doc.aiPending||[];count.textContent=`${pending.length} đề xuất`;actions.style.display=pending.length?'flex':'none';if(!pending.length){list.textContent='Chạy AI Detect để tạo vòng preview. Kết quả không thay đổi phép đo cho đến khi bạn bấm Chấp nhận.';return;}list.replaceChildren();for(const p of pending){const item=document.createElement('div');item.className='meas-item';item.style.setProperty('--measure-color','#50e5dc');const diameter=doc.cal?`${num(p.diameter_px*doc.cal.mmPerPx*1000,2)} µm`:`${num(p.diameter_px,2)} px`;item.innerHTML=`<div class="meas-top"><span class="meas-type">AI ${Math.round(p.confidence*100)}%</span><span class="meas-name">${p.review_required?'⚠ CẦN REVIEW':'Đề xuất AI'}</span></div><div class="meas-val">Ø ${diameter}</div><div class="meas-foot">Ø ${num(p.diameter_px,2)} px · residual ${num(p.fit_error,2)} px · coverage ${Math.round((p.angular_coverage||0)*100)}%</div>`;const row=document.createElement('div');row.className='side-acts';const accept=document.createElement('button');accept.className='btn small primary';accept.textContent='Chấp nhận';accept.onclick=()=>acceptAiProposals([p.proposalId]);const reject=document.createElement('button');reject.className='btn small';reject.textContent='Loại bỏ';reject.onclick=()=>rejectAiProposals([p.proposalId]);row.append(accept,reject);item.append(row);list.append(item);}}
+function acceptAiProposals(ids){const picked=(doc.aiPending||[]).filter(x=>ids.includes(x.proposalId));if(!picked.length)return;historyPush();const added=applyAiDetections(doc,picked);doc.aiPending=(doc.aiPending||[]).filter(x=>!ids.includes(x.proposalId));dirty=true;setTool('select');updateUI();render();renderImageList();toast(added?`Đã chấp nhận ${added} phép đo AI. Ctrl+Z để hoàn tác.`:'Không thêm đề xuất trùng với phép đo hiện có.',!added);}
+function rejectAiProposals(ids){const before=(doc.aiPending||[]).length;doc.aiPending=(doc.aiPending||[]).filter(x=>!ids.includes(x.proposalId));if(before!==doc.aiPending.length){dirty=true;updateUI();render();renderImageList();toast('Đã loại bỏ đề xuất AI.');}}
+async function requestAi(record){const form=new FormData();form.append('file',await recordBlob(record),record.imgName||'image.png');const response=await fetch(`${AI_API}/detect?conf=${AI_CONF}&imgsz=${AI_IMGSZ}`,{method:'POST',body:form,signal:AbortSignal.timeout(120000)});if(!response.ok){let detail='HTTP '+response.status;try{detail=(await response.json()).detail||detail}catch{}throw new Error(detail)}return response.json();}
+async function aiDetectCurrent(){if(!aiOnline||!doc.source||busy)return;setBusy(true,'AI Experimental: phân đoạn và tạo đề xuất…');try{const result=await requestAi(doc);doc.aiPending=normalizeAiDetections(doc,result);dirty=true;updateUI();render();renderImageList();const review=doc.aiPending.filter(x=>x.review_required).length;toast(`AI tạo ${doc.aiPending.length} đề xuất · ${review} cần review · chưa thêm phép đo.`);}catch(e){toast('AI Detect thất bại: '+(e?.message||e)+'. Công cụ thủ công vẫn hoạt động.',true)}finally{setBusy(false);setAiState(aiOnline,$('aiEngineStatus').textContent)}}
+async function aiDetectAll(){if(!aiOnline||!images.length||busy)return;stashActive();const originalId=activeId;cancelRequested=false;let done=0,total=0,failed=[];try{for(let i=0;i<images.length;i++){if(cancelRequested)break;const record=images[i];setBusy(true,`AI Batch ${i+1}/${images.length}: ${record.imgName}`,i,images.length);await breathe();try{const result=await requestAi(record);record.aiPending=normalizeAiDetections(record,result);total+=record.aiPending.length;done++;}catch(e){failed.push(`${record.imgName}: ${e?.message||e}`)}}dirty=dirty||done>0;}finally{setBusy(false);activeId=null;if(originalId!==null)activateImage(originalId);renderImageList();setAiState(aiOnline,$('aiEngineStatus').textContent)}toast(`AI Batch tạo ${total} đề xuất trên ${done}/${images.length} ảnh. Hãy mở từng ảnh để chấp nhận/loại bỏ.`,!!failed.length);if(failed.length)alert('AI không xử lý được:\n'+failed.join('\n'));}
+
+installRowSpacingUI();init();installAiUI();
+})();
+</script>
+</body>
+</html>

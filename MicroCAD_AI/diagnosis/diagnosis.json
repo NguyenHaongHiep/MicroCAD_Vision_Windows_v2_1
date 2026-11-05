@@ -1,0 +1,394 @@
+{
+  "checkpoint": "C:\\Users\\admin\\Documents\\App codex\\MicroCAD_Vision_Windows_v2_1\\MicroCAD_Vision_Windows_v2_1\\MicroCAD_AI\\runs\\segment\\hole_inner\\weights\\best.pt",
+  "sha256": "f0d296145205e90fd17fb5cf464737d9dcf48d9e400cef4661d67c3ad50f75c6",
+  "model_names": {
+    "0": "hole_inner"
+  },
+  "imgsz": 640,
+  "iou_match_threshold": 0.5,
+  "threshold_summary": [
+    {
+      "split": "val",
+      "threshold": 0.001,
+      "images": 4,
+      "tp": 12,
+      "fp": 1187,
+      "fn": 0,
+      "precision": 0.010008340283569641,
+      "recall": 1.0,
+      "f1": 0.019818331957060283,
+      "detections": 1199,
+      "mean_confidence": 0.006744982322267846,
+      "min_confidence": 0.0026038354262709618,
+      "max_confidence": 0.06861594319343567,
+      "mean_matched_iou": 0.8824345378809841
+    },
+    {
+      "split": "val",
+      "threshold": 0.01,
+      "images": 4,
+      "tp": 12,
+      "fp": 212,
+      "fn": 0,
+      "precision": 0.05357142857142857,
+      "recall": 1.0,
+      "f1": 0.10169491525423728,
+      "detections": 224,
+      "mean_confidence": 0.017378536281674833,
+      "min_confidence": 0.010043570771813393,
+      "max_confidence": 0.06861594319343567,
+      "mean_matched_iou": 0.8529632238649651
+    },
+    {
+      "split": "val",
+      "threshold": 0.05,
+      "images": 4,
+      "tp": 2,
+      "fp": 0,
+      "fn": 10,
+      "precision": 1.0,
+      "recall": 0.16666666666666666,
+      "f1": 0.2857142857142857,
+      "detections": 2,
+      "mean_confidence": 0.06483620032668114,
+      "min_confidence": 0.061056457459926605,
+      "max_confidence": 0.06861594319343567,
+      "mean_matched_iou": 0.896989316992676
+    },
+    {
+      "split": "val",
+      "threshold": 0.1,
+      "images": 4,
+      "tp": 0,
+      "fp": 0,
+      "fn": 12,
+      "precision": 0,
+      "recall": 0.0,
+      "f1": 0,
+      "detections": 0,
+      "mean_confidence": null,
+      "min_confidence": null,
+      "max_confidence": null,
+      "mean_matched_iou": null
+    },
+    {
+      "split": "val",
+      "threshold": 0.15,
+      "images": 4,
+      "tp": 0,
+      "fp": 0,
+      "fn": 12,
+      "precision": 0,
+      "recall": 0.0,
+      "f1": 0,
+      "detections": 0,
+      "mean_confidence": null,
+      "min_confidence": null,
+      "max_confidence": null,
+      "mean_matched_iou": null
+    },
+    {
+      "split": "val",
+      "threshold": 0.25,
+      "images": 4,
+      "tp": 0,
+      "fp": 0,
+      "fn": 12,
+      "precision": 0,
+      "recall": 0.0,
+      "f1": 0,
+      "detections": 0,
+      "mean_confidence": null,
+      "min_confidence": null,
+      "max_confidence": null,
+      "mean_matched_iou": null
+    },
+    {
+      "split": "train",
+      "threshold": 0.001,
+      "images": 18,
+      "tp": 53,
+      "fp": 5327,
+      "fn": 0,
+      "precision": 0.009851301115241635,
+      "recall": 1.0,
+      "f1": 0.01951039941100681,
+      "detections": 5380,
+      "mean_confidence": 0.006926524046168846,
+      "min_confidence": 0.00188744708430022,
+      "max_confidence": 0.07616870850324631,
+      "mean_matched_iou": 0.8789347827483259
+    },
+    {
+      "split": "train",
+      "threshold": 0.01,
+      "images": 18,
+      "tp": 51,
+      "fp": 911,
+      "fn": 2,
+      "precision": 0.05301455301455302,
+      "recall": 0.9622641509433962,
+      "f1": 0.10049261083743843,
+      "detections": 962,
+      "mean_confidence": 0.01914802184250988,
+      "min_confidence": 0.01001148670911789,
+      "max_confidence": 0.07616870850324631,
+      "mean_matched_iou": 0.842244733375763
+    },
+    {
+      "split": "train",
+      "threshold": 0.05,
+      "images": 18,
+      "tp": 9,
+      "fp": 0,
+      "fn": 44,
+      "precision": 1.0,
+      "recall": 0.16981132075471697,
+      "f1": 0.2903225806451613,
+      "detections": 9,
+      "mean_confidence": 0.0623114804426829,
+      "min_confidence": 0.05459412932395935,
+      "max_confidence": 0.07616870850324631,
+      "mean_matched_iou": 0.9129643269669658
+    },
+    {
+      "split": "train",
+      "threshold": 0.1,
+      "images": 18,
+      "tp": 0,
+      "fp": 0,
+      "fn": 53,
+      "precision": 0,
+      "recall": 0.0,
+      "f1": 0,
+      "detections": 0,
+      "mean_confidence": null,
+      "min_confidence": null,
+      "max_confidence": null,
+      "mean_matched_iou": null
+    },
+    {
+      "split": "train",
+      "threshold": 0.15,
+      "images": 18,
+      "tp": 0,
+      "fp": 0,
+      "fn": 53,
+      "precision": 0,
+      "recall": 0.0,
+      "f1": 0,
+      "detections": 0,
+      "mean_confidence": null,
+      "min_confidence": null,
+      "max_confidence": null,
+      "mean_matched_iou": null
+    },
+    {
+      "split": "train",
+      "threshold": 0.25,
+      "images": 18,
+      "tp": 0,
+      "fp": 0,
+      "fn": 53,
+      "precision": 0,
+      "recall": 0.0,
+      "f1": 0,
+      "detections": 0,
+      "mean_confidence": null,
+      "min_confidence": null,
+      "max_confidence": null,
+      "mean_matched_iou": null
+    }
+  ],
+  "dataset": {
+    "images": 25,
+    "objects": 71,
+    "negative_images": 1,
+    "per_split": {
+      "train": {
+        "images": 18,
+        "objects": 53,
+        "negative_images": 0
+      },
+      "val": {
+        "images": 4,
+        "objects": 12,
+        "negative_images": 0
+      },
+      "test": {
+        "images": 3,
+        "objects": 6,
+        "negative_images": 1
+      }
+    },
+    "polygon_errors": [],
+    "exact_cross_split_duplicates": [],
+    "nearest_cross_split_dhash": [
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_58_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_25_02_Pro.jpg",
+        "dhash_distance": 18
+      },
+      {
+        "a_split": "val",
+        "a_image": "WIN_20261104_17_24_21_Pro.jpg",
+        "b_split": "test",
+        "b_image": "WIN_20261104_17_24_10_Pro.jpg",
+        "dhash_distance": 20
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_04_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_06_Pro.jpg",
+        "dhash_distance": 21
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_18_Pro.jpg",
+        "b_split": "test",
+        "b_image": "WIN_20261104_17_24_10_Pro.jpg",
+        "dhash_distance": 21
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_44_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_06_Pro.jpg",
+        "dhash_distance": 21
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_54_Pro.jpg",
+        "b_split": "test",
+        "b_image": "WIN_20261104_17_24_41_Pro.jpg",
+        "dhash_distance": 21
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_12_Pro.jpg",
+        "b_split": "test",
+        "b_image": "WIN_20261104_17_24_41_Pro.jpg",
+        "dhash_distance": 22
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_58_Pro.jpg",
+        "b_split": "test",
+        "b_image": "WIN_20261104_17_24_41_Pro.jpg",
+        "dhash_distance": 22
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_25_04_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_50_Pro.jpg",
+        "dhash_distance": 22
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_01_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_06_Pro.jpg",
+        "dhash_distance": 23
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_04_Pro.jpg",
+        "b_split": "test",
+        "b_image": "WIN_20261104_17_24_10_Pro.jpg",
+        "dhash_distance": 23
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_18_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_21_Pro.jpg",
+        "dhash_distance": 23
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_47_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_06_Pro.jpg",
+        "dhash_distance": 23
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_54_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_25_02_Pro.jpg",
+        "dhash_distance": 23
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_15_Pro.jpg",
+        "b_split": "test",
+        "b_image": "WIN_20261104_17_24_41_Pro.jpg",
+        "dhash_distance": 24
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_25_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_21_Pro.jpg",
+        "dhash_distance": 24
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_47_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_50_Pro.jpg",
+        "dhash_distance": 24
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_56_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_24_21_Pro.jpg",
+        "dhash_distance": 24
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_04_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_25_02_Pro.jpg",
+        "dhash_distance": 25
+      },
+      {
+        "a_split": "train",
+        "a_image": "WIN_20261104_17_24_38_Pro.jpg",
+        "b_split": "val",
+        "b_image": "WIN_20261104_17_25_02_Pro.jpg",
+        "dhash_distance": 25
+      }
+    ],
+    "diameter_px": {
+      "min": 94.68641008218998,
+      "p25": 103.64819825224421,
+      "median": 106.46602766612826,
+      "mean": 106.8869104874899,
+      "p75": 110.0574193640116,
+      "max": 128.3800969263706
+    },
+    "resized_diameter_px": {
+      "min": 94.68641008218998,
+      "p25": 103.64819825224421,
+      "median": 106.46602766612826,
+      "mean": 106.8869104874899,
+      "p75": 110.0574193640116,
+      "max": 128.3800969263706
+    },
+    "mask_grid_diameter_ratio4": {
+      "min": 23.671602520547495,
+      "p25": 25.912049563061053,
+      "median": 26.616506916532064,
+      "mean": 26.721727621872475,
+      "p75": 27.5143548410029,
+      "max": 32.09502423159265
+    },
+    "touching_edge_objects": 5
+  }
+}

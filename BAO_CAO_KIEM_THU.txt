@@ -1,0 +1,46 @@
+MICROCAD VISION 2.1 — KIỂM THỬ NGÀY 26/10/2026
+
+Đã kiểm thử trên Windows với Microsoft Edge, mở HTML ngoại tuyến.
+
+ĐẠT — TÍNH NĂNG MỚI
+- 9 ca hình học: rời nhau ngang/chéo, tiếp xúc ngoài/trong, giao nhau,
+  nằm trong nhau theo cả hai thứ tự, đồng tâm, trùng nhau.
+- Hai đầu đoạn đo nằm đúng trên hai đường tròn tương ứng.
+- Sáu lần bấm tạo hai đường kính và một khe mép; một Undo xóa cả nhóm.
+- Mẫu chuẩn 200 px = 1 mm: hai đường kính 80 px = 0,4 mm; khe 160 px = 0,8 mm.
+- Chọn hai đường tròn bằng vành/bên trong trên ảnh hoặc trong danh sách.
+- Không cho chọn cùng một đường tròn hai lần; Esc hủy lựa chọn dở dang.
+- Xóa một đường tròn xóa các khe liên quan; Undo khôi phục cả nhóm.
+- Mở dự án v3 giữ tham chiếu hai đường tròn. Dữ liệu khe được tính lại từ đường
+  tròn khi mở; dự án tham chiếu đường tròn không tồn tại bị từ chối.
+- CSV có ID hai đường tròn, hai đường kính và khe đúng; ZIP kiểm tra CRC đạt.
+- PNG xuất đúng 800 x 600 px và hiển thị đủ hai đường kính cùng khe mép.
+- Không có lỗi JavaScript không được xử lý trong các ca trên.
+
+ĐẠT — KIỂM TRA LẠI TÍNH NĂNG CŨ TRÊN BẢN 2.1
+- Nhập nhiều ảnh trùng tên; nhập thư mục và thư mục con.
+- Giữ phép đo, chuẩn, Undo riêng khi chuyển ảnh.
+- Hiệu chuẩn, đường tròn 3 điểm, đo hai điểm thủ công, chuẩn chung và Undo.
+- PNG, CSV toàn bộ, ZIP, lưu/mở dự án; đọc dự án v1 và v2.
+- Dữ liệu chuẩn lỗi bị từ chối trước khi thay bộ ảnh hiện tại.
+- Điểm đường tròn thẳng hàng bị từ chối.
+- Bố cục 1920/1349/1024/375 px, chế độ giảm chuyển động.
+
+SHORTCUT
+- Trình khởi chạy tìm Edge/Chrome và tạo đường dẫn file URL có mã hóa khoảng trắng.
+- Desktop shortcut có biểu tượng MicroCAD riêng, mở Edge với chế độ --app.
+- Không đổi thiết lập nhấp chuột Windows hoặc cài chính sách hệ thống.
+- Tệp BAT tạo shortcut được kèm theo cho lần giải nén trên máy khác.
+
+GIỚI HẠN
+- Đo trên hai đường tròn dựng từ điểm người dùng, chưa tự dò biên ảnh thực.
+- Sai số hình học không đại diện sai số quang học hay sai số chọn điểm thực tế.
+- Không kiểm thử lại kính hiển vi USB thật hoặc tải tối đa 300 ảnh.
+- Cần giữ thư mục ứng dụng ở vị trí shortcut đang trỏ tới.
+
+CẬP NHẬT 02/11/2026 — KIỂM THỬ TỰ ĐỘNG
+- node --check: cú pháp JavaScript trong MicroCAD_Vision.html hợp lệ.
+- node KIEM_THU_CAP_NHAT.js: vòng tròn 12 điểm chính xác; lỗ méo cho RMS > 0;
+  điểm thẳng hàng bị từ chối; hai nhãn trùng vị trí được dàn tránh chồng nhau;
+  xác nhận chuẩn thay hệ số trên toàn bộ ảnh; tên ZIP dùng ngày địa phương.
+- Chưa chạy thử thao tác chuột trên giao diện ở lượt kiểm thử này.

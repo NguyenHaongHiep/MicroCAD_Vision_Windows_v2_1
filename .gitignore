@@ -1,0 +1,29 @@
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Training data
+MicroCAD_AI/cvat_exports/
+MicroCAD_AI/datasets/
+MicroCAD_AI/runs/
+
+# Backups and temporary files
+backups/
+*.log
+*.tmp
+node_modules/
+
+# Windows
+Thumbs.db
+Desktop.ini

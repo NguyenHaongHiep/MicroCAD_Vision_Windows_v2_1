@@ -1,0 +1,22 @@
+MicroCAD Vision 2.1 — 26/10/2026
+
+Nâng cấp từ bản 2.0 đã giao, giữ nguyên bản 2.0 trong thư mục riêng.
+
+- B / Ø + MÉP: chọn ba điểm trên mỗi lỗ để tạo hai đường kính và khe mép cùng lúc.
+- G / MÉP 2Ø: đo mép giữa hai đường tròn hiện có, chọn trên ảnh hoặc danh sách.
+- Xử lý đúng đường tròn rời, chứa nhau, tiếp xúc, giao nhau, đồng tâm và trùng nhau.
+- Đoạn gióng/mũi tên từ điểm mép đường tròn; khe bằng 0 có chú giải quan hệ hình học.
+- Khe liên kết với ID hai đường tròn; xóa đường tròn xóa khe liên quan, Undo phục hồi.
+- JSON v3 lưu quan hệ; mở được v1/v2/v3; tính lại khe khi đọc dự án.
+- CSV thêm quan hệ, ID đường tròn và hai đường kính.
+- Công cụ E đổi tên trên thanh công cụ thành 2 ĐIỂM để phân biệt với mép đường tròn.
+- Shortcut Desktop, biểu tượng riêng, mở ứng dụng bằng chế độ cửa sổ Edge/Chrome.
+
+Khe tối thiểu chỉ là kết quả của hai đường tròn đã dựng, không tự dò biên ảnh.
+
+Cập nhật 02/11/2026
+- Chuẩn mới tự áp dụng cho toàn bộ ảnh đang có và các ảnh nhập/chụp sau; JSON giữ chuẩn mới nhất.
+- Ø NHIỀU [M] khớp vòng tròn từ 3–64 điểm, hiển thị RMS và lưu mọi điểm trong CSV/JSON.
+- Kính lúp [Q] phóng đại vùng dưới con trỏ để chọn điểm chính xác.
+- Nhãn kích thước tự tránh chồng nhau; màu riêng cho từng loại phép đo.
+- ZIP có tên MicroCAD_DD-MM-YYYY.zip theo ngày trên máy.
