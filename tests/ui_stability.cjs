@@ -50,8 +50,12 @@ async function circle() {
   await clickImage(296,270);await clickImage(235,331);await clickImage(174,270);
 }
 async function propose() {
+  await openAi();
   await page.locator('#aiDetectBtn').click();
   await page.locator('#aiReviewList .meas-item').waitFor();
+}
+async function openAi() {
+  if(await page.locator('#inspectorAiBtn').count())await page.locator('#inspectorAiBtn').click();
 }
 async function selectRow() {
   await circle();
@@ -74,6 +78,7 @@ test('accepting an AI proposal keeps the accepted measurement selected', async (
   assert.equal(await page.locator('#editBox').isVisible(),true);
   await page.locator('#undoBtn').click();
   assert.equal(await page.locator('#measCount').textContent(),'0');
+  await openAi();
   assert.equal(await page.locator('#aiReviewList .meas-item').count(),1);
 });
 test('rejecting an AI proposal preserves the existing manual selection', async () => {
@@ -181,15 +186,18 @@ test('AI Batch fixtures stay proposals until explicit acceptance and Undo restor
   const buffer=Buffer.from(saved.images[0].imageDataUrl.split(',')[1],'base64');
   await page.locator('#fileImage').setInputFiles({name:'second.jpg',mimeType:'image/jpeg',buffer});
   await page.waitForFunction(()=>document.querySelector('#docName').textContent==='second.jpg');
+  await openAi();
   await page.locator('#aiBatchBtn').click();
   await page.locator('#aiReviewList .meas-item').waitFor();
   assert.equal(await page.locator('#measCount').textContent(),'0');
   await page.locator('#prevImage').click();
+  await openAi();
   assert.equal(await page.locator('#aiReviewList .meas-item').count(),1);
   await page.locator('#aiAcceptAllBtn').click();
   assert.equal(await page.locator('#measCount').textContent(),'1');
   await page.locator('#undoBtn').click();
   assert.equal(await page.locator('#measCount').textContent(),'0');
+  await openAi();
   assert.equal(await page.locator('#aiReviewList .meas-item').count(),1);
   await page.locator('#aiRejectAllBtn').click();
   assert.equal(await page.locator('#aiReviewList .meas-item').count(),0);
@@ -213,7 +221,7 @@ test('Row Spacing calculates from selected circles and remains undoable', async 
   await page.locator('#undoBtn').click();assert.equal(await page.locator('#measCount').textContent(),'4');
 });
 
-test('desktop layouts keep the library and context controls inside the sidebar', async () => {
+test('desktop layouts keep the independent library and context controls accessible', async () => {
   for(const width of [1280,1366,1920]) {
     await page.setViewportSize({width,height:768});
     await page.locator('[data-tool="rowSpacing"]').click();
@@ -222,5 +230,119 @@ test('desktop layouts keep the library and context controls inside the sidebar',
     assert(panel.x>=canvas.x+canvas.width-1);assert(panel.x+panel.width<=width);
     await page.locator('#imageList').scrollIntoViewIfNeeded();
     assert.equal(await page.locator('#imageList .image-entry').isVisible(),true);
+    const library=page.locator('#imageLibrary');
+    if(await library.count()) {
+      const box=await library.boundingBox();assert(box.x+box.width<=canvas.x);
+      assert.equal(await page.locator('#sidePanel #imageList').count(),0);
+    }
   }
+});
+
+test('Phase 1 docks never overlap and library stays visible while inspector scrolls', async () => {
+  for(const [width,height] of [[1280,720],[1366,768],[1920,1080]]) {
+    await page.setViewportSize({width,height});
+    await page.locator('[data-tool="rowSpacing"]').click();
+    const rail=await page.locator('.tools').boundingBox(),library=await page.locator('#imageLibrary').boundingBox();
+    const canvas=await page.locator('#stage').boundingBox(),inspector=await page.locator('#sidePanel').boundingBox();
+    assert(rail.x+rail.width<=library.x);assert(library.x+library.width<=canvas.x);
+    assert(canvas.x+canvas.width<=inspector.x);assert(inspector.x+inspector.width<=width);
+    assert(canvas.width>500);assert(canvas.height>600);
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth),width);
+    await page.locator('#sidePanel').evaluate(el=>{el.scrollTop=el.scrollHeight;});
+    assert.equal(await page.locator('#imageList .image-entry[aria-current="true"]').isVisible(),true);
+  }
+});
+
+test('AI inspector is independent of canvas tool and transient row selections', async () => {
+  await selectRow();const before=await project();
+  await openAi();
+  assert.equal(await page.locator('#toolMode').textContent(),'ROWSPACING');
+  assert.equal(await page.locator('#aiReviewPanel').isVisible(),true);
+  assert.equal(await page.locator('#rowSpacingPanel').isVisible(),false);
+  assert.equal(await page.locator('#calibrationPanel').isVisible(),false);
+  assert.deepEqual(await project(),before);
+  // Canvas interaction must not reopen the hidden row panel over the AI context.
+  await clickImage(235,270);
+  assert.equal(await page.locator('#rowSpacingPanel').isVisible(),false);
+  await clickImage(235,270);
+  await page.locator('#inspectorToolBtn').click();
+  assert.equal(await page.locator('#rowSpacingPanel').isVisible(),true);
+  assert.equal(await page.locator('[data-row="0"]').textContent(),'Hàng 1 (1)');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#rowSpacingPanel').isVisible(),false);
+});
+
+test('context switches show calibration, measurement help, and AI only when requested', async () => {
+  assert.equal(await page.locator('#calibrationPanel').isVisible(),true);
+  assert.equal(await page.locator('#aiReviewPanel').isVisible(),false);
+  await page.locator('[data-tool="circle"]').click();
+  assert.equal(await page.locator('#calibrationPanel').isVisible(),false);
+  assert.equal(await page.locator('#inspectorToolTitle').textContent(),'Đo Ø lỗ');
+  await page.locator('#inspectorHelpBtn').click();
+  assert.equal(await page.locator('#helpPanel').isVisible(),true);
+  assert.equal(await page.locator('#toolMode').textContent(),'CIRCLE');
+  await page.locator('#inspectorToolBtn').click();
+  assert.equal(await page.locator('#helpPanel').isVisible(),false);
+});
+
+test('1024px dock toggles free canvas space and desktop restores the library', async () => {
+  await page.setViewportSize({width:1024,height:768});
+  await page.waitForFunction(()=>document.querySelector('#mobileSideBtn').getAttribute('aria-expanded')==='false');
+  const initial=await page.locator('#stage').boundingBox();
+  await page.locator('#mobileSideBtn').click();
+  const docked=await page.locator('#stage').boundingBox();
+  assert(docked.width<initial.width);assert(docked.width>=500);
+  const side=await page.locator('#sidePanel').boundingBox();assert(docked.x+docked.width<=side.x);
+  await page.locator('#libraryToggleBtn').click();
+  assert.equal(await page.locator('#imageLibrary').isVisible(),false);
+  await page.setViewportSize({width:1366,height:768});
+  await page.waitForFunction(()=>document.querySelector('#libraryToggleBtn').getAttribute('aria-expanded')==='true');
+  assert.equal(await page.locator('#imageList').isVisible(),true);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth),1366);
+});
+
+test('footer reports existing zoom, coordinates, units, calibration, and AI state', async () => {
+  await calibrate();await circle();
+  await page.locator('#unitSelect').selectOption('mm');
+  assert.equal(await page.locator('#footerUnit').textContent(),'mm');
+  assert((await page.locator('#footerScale').textContent()).includes('µm/px'));
+  await clickImage(700,400);
+  assert((await page.locator('#coordinateText').textContent()).includes('700'));
+  assert((await page.locator('#zoomText').textContent()).includes('%'));
+  assert((await page.locator('#footerAi').textContent()).includes('AI ONLINE'));
+});
+
+test('fixed project input exports independently of dock layout', async () => {
+  const fixture=await project();
+  const cal={mmPerPx:.005,p1:{x:130,y:750},p2:{x:330,y:750},lengthMm:1,
+    refName:fixture.images[0].imgName,refW:1400,refH:850,refId:fixture.images[0].imgId};
+  fixture.latestCalibration=cal;fixture.images[0].cal=cal;
+  fixture.images[0].view={z:.5,x:50,y:50};
+  fixture.images[0].measures=[{id:1,type:'circle',name:'Lỗ 1',c:{x:235,y:270},r:61,
+    edgePts:[{x:296,y:270},{x:235,y:331},{x:174,y:270}],shift:{x:0,y:0},fitRms:0}];
+  page.once('dialog',dialog=>dialog.accept());
+  await page.locator('#fileProject').setInputFiles({name:'fixed.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(fixture))});
+  await page.waitForFunction(()=>document.querySelector('#busyPanel').hidden);
+  const outputs={'fixed-project.json':await download('#saveProjectBtn'),'fixed-measurements.csv':await download('#exportCsvBtn'),
+    'fixed-measurement.png':await download('#exportPngBtn'),'fixed-measurements.zip':await download('#exportAllBtn')};
+  if(process.env.MICROCAD_EXPORT_CAPTURE) {
+    fs.mkdirSync(process.env.MICROCAD_EXPORT_CAPTURE,{recursive:true});
+    for(const [name,buffer] of Object.entries(outputs))fs.writeFileSync(path.join(process.env.MICROCAD_EXPORT_CAPTURE,name),buffer);
+  }
+  const saved=JSON.parse(outputs['fixed-project.json']);
+  assert.equal(saved.images[0].measures[0].r,61);assert.equal(saved.images[0].cal.mmPerPx,.005);
+  assert.equal(outputs['fixed-measurement.png'].readUInt32BE(16),1400);
+  assert.equal(outputs['fixed-measurement.png'].readUInt32BE(20),850);
+});
+
+test('missing AI model leaves manual tools usable and AI actions disabled', async () => {
+  await page.route('http://127.0.0.1:8000/**',route=>route.fulfill({json:{status:'online',model_ready:false,device:'cpu'}}));
+  await page.reload();
+  await page.waitForFunction(()=>document.querySelector('#footerAi').textContent.includes('MODEL'));
+  await page.locator('#demoBtn').click();
+  await page.waitForFunction(()=>document.querySelector('#imageSizeText').textContent.includes('1400'));
+  await page.locator('#fitBtn').click();await openAi();
+  assert.equal(await page.locator('#aiDetectBtn').isDisabled(),true);
+  assert.equal(await page.locator('#aiBatchBtn').isDisabled(),true);
+  await circle();assert.equal(await page.locator('#measCount').textContent(),'1');
 });

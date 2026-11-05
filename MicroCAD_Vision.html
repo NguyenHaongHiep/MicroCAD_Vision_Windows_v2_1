@@ -19,6 +19,31 @@
 .finish-circle{display:none;margin-top:8px}.finish-circle.visible{display:inline-flex}
 .meas-item{border-left:3px solid var(--measure-color,#50e5dc)}.meas-type{color:var(--measure-color,#50e5dc);border-color:var(--measure-color,#50e5dc)}
 .ai-note{margin-top:9px;color:#9db1c6;font-size:10px;line-height:1.5}.legacy-score{color:var(--green)}
+/* Phase 1: independent CAD docks. Measurement rendering and transforms are unchanged. */
+:root{--bg:#11151b;--panel:#191f27;--panel2:#202731;--line:#343e4a;--muted:#a0acba;--cyan:#61d6df;--shadow:none}
+#app{grid-template-rows:48px minmax(0,1fr) 28px}
+.top{padding:0 12px;gap:10px;background:#1b222c}
+.brand{min-width:156px;gap:8px}.brand-mark{width:28px;height:28px;border-radius:4px;box-shadow:none;background:#22323c;font-size:20px}.brand-name{font-size:13px}.brand-sub{font-size:8px;letter-spacing:.06em}
+.top-actions{gap:4px;scrollbar-width:thin;padding:0 0 2px}.top-actions .btn{min-height:28px;padding:0 8px;font-size:11px}.top-actions .separator{height:20px;margin:0 4px}.top-actions .spacer{min-width:8px}
+.btn,.btn.primary{border-radius:4px;background:#252f3b;box-shadow:none;transition:background .12s,border-color .12s}.btn.primary{background:#25434c;border-color:#477780}.btn:hover,.btn.primary:hover{background:#304353;box-shadow:none}.btn[aria-pressed="true"]{color:var(--cyan);border-color:#4d8a94;background:#233d47}
+.workspace{grid-template-columns:60px 220px minmax(0,1fr) 308px;overflow:hidden}
+.tools{gap:3px;padding:8px 6px;background:#1b222b}.tool{width:44px;height:40px;min-height:40px;border-radius:4px;transition:none}.tool.active{background:#263f49;box-shadow:inset 2px 0 var(--cyan);border-color:#42616d}.tool-sep{margin:3px 0}.tool-spacer{min-height:4px}.tool span{font-size:17px}.tool .tool-label{font-size:8px}
+.image-library{min-width:0;min-height:0;display:flex;flex-direction:column;background:#181e26;border-right:1px solid var(--line);overflow:hidden}
+.dock-heading{height:41px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:750;letter-spacing:.06em;border-bottom:1px solid var(--line);flex-shrink:0}.dock-caption{font:10px Consolas,monospace;color:#9aabba;letter-spacing:.04em}
+.image-library .image-section{display:flex;flex:1;min-height:0;flex-direction:column;padding:12px;border:0}.image-section .sec-label{margin-bottom:10px}.image-nav{font-size:11px;flex-shrink:0}.image-list{flex:1;min-height:60px;max-height:none;align-content:start;overflow:auto;margin:0 0 12px;gap:6px}.image-entry{padding:8px;border-radius:4px;grid-template-columns:48px minmax(0,1fr);gap:8px;background:#202832}.image-entry img{width:48px;height:40px}.image-entry strong{font-size:11px}.image-entry small{font-size:10px;line-height:1.5}.image-entry[aria-current="true"]{border-color:#4e919c;background:#263b45;box-shadow:inset 2px 0 var(--cyan)}.image-section>.muted{font-size:10px;line-height:1.6;flex-shrink:0}
+.side{position:static;width:auto;min-width:0;min-height:0;display:block;overflow:auto;background:#191f28;box-shadow:none;border-left:1px solid var(--line)}.side-head{padding:0 12px;min-height:41px;gap:8px}.side-title{font-size:11px}.side-section{padding:14px 12px}.sec-label{font-size:10px;letter-spacing:.07em;color:#b4c1ce}.inspector-tabs{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--line)}.inspector-tabs .btn{flex:1;min-width:0}.inspector-tabs .btn:last-child{flex:0 0 28px}.tool-guide p{margin:0;line-height:1.7}.tool-guide .sec-label{margin-bottom:8px}
+.cal-card,.tips{border-radius:4px;background:#202a35;box-shadow:none;padding:10px}.scale-big{font-size:21px}.side-acts{flex-wrap:wrap}.side-acts .btn{min-width:0;white-space:normal;line-height:1.4;padding:6px 8px}.side-section .tips{font-size:11px}.meas-item{border-radius:4px;background:#212b36;padding:10px}.meas-val{font-size:19px}.meas-item.selected{background:#233d46;border-color:#528b96}.meas-foot{line-height:1.6}.edit-row .field{min-width:0}.status-pill,.field,.unit-select select{border-radius:4px}.warning{border-radius:4px}.side-section[hidden],.btn[hidden]{display:none!important}
+.side-head{position:sticky;top:0;background:#191f28;z-index:2}.inspector-tabs{position:sticky;top:41px;background:#191f28;z-index:2}
+#measurementPanel>.tips{display:none}#projectPanel{display:none}#drawingPanel .micro-row:last-child{margin-bottom:0}
+.canvas-area{background:#111820}.canvas-area:after{box-shadow:none}.glass{background:#1b2732ed;border-color:#3b4a59;backdrop-filter:none;border-radius:4px;box-shadow:none}.canvas-head{top:8px;left:34px;right:8px;gap:8px}.docname{padding:6px 9px;max-width:78%;gap:7px}.doc-chip{font-size:8px;border-radius:3px;letter-spacing:.06em}.file-name{font-size:11px}.doc-sub{font-size:9px}.view-chip{padding:6px 8px;font-size:10px}.view-chip>span:first-child{display:none}.viewport-bottom{left:34px;right:8px;bottom:8px}.command{padding:8px 10px;min-width:0;max-width:100%;width:100%}.command-head{font-size:9px;margin-bottom:4px}.command-text{font-size:11px;line-height:1.5}.welcome-graphic,.signal.live{animation:none}.welcome-graphic{border-radius:8px;box-shadow:none;background:#203640}.welcome h2{font-size:21px}.welcome p{font-size:12px}
+.footer{padding:0 10px;gap:16px;background:#1b232d;font-size:10px;overflow-x:auto}.footer .coordinates{min-width:150px;color:#bed4df}.footer .end{font-size:9px}.session{display:flex;gap:5px;font-size:9px}.session #sessionText,.session .signal{display:none}.session .status-pill{font-size:8px;margin:0!important;white-space:nowrap}.footer .status-pill{font-size:9px;padding:2px 5px}.status-pill.good{color:#b8e693}.toast{border-radius:4px;font-size:12px;min-width:220px;max-width:calc(100vw - 30px);bottom:38px}.modal-card{border-radius:6px;background:#1b2633}
+.workspace.library-collapsed{grid-template-columns:60px 0 minmax(0,1fr) 308px}.workspace.inspector-collapsed{grid-template-columns:60px 220px minmax(0,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:60px 0 minmax(0,1fr) 0}.library-collapsed .image-library,.inspector-collapsed .side{visibility:hidden;pointer-events:none}
+@media(min-width:1600px){.workspace{grid-template-columns:60px 240px minmax(0,1fr) 320px}.workspace.library-collapsed{grid-template-columns:60px 0 minmax(0,1fr) 320px}.workspace.inspector-collapsed{grid-template-columns:60px 240px minmax(0,1fr) 0}}
+@media(min-width:1280px){#libraryToggleBtn{display:none}}
+@media(max-width:1279px){.workspace{grid-template-columns:56px 180px minmax(0,1fr) 280px}.workspace.library-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 280px}.workspace.inspector-collapsed{grid-template-columns:56px 180px minmax(0,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 0}.brand{min-width:124px}.brand-sub{display:none}.top{gap:6px;padding:0 8px}.top-actions .btn{font-size:10px;padding:0 6px}.session{display:none}.footer{gap:10px}.footer .end{display:none}}
+@media(max-width:1099px){.workspace{grid-template-columns:56px 168px minmax(0,1fr) 260px}.workspace.library-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 260px}.workspace.inspector-collapsed{grid-template-columns:56px 168px minmax(0,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 0}.image-library .image-section{padding:8px}.image-entry{grid-template-columns:36px minmax(0,1fr);padding:6px}.image-entry img{width:36px;height:32px}.footer{gap:8px}.footer .coordinates{min-width:135px}}
+@media(max-width:900px){.side{position:static;top:auto;bottom:auto;right:auto}.mobile-side{display:inline-flex!important}.workspace{grid-template-columns:52px 144px minmax(200px,1fr) 0}.workspace.library-collapsed{grid-template-columns:52px 0 minmax(200px,1fr) 260px}.workspace.inspector-collapsed{grid-template-columns:52px 144px minmax(200px,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:52px 0 minmax(200px,1fr) 0}.workspace:not(.library-collapsed) .side{visibility:hidden}.workspace.library-collapsed:not(.inspector-collapsed) .side{visibility:visible}.docname{max-width:100%}.view-chip{display:none}.tools{padding:6px 4px}.brand-mark{display:none}.brand{min-width:90px}.footer .foot-item:first-child{display:block}.footer .foot-item{flex-shrink:0}}
+@media(max-width:600px){.workspace{grid-template-columns:48px 110px minmax(160px,1fr) 0}.workspace.library-collapsed{grid-template-columns:48px 0 minmax(160px,1fr) min(240px,45vw)}.workspace.inspector-collapsed{grid-template-columns:48px 110px minmax(160px,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:48px 0 minmax(160px,1fr) 0}.image-entry{display:block}.image-entry img{width:100%;height:48px}.image-entry strong{margin-top:4px}.dock-heading{padding:0 6px;font-size:9px}.dock-caption{display:none}.top-actions .btn span.subtext{display:none}.command-text{font-size:10px}.welcome p{margin:0 0 12px}.welcome-btns{flex-wrap:wrap}.footer{font-size:9px}}
 </style>
 </head>
 <body>
@@ -35,10 +60,11 @@
   <button class="btn" id="cameraBtn">◉ <span class="subtext">USB Camera</span></button>
   <button class="btn primary" id="snapshotBtn" style="display:none">◎ Chụp ảnh</button>
   <div class="spacer"></div>
+  <button class="btn small" id="saveProjectBtn">↓ Lưu JSON</button>
   <button class="btn" id="exportCsvBtn" title="Xuất dữ liệu đo dạng CSV">↧ CSV</button>
   <button class="btn primary" id="exportPngBtn" title="Lưu ảnh gốc kèm kích thước">↓ Lưu ảnh PNG</button>
   <button class="btn primary" id="exportAllBtn" title="Xuất tất cả ảnh đã đo và CSV trong một ZIP">↓ Save All · ZIP</button>
-  <button class="btn small mobile-side" id="mobileSideBtn" style="display:none">☷</button>
+  <button class="btn small" id="libraryToggleBtn" title="Thu gọn hoặc mở thư viện ảnh" aria-controls="imageLibrary" aria-expanded="true">▤ Bộ ảnh</button><button class="btn small" id="mobileSideBtn" title="Thu gọn hoặc mở bảng thuộc tính" aria-controls="sidePanel" aria-expanded="true">☷ Thuộc tính</button>
  </div>
  <div class="separator"></div>
  <div class="session"><span class="signal" id="signal"></span><span id="sessionText">SẴN SÀNG</span></div>
@@ -63,29 +89,41 @@
  <button class="tool" id="magnifierBtn" title="Bật hoặc tắt kính lúp [Q]" aria-label="Bật kính lúp" aria-pressed="false"><span>⊕</span><span class="tool-label">KÍNH LÚP</span></button>
  <button class="tool" id="undoBtn" title="Hoàn tác [Ctrl+Z]"><span>↶</span><span class="tool-label">UNDO</span></button>
 </nav>
-<section class="canvas-area" id="viewport">
- <canvas id="stage" aria-label="Ảnh và bản vẽ đo"></canvas>
- <canvas id="magnifier" class="magnifier" width="160" height="160" aria-hidden="true"></canvas>
- <div class="canvas-head"><div class="glass docname"><span class="doc-chip" id="docKind">NO IMAGE</span><div style="min-width:0"><div class="file-name" id="docName">Chưa tải ảnh</div><div class="doc-sub" id="docDetails">Mở ảnh từ kính hiển vi hoặc tải ảnh chuẩn</div></div></div><div class="glass view-chip"><span><span class="cross">✛</span> <span id="zoomText">100%</span></span><span id="imageSizeText">— px</span></div></div>
- <div id="welcome" class="floating welcome"><div class="welcome-graphic"><div class="reticle"><i></i></div></div><h2>Đo lỗ chính xác từ ảnh</h2><p>Tải ảnh từ kính hiển vi, hiệu chuẩn theo vật mẫu có kích thước đã biết rồi ghi kích thước giống AutoCAD.</p><div class="welcome-btns"><button class="btn primary" id="welcomeOpen">▣ Mở ảnh</button><button class="btn" id="welcomeCamera">◉ Bật camera</button></div><button class="demo-link" id="demoBtn">Dùng ảnh minh hoạ để trải nghiệm →</button></div>
- <div class="viewport-bottom"><div class="glass command"><div class="command-head">▸ Command line · <span id="toolMode">SELECT</span></div><div class="command-text" id="toolHint">Chọn công cụ ở bên trái hoặc mở một ảnh để bắt đầu.</div><button class="btn small primary finish-circle" id="finishCircleBtn">✓ Hoàn tất lỗ (Enter)</button></div><div class="glass legend"><span id="coordinateText">X: — &nbsp; Y: —</span></div></div>
-</section>
-<aside class="side" id="sidePanel">
- <div class="side-head"><div class="side-title">BẢNG THUỘC TÍNH</div><span class="kbd" title="Phiên bản thử nghiệm">v2.3 AUTO BATCH</span></div>
- <section class="side-section image-section"><div class="sec-label">Bộ ảnh <span id="imageCount">0 ảnh</span></div>
+ <aside class="image-library" id="imageLibrary" aria-label="Thư viện ảnh"><div class="dock-heading">THƯ VIỆN ẢNH <span class="dock-caption">PROJECT</span></div><section class="side-section image-section"><div class="sec-label">Bộ ảnh <span id="imageCount">0 ảnh</span></div>
  <div class="image-nav"><button class="btn small" id="prevImage" aria-label="Ảnh trước">←</button><span id="imagePosition">0 / 0</span><button class="btn small" id="nextImage" aria-label="Ảnh sau">→</button></div>
  <div id="imageList" class="image-list" aria-label="Danh sách ảnh"></div>
  <label class="muted"><input type="checkbox" id="includeUnmeasured"> Xuất cả ảnh chưa đo vào ZIP</label>
  <div class="muted">Chuẩn mới nhất tự áp dụng cho toàn bộ bộ ảnh và ảnh nhập sau. Chỉ dùng khi cùng độ phóng đại và tỷ lệ pixel.</div>
- </section>
- <section class="side-section"><div class="sec-label">01 / Hiệu chuẩn ảnh <span class="status-pill" id="calStatus">CHƯA CHUẨN</span></div><div class="cal-card"><div class="dim-label">Hệ số chiều dài / pixel</div><div class="scale-big" id="scaleValue">—</div><div class="scale-sub" id="scaleInfo">Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.</div><div class="side-acts"><button class="btn small primary" id="calBtn">⤢ Lấy chuẩn</button><button class="btn small" id="newRefBtn">Mở ảnh chuẩn</button></div><div class="tiny">Lấy chuẩn xong sẽ tự áp dụng cho mọi ảnh trong bộ.</div></div><div class="warning" id="calWarning">⚠ Chuẩn được lấy từ ảnh khác. Chỉ tái sử dụng hệ số khi cùng độ phóng đại, khoảng cách làm việc, thiết lập ảnh và tỷ lệ pixel.</div></section>
- <section class="side-section"><div class="sec-label">02 / Cài đặt bản vẽ</div><div class="micro-row"><span class="dim-label">Đơn vị hiển thị</span><div class="unit-select"><select id="unitSelect" aria-label="Đơn vị"><option value="um">µm</option><option value="mm">mm</option></select></div></div><div class="micro-row"><span class="dim-label">Bám tâm đường tròn</span><label style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px"><input id="snapToggle" type="checkbox" checked> SNAP</label></div><div class="micro-row" style="margin-bottom:0"><span class="dim-label">Đối tượng đang chọn</span><strong id="selectedCount" style="font-family:Consolas,monospace">0</strong></div></section>
- <section class="side-section"><div class="sec-label">03 / Danh sách kích thước <span id="measCount">0</span></div><div class="tips" style="margin-bottom:10px"><b>Ø NHIỀU [M]</b>: chọn ít nhất 3 điểm trên vành lỗ; Enter để khớp vòng tròn. Độ lệch RMS cho biết mức méo so với vòng tròn.<br><b>Ø + MÉP [B]</b>: chọn 3 điểm mỗi lỗ rồi tính khe giữa hai đường tròn.<br><b>MÉP 2Ø [G]</b>: chọn hai đường tròn đã đo. Khe tính từ đường tròn khớp, không dò biên ảnh.</div><div id="measureList" class="meas-list"><div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div></div><div class="edit-box" id="editBox"><div class="dim-label">Tên/ghi chú kích thước</div><div class="edit-row"><input class="field" id="measNameEdit" maxlength="40" placeholder="Ví dụ: Lỗ số 1"><button class="btn small" id="updateNameBtn">Lưu</button></div><button class="btn small" id="deleteMeasureBtn" style="width:100%;margin-top:8px;border-color:#573a4c;color:#f0a2b4">× Xóa phép đo đang chọn</button></div></section>
- <section class="side-section"><div class="sec-label">04 / Dự án</div><div style="display:flex;gap:7px"><button class="btn small" style="flex:1" id="saveProjectBtn">↓ Lưu JSON</button><button class="btn small" style="flex:1" id="saveCsvBtn">↓ Lưu CSV</button></div><div class="muted" style="margin-top:11px">Save All tạo ZIP gồm PNG và CSV tổng hợp. Lưu JSON giữ toàn bộ ảnh gốc, phép đo và chuẩn để mở lại. Lưu dự án trước khi đóng cửa sổ.</div></section>
- <section class="side-section"><div class="sec-label">Hướng dẫn nhanh</div><div class="tips"><strong>1.</strong> Mở ảnh cần đo hoặc ảnh chuẩn.<br><strong>2.</strong> Bấm <b>K</b>, chọn hai đầu đoạn chuẩn, nhập chiều dài thực. Chuẩn tự áp dụng toàn bộ ảnh.<br><strong>3.</strong> Trong <b>AI DETECT · YOLO</b>, chạy phát hiện cho ảnh này hoặc toàn bộ ảnh.<br><strong>4.</strong> Kiểm tra vòng cyan, confidence và trạng thái review; chỉ bấm <b>Chấp nhận</b> với kết quả đúng.<br><strong>5.</strong> Dùng <b>M</b> để đo hoặc bổ sung thủ công khi cần.<br><strong>6.</strong> Bấm <b>Save All · ZIP</b> để xuất PNG và CSV toàn bộ bộ ảnh.<br><br>Cuộn chuột để zoom, <b>H</b> để pan, <b>Esc</b> để hủy thao tác.</div><div class="tiny">AI YOLO là công cụ thử nghiệm. Confidence không phải độ chính xác kích thước; luôn kiểm tra trực quan và xác nhận bằng mẫu chuẩn trước khi dùng kết quả kiểm định.</div></section>
+ </section></aside>
+<section class="canvas-area" id="viewport">
+ <canvas id="stage" aria-label="Ảnh và bản vẽ đo"></canvas>
+ <canvas id="magnifier" class="magnifier" width="160" height="160" aria-hidden="true"></canvas>
+ <div class="canvas-head"><div class="glass docname"><span class="doc-chip" id="docKind">NO IMAGE</span><div style="min-width:0"><div class="file-name" id="docName">Chưa tải ảnh</div><div class="doc-sub" id="docDetails">Mở ảnh từ kính hiển vi hoặc tải ảnh chuẩn</div></div></div><div class="glass view-chip"><span><span class="cross">✛</span> ZOOM</span><span id="imageSizeText">— px</span></div></div>
+ <div id="welcome" class="floating welcome"><div class="welcome-graphic"><div class="reticle"><i></i></div></div><h2>Đo lỗ chính xác từ ảnh</h2><p>Tải ảnh từ kính hiển vi, hiệu chuẩn theo vật mẫu có kích thước đã biết rồi ghi kích thước giống AutoCAD.</p><div class="welcome-btns"><button class="btn primary" id="welcomeOpen">▣ Mở ảnh</button><button class="btn" id="welcomeCamera">◉ Bật camera</button></div><button class="demo-link" id="demoBtn">Dùng ảnh minh hoạ để trải nghiệm →</button></div>
+ <div class="viewport-bottom"><div class="glass command"><div class="command-head">▸ Command line · <span id="toolMode">SELECT</span></div><div class="command-text" id="toolHint">Chọn công cụ ở bên trái hoặc mở một ảnh để bắt đầu.</div><button class="btn small primary finish-circle" id="finishCircleBtn">✓ Hoàn tất lỗ (Enter)</button></div><div class="glass legend"></div></div>
+</section>
+<aside class="side" id="sidePanel">
+ <div class="side-head"><div class="side-title">THUỘC TÍNH</div><span class="dock-caption" id="inspectorContext">CHỌN</span></div>
+ <div class="inspector-tabs" role="group" aria-label="Ngữ cảnh thuộc tính"><button class="btn small" id="inspectorToolBtn" aria-pressed="true">Công cụ</button><button class="btn small" id="inspectorAiBtn" aria-pressed="false">AI Detect · EXP</button><button class="btn small" id="inspectorHelpBtn" aria-pressed="false" title="Hướng dẫn sử dụng">?</button></div>
+ <section class="side-section tool-guide" id="toolGuide"><div class="sec-label" id="inspectorToolTitle">Chọn</div><p class="muted" id="inspectorToolHelp"></p></section>
+
+ <section class="side-section" id="calibrationPanel"><div class="sec-label">01 / Hiệu chuẩn ảnh <span class="status-pill" id="calStatus">CHƯA CHUẨN</span></div><div class="cal-card"><div class="dim-label">Hệ số chiều dài / pixel</div><div class="scale-big" id="scaleValue">—</div><div class="scale-sub" id="scaleInfo">Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.</div><div class="side-acts"><button class="btn small primary" id="calBtn">⤢ Lấy chuẩn</button><button class="btn small" id="newRefBtn">Mở ảnh chuẩn</button></div><div class="tiny">Lấy chuẩn xong sẽ tự áp dụng cho mọi ảnh trong bộ.</div></div><div class="warning" id="calWarning">⚠ Chuẩn được lấy từ ảnh khác. Chỉ tái sử dụng hệ số khi cùng độ phóng đại, khoảng cách làm việc, thiết lập ảnh và tỷ lệ pixel.</div></section>
+ <section class="side-section" id="drawingPanel"><div class="sec-label">02 / Cài đặt bản vẽ</div><div class="micro-row"><span class="dim-label">Đơn vị hiển thị</span><div class="unit-select"><select id="unitSelect" aria-label="Đơn vị"><option value="um">µm</option><option value="mm">mm</option></select></div></div><div class="micro-row"><span class="dim-label">Bám tâm đường tròn</span><label style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px"><input id="snapToggle" type="checkbox" checked> SNAP</label></div><div class="micro-row" style="margin-bottom:0"><span class="dim-label">Đối tượng đang chọn</span><strong id="selectedCount" style="font-family:Consolas,monospace">0</strong></div></section>
+ <section class="side-section" id="measurementPanel"><div class="sec-label">03 / Danh sách kích thước <span id="measCount">0</span></div><div class="tips" style="margin-bottom:10px"><b>Ø NHIỀU [M]</b>: chọn ít nhất 3 điểm trên vành lỗ; Enter để khớp vòng tròn. Độ lệch RMS cho biết mức méo so với vòng tròn.<br><b>Ø + MÉP [B]</b>: chọn 3 điểm mỗi lỗ rồi tính khe giữa hai đường tròn.<br><b>MÉP 2Ø [G]</b>: chọn hai đường tròn đã đo. Khe tính từ đường tròn khớp, không dò biên ảnh.</div><div id="measureList" class="meas-list"><div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div></div><div class="edit-box" id="editBox"><div class="dim-label">Tên/ghi chú kích thước</div><div class="edit-row"><input class="field" id="measNameEdit" maxlength="40" placeholder="Ví dụ: Lỗ số 1"><button class="btn small" id="updateNameBtn">Lưu</button></div><button class="btn small" id="deleteMeasureBtn" style="width:100%;margin-top:8px;border-color:#573a4c;color:#f0a2b4">× Xóa phép đo đang chọn</button></div></section>
+ <section class="side-section" id="projectPanel"><div class="sec-label">04 / Dự án</div><div style="display:flex;gap:7px"><button class="btn small" hidden id="saveCsvBtn">↓ Lưu CSV</button></div><div class="muted" style="margin-top:11px">Save All tạo ZIP gồm PNG và CSV tổng hợp. Lưu JSON giữ toàn bộ ảnh gốc, phép đo và chuẩn để mở lại. Lưu dự án trước khi đóng cửa sổ.</div></section>
+ <section class="side-section" id="helpPanel"><div class="sec-label">Hướng dẫn nhanh</div><div class="tips"><strong>1.</strong> Mở ảnh cần đo hoặc ảnh chuẩn.<br><strong>2.</strong> Bấm <b>K</b>, chọn hai đầu đoạn chuẩn, nhập chiều dài thực. Chuẩn tự áp dụng toàn bộ ảnh.<br><strong>3.</strong> Trong <b>AI DETECT · YOLO</b>, chạy phát hiện cho ảnh này hoặc toàn bộ ảnh.<br><strong>4.</strong> Kiểm tra vòng cyan, confidence và trạng thái review; chỉ bấm <b>Chấp nhận</b> với kết quả đúng.<br><strong>5.</strong> Dùng <b>M</b> để đo hoặc bổ sung thủ công khi cần.<br><strong>6.</strong> Bấm <b>Save All · ZIP</b> để xuất PNG và CSV toàn bộ bộ ảnh.<br><br>Cuộn chuột để zoom, <b>H</b> để pan, <b>Esc</b> để hủy thao tác.</div><div class="tiny">AI YOLO là công cụ thử nghiệm. Confidence không phải độ chính xác kích thước; luôn kiểm tra trực quan và xác nhận bằng mẫu chuẩn trước khi dùng kết quả kiểm định.</div></section>
 </aside>
 </div>
-<footer class="footer"><div class="foot-item">MODEL <b>2D IMAGE METROLOGY</b></div><div class="foot-item">SCALE <b id="footerScale">UNCALIBRATED</b></div><div class="foot-item">MEASUREMENTS <b id="footerCount">0</b></div><div class="foot-item">TOOL <b id="footerTool">SELECT</b></div><div class="end">MICROCAD VISION · OFFLINE READY</div></footer>
+<footer class="footer" aria-label="Trạng thái đo lường">
+ <div class="foot-item coordinates" id="coordinateText">X: — &nbsp; Y: —</div>
+ <div class="foot-item">ZOOM <b id="zoomText">100%</b></div>
+ <div class="foot-item status-unit">UNIT <b id="footerUnit">µm</b></div>
+ <div class="foot-item">CAL <b id="footerScale">UNCALIBRATED</b></div>
+ <div class="foot-item">TOOL <b id="footerTool">SELECT</b></div>
+ <div class="foot-item">MEAS <b id="footerCount">0</b></div>
+ <span class="status-pill" id="footerAi" role="status">AI OFFLINE</span>
+ <span class="end">MICROCAD VISION</span>
+</footer>
 </div>
 <div id="busyPanel" hidden role="status" aria-live="polite"><div class="glass"><b id="busyText">Đang xử lý…</b><progress id="batchProgress" max="1" value="0"></progress><button id="cancelBatch" class="btn">Hủy</button></div></div>
 <div class="toast" id="toast" role="status"></div>
@@ -100,6 +138,8 @@
 'use strict';
 const $=id=>document.getElementById(id), canvas=$('stage'), viewport=$('viewport'), ctx=canvas.getContext('2d');
 const doc={source:null,dataUrl:null,imgName:'',imgId:0,role:'image',width:0,height:0,cal:null,measures:[],aiPending:[],selected:null,tool:'select',pending:[],hover:null,view:{z:1,x:0,y:0},camera:false,stream:null,mouse:{down:false,mode:'',x:0,y:0},snap:true,unit:'um',history:[],lastLabelBoxes:[],ready:false};
+// Inspector navigation is UI-only; opening AI never changes the canvas tool.
+let inspectorMode='tool';
 let width=800,height=600,dpr=1,framePending=false,toastTimer=null,calPair=null,spacePressed=false,requestId=0;
 const COLORS={rowSpacing:'#f4d35e',circleGap:'#ffbd59',edges:'#ff8765',distance:'#f87fb4',centers:'#a997ff',line:'#f87fb4',circle:'#4de1f3',legacyCircle:'#a7f36a',center:'#a997ff',angle:'#ffe27a',cal:'#ffffff'};
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y), pt=(x,y)=>({x,y}), mid=(a,b)=>pt((a.x+b.x)/2,(a.y+b.y)/2);
@@ -129,7 +169,7 @@ function updateUI(){
  $('footerScale').textContent=doc.cal?num(doc.cal.mmPerPx*1000,4)+' µm/px':'UNCALIBRATED';$('footerCount').textContent=String(doc.measures.length);$('footerTool').textContent=doc.tool.toUpperCase();$('measCount').textContent=String(doc.measures.length);$('selectedCount').textContent=doc.selected===null?'0':'1';
  $('exportPngBtn').disabled=!doc.source||doc.camera;$('exportCsvBtn').disabled=!doc.measures.length;$('saveCsvBtn').disabled=!doc.measures.length;$('saveProjectBtn').disabled=!doc.source||doc.camera;
  if($('aiEngineStatus'))setAiState(aiOnline,$('aiEngineStatus').textContent);
- renderList();renderAiReviewPanel();renderRowPanel();renderImageList();
+ renderList();renderAiReviewPanel();renderRowPanel();renderImageList();renderInspector();
 }
 function formatMeasurement(m){
  let p=m.type==='circle'?m.r*2:m.type==='angle'?m.angle:dist(m.p1,m.p2);
@@ -142,14 +182,14 @@ function basePx(m){return m.type==='circle'?m.r*2:m.type==='angle'?m.angle:dist(
 function mLabel(m){const prefix=m.type==='circle'?'Ø ':m.type==='centers'?'C–C ':m.type==='angle'?'∠ ':'';return `${m.name?m.name+' · ':''}${prefix}${formatMeasurement(m)}`}
 function renderList(){
  const list=$('measureList');if(!doc.measures.length){list.innerHTML='<div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div>';}
- else list.innerHTML=doc.measures.map((m,i)=>`<div class="meas-item ${m.id===doc.selected?'selected':''}" style="--measure-color:${m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type]}" data-id="${m.id}"><div class="meas-top"><span class="meas-type">${m.ai?'AI Ø':m.auto?'LEGACY Ø':typeName[m.type]}</span><span class="meas-name" title="${escapeHTML(m.name)}">${escapeHTML(m.name)||'Phép đo '+(i+1)}</span><button class="iconbtn remove-one" data-id="${m.id}" title="Xóa">✕</button></div><div class="meas-val">${escapeHTML((m.type==='circle'?'Ø ':m.type==='angle'?'∠ ':'')+formatMeasurement(m))}</div><div class="meas-foot">${m.type==='angle'?'Góc · '+num(basePx(m),2)+'°':num(basePx(m),2)+' px'} · ${m.type==='rowSpacing'?`${m.row1Ids.length} + ${m.row2Ids.length} tâm · lệch ${num(m.angleDifferenceDeg,2)}°`:m.type==='circle'?`${m.ai?`AI ${Math.round((m.autoConfidence||0)*100)}% · `:m.auto?`<span class="legacy-score">Legacy ${Math.round((m.autoConfidence||0)*100)}%</span> · `:''}${m.edgePts?.length||3} điểm · lệch RMS ${num(m.fitRms||0,2)} px`:m.type==='circleGap'?gapRelations[m.relation]:m.type==='centers'?'Tâm đến tâm':'2 điểm'}</div></div>`).join('');
+ else list.innerHTML=doc.measures.map((m,i)=>`<div class="meas-item ${m.id===doc.selected?'selected':''}" style="--measure-color:${m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type]}" data-id="${m.id}"><div class="meas-top"><span class="meas-type">${m.ai?'AI ✓ Ø':m.auto?'LEGACY Ø':m.type==='circle'?'THỦ CÔNG Ø':typeName[m.type]}</span><span class="meas-name" title="${escapeHTML(m.name)}">${escapeHTML(m.name)||'Phép đo '+(i+1)}</span><button class="iconbtn remove-one" data-id="${m.id}" title="Xóa">✕</button></div><div class="meas-val">${escapeHTML((m.type==='circle'?'Ø ':m.type==='angle'?'∠ ':'')+formatMeasurement(m))}</div><div class="meas-foot">${m.type==='angle'?'Góc · '+num(basePx(m),2)+'°':num(basePx(m),2)+' px'} · ${m.type==='rowSpacing'?`${m.row1Ids.length} + ${m.row2Ids.length} tâm · lệch ${num(m.angleDifferenceDeg,2)}°`:m.type==='circle'?`${m.ai?`AI ${Math.round((m.autoConfidence||0)*100)}% · `:m.auto?`<span class="legacy-score">Legacy ${Math.round((m.autoConfidence||0)*100)}%</span> · `:''}${m.edgePts?.length||3} điểm · lệch RMS ${num(m.fitRms||0,2)} px`:m.type==='circleGap'?gapRelations[m.relation]:m.type==='centers'?'Tâm đến tâm':'2 điểm'}</div></div>`).join('');
  list.querySelectorAll('.meas-item').forEach(e=>e.addEventListener('click',evt=>{if(evt.target.closest('.remove-one'))return;const id=Number(e.dataset.id);if(doc.tool==='rowSpacing'){toggleRowCircle(id);return;}if(doc.tool==='circleGap'){chooseGapCircle(id);return;}doc.selected=id;updateUI();render()}));
  list.querySelectorAll('.remove-one').forEach(e=>e.addEventListener('click',evt=>{evt.stopPropagation();deleteMeasurement(Number(e.dataset.id))}));
  const selected=doc.measures.find(m=>m.id===doc.selected);$('editBox').classList.toggle('visible',!!selected);if(selected)$('measNameEdit').value=selected.name||'';
 }
 function historyPush(){dirty=true;doc.history.push(JSON.stringify({measures:doc.measures,cal:doc.cal,selected:doc.selected,aiPending:doc.aiPending}));if(doc.history.length>75)doc.history.shift()}
 function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];setStatus(helpers[doc.tool]);let p=JSON.parse(doc.history.pop());doc.measures=p.measures;doc.cal=p.cal;doc.selected=p.selected;doc.aiPending=p.aiPending??[];updateUI();render();toast('Đã hoàn tác')}
-function setTool(t){if($('calModal').classList.contains('open'))return;doc.tool=t;doc.pending=[];circleSelection=[];if(t!=='rowSpacing'){rowSelection=[[],[]];activeRow=0;}doc.selected=t==='select'?doc.selected:null;document.querySelectorAll('[data-tool]').forEach(b=>(b.classList.toggle('active',b.dataset.tool===t),b.setAttribute('aria-pressed',String(b.dataset.tool===t))));$('toolMode').textContent=t.toUpperCase();setStatus(helpers[t]);$('finishCircleBtn').classList.remove('visible');updateUI();render()}
+function setTool(t){if($('calModal').classList.contains('open'))return;inspectorMode='tool';doc.tool=t;doc.pending=[];circleSelection=[];if(t!=='rowSpacing'){rowSelection=[[],[]];activeRow=0;}doc.selected=t==='select'?doc.selected:null;document.querySelectorAll('[data-tool]').forEach(b=>(b.classList.toggle('active',b.dataset.tool===t),b.setAttribute('aria-pressed',String(b.dataset.tool===t))));$('toolMode').textContent=t.toUpperCase();setStatus(helpers[t]);$('finishCircleBtn').classList.remove('visible');updateUI();render()}
 function fit(){if(!doc.source)return;let pad=85;doc.view.z=Math.max(.05,Math.min((width-pad*2)/doc.width,(height-pad*2)/doc.height));doc.view.x=(width-doc.width*doc.view.z)/2;doc.view.y=(height-doc.height*doc.view.z)/2;updateZoom();render()}
 function updateZoom(){$('zoomText').textContent=num(doc.view.z*100,0)+'%'}
 function resize(){let rect=viewport.getBoundingClientRect();width=Math.max(1,rect.width);height=Math.max(1,rect.height);dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);render()}
@@ -325,7 +365,7 @@ function activateImage(id){
  doc.pending=[];doc.hover=null;doc.mouse.down=false;doc.lastLabelBoxes=[];
  calPair=null;$('calModal').classList.remove('open');
  if(!target.view||!target.view.z){doc.view={z:1,x:0,y:0};fit();}else updateZoom();
- updateHeader();setTool('select');render();
+ const priorInspector=inspectorMode;updateHeader();setTool('select');inspectorMode=priorInspector;renderInspector();render();
 }
 function renderImageList(){
  stashActive();const list=$('imageList');if(!list)return;
@@ -653,7 +693,7 @@ function calculateRowSpacing(){
  }catch(e){toast(e.message,true);renderRowPanel();}
 }
 function cancelRowSpacing(){rowSelection=[[],[]];activeRow=0;setTool('select');renderRowPanel();render();}
-function renderRowPanel(){const p=$('rowSpacingPanel');if(!p)return;p.hidden=doc.tool!=='rowSpacing';rowSelection=rowSelection.map(ids=>rowCircles(ids).map(c=>c.id));p.querySelector('[data-row="0"]').textContent=`Hàng 1 (${rowSelection[0].length})`;p.querySelector('[data-row="1"]').textContent=`Hàng 2 (${rowSelection[1].length})`;p.querySelectorAll('[data-row]').forEach(b=>b.classList.toggle('primary',Number(b.dataset.row)===activeRow));}
+function renderRowPanel(){const p=$('rowSpacingPanel');if(!p)return;p.hidden=doc.tool!=='rowSpacing'||inspectorMode!=='tool';rowSelection=rowSelection.map(ids=>rowCircles(ids).map(c=>c.id));p.querySelector('[data-row="0"]').textContent=`Hàng 1 (${rowSelection[0].length})`;p.querySelector('[data-row="1"]').textContent=`Hàng 2 (${rowSelection[1].length})`;p.querySelectorAll('[data-row]').forEach(b=>b.classList.toggle('primary',Number(b.dataset.row)===activeRow));}
 function installRowSpacingUI(){
  const nav=document.querySelector('.tools'),anchor=nav.querySelector('[data-tool="angle"]');const button=document.createElement('button');button.className='tool';button.dataset.tool='rowSpacing';button.title='Đo khoảng cách vuông góc giữa hai hàng tâm lỗ [R]';button.innerHTML='<span>⋮↔⋮</span><span class="tool-label">2 HÀNG</span>';nav.insertBefore(button,anchor.parentElement===nav?anchor:nav.firstChild);
  const panel=document.createElement('section');panel.id='rowSpacingPanel';panel.className='side-section';panel.innerHTML='<div class="sec-label">Khoảng cách 2 hàng <span class="status-pill">TLS / PCA</span></div><div class="muted">Chọn công cụ, chọn các đường tròn của từng hàng. Chỉ tâm AI đã chấp nhận và đường tròn thủ công mới được dùng.</div><div class="side-acts"><button class="btn small primary" data-row="0">Hàng 1 (0)</button><button class="btn small" data-row="1">Hàng 2 (0)</button></div><div class="side-acts"><button class="btn small primary" id="rowCalculateBtn">Tính khoảng cách</button><button class="btn small" id="rowCancelBtn">Hủy</button></div><div class="tiny">Yêu cầu ≥2 tâm/hàng · giới hạn lệch góc 5°.</div>';
@@ -676,7 +716,7 @@ function installAiUI(){
  checkAiHealth();aiHealthTimer=setInterval(checkAiHealth,5000);
 }
 async function checkAiHealth(){try{const response=await fetch(AI_API+'/health',{signal:AbortSignal.timeout(1500)}),data=await response.json();aiOnline=response.ok&&data.status==='online'&&data.model_ready===true;setAiState(aiOnline,aiOnline?`AI ONLINE · ${data.device}`:'AI OFFLINE / MODEL');}catch{aiOnline=false;setAiState(false,'AI OFFLINE');}}
-function setAiState(ready,text){const badge=$('aiEngineStatus');if(!badge)return;badge.textContent=text;badge.classList.toggle('good',ready);$('aiDetectBtn').disabled=!ready||!doc.source||doc.camera;$('aiBatchBtn').disabled=!ready||!images.length||doc.camera;}
+function setAiState(ready,text){const badge=$('aiEngineStatus');if(!badge)return;badge.textContent=text;badge.classList.toggle('good',ready);$('footerAi').textContent=text;$('footerAi').classList.toggle('good',ready);$('aiDetectBtn').disabled=!ready||!doc.source||doc.camera;$('aiBatchBtn').disabled=!ready||!images.length||doc.camera;}
 async function recordBlob(record){const response=await fetch(record.dataUrl);return response.blob();}
 function normalizeAiDetections(record,result){
  if(result.width!==record.width||result.height!==record.height)throw new Error('Kích thước API không khớp ảnh gốc');
@@ -691,7 +731,37 @@ async function requestAi(record){const form=new FormData();form.append('file',aw
 async function aiDetectCurrent(){if(!aiOnline||!doc.source||busy)return;setBusy(true,'AI Experimental: phân đoạn và tạo đề xuất…');try{const result=await requestAi(doc);doc.aiPending=normalizeAiDetections(doc,result);dirty=true;updateUI();render();renderImageList();const review=doc.aiPending.filter(x=>x.review_required).length;toast(`AI tạo ${doc.aiPending.length} đề xuất · ${review} cần review · chưa thêm phép đo.`);}catch(e){toast('AI Detect thất bại: '+(e?.message||e)+'. Công cụ thủ công vẫn hoạt động.',true)}finally{setBusy(false);setAiState(aiOnline,$('aiEngineStatus').textContent)}}
 async function aiDetectAll(){if(!aiOnline||!images.length||busy)return;stashActive();const originalId=activeId;cancelRequested=false;let done=0,total=0,failed=[];try{for(let i=0;i<images.length;i++){if(cancelRequested)break;const record=images[i];setBusy(true,`AI Batch ${i+1}/${images.length}: ${record.imgName}`,i,images.length);await breathe();try{const result=await requestAi(record);record.aiPending=normalizeAiDetections(record,result);total+=record.aiPending.length;done++;}catch(e){failed.push(`${record.imgName}: ${e?.message||e}`)}}dirty=dirty||done>0;}finally{setBusy(false);activeId=null;if(originalId!==null)activateImage(originalId);renderImageList();setAiState(aiOnline,$('aiEngineStatus').textContent)}toast(`AI Batch tạo ${total} đề xuất trên ${done}/${images.length} ảnh. Hãy mở từng ảnh để chấp nhận/loại bỏ.`,!!failed.length);if(failed.length)alert('AI không xử lý được:\n'+failed.join('\n'));}
 
-installRowSpacingUI();init();installAiUI();
+function renderInspector(){
+ const ai=inspectorMode==='ai',help=inspectorMode==='help',cal=!ai&&!help&&doc.tool==='calibrate',row=!ai&&!help&&doc.tool==='rowSpacing';
+ $('calibrationPanel').hidden=!cal;
+ if($('aiReviewPanel'))$('aiReviewPanel').hidden=!ai;
+ if($('rowSpacingPanel'))$('rowSpacingPanel').hidden=!row;
+ $('helpPanel').hidden=!help;$('drawingPanel').hidden=cal||ai||help;
+ $('measurementPanel').hidden=cal||help||!doc.measures.length;
+ $('toolGuide').hidden=help;
+ $('inspectorContext').textContent=ai?'AI · EXP':help?'HƯỚNG DẪN':toolTitles[doc.tool];
+ $('inspectorToolTitle').textContent=ai?'AI DETECT · YOLO':toolTitles[doc.tool];
+ $('inspectorToolHelp').textContent=ai?'Phát hiện chỉ tạo đề xuất. Kiểm tra và chấp nhận từng kết quả trước khi dùng làm phép đo.':helpers[doc.tool];
+ $('footerUnit').textContent=doc.unit==='um'?'µm':'mm';
+ for(const [id,mode] of [['inspectorToolBtn','tool'],['inspectorAiBtn','ai'],['inspectorHelpBtn','help']])$(id).setAttribute('aria-pressed',String(inspectorMode===mode));
+}
+function installWorkspaceUI(){
+ const workspace=document.querySelector('.workspace');
+ function syncDocks(){
+  $('libraryToggleBtn').setAttribute('aria-expanded',String(!workspace.classList.contains('library-collapsed')));
+  $('mobileSideBtn').setAttribute('aria-expanded',String(!workspace.classList.contains('inspector-collapsed')));
+  $('imageLibrary').inert=workspace.classList.contains('library-collapsed');
+  $('sidePanel').inert=workspace.classList.contains('inspector-collapsed');
+ }
+ $('libraryToggleBtn').onclick=()=>{workspace.classList.toggle('library-collapsed');if(innerWidth<=900&&!workspace.classList.contains('library-collapsed'))workspace.classList.add('inspector-collapsed');syncDocks();};
+ $('mobileSideBtn').onclick=()=>{workspace.classList.toggle('inspector-collapsed');if(innerWidth<=900&&!workspace.classList.contains('inspector-collapsed'))workspace.classList.add('library-collapsed');syncDocks();};
+ for(const [id,mode] of [['inspectorToolBtn','tool'],['inspectorAiBtn','ai'],['inspectorHelpBtn','help']])$(id).onclick=()=>{inspectorMode=mode;renderInspector();};
+ // At tablet widths start with the library open, and let the user dock either pane.
+ const tablet=matchMedia('(max-width:1099px)'),mobile=matchMedia('(max-width:900px)'),desktop=matchMedia('(min-width:1280px)');
+ function responsiveDocks(){workspace.classList.remove('library-collapsed');workspace.classList.toggle('inspector-collapsed',tablet.matches);syncDocks();}
+ tablet.addEventListener('change',responsiveDocks);mobile.addEventListener('change',responsiveDocks);desktop.addEventListener('change',responsiveDocks);responsiveDocks();renderInspector();
+}
+installRowSpacingUI();init();installAiUI();installWorkspaceUI();
 })();
 </script>
 </body>
