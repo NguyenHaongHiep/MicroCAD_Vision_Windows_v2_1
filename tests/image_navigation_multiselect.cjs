@@ -20,9 +20,11 @@ afterEach(async()=>{await page.close();assert.deepEqual(errors,[]);});
 async function download(selector){const pending=page.waitForEvent('download');await page.locator(selector).click();return fs.readFileSync(await(await pending).path());}
 async function project(){return JSON.parse((await download('#saveProjectBtn')).toString());}
 function circle(id,x,y,ai=false){return {id,type:'circle',name:`M${id}`,c:{x,y},r:35,fitRms:0,shift:{x:0,y:0},edgePts:[{x:x+35,y},{x,y:y+35},{x:x-35,y}],...(ai?{ai:true,autoConfidence:.9,reviewRequired:false,angularCoverage:1,modelVersion:'accepted-fixture'}:{})};}
-async function fixture({images=1,zoom=.5,pan={x:55,y:85},dependencies=false}={}){
+async function fixture({images=1,zoom=.5,pan={x:55,y:85},dependencies=false,thirdRow=false,badThirdRow=false,circleCount=0}={}){
  const original=await project(),template=original.images[0];
  const measures=[circle(1,200,200),circle(2,450,200,true),circle(3,700,200),circle(4,200,450),circle(5,450,450),circle(6,700,450)];
+ if(thirdRow)measures.push(circle(7,200,700),circle(8,450,badThirdRow?800:700));
+ if(circleCount)measures.splice(0,measures.length,...Array.from({length:circleCount},(_,i)=>circle(i+1,60+(i%12)*100,60+Math.floor(i/12)*65)));
  if(dependencies)measures.push({id:7,type:'circleGap',name:'gap',circleIds:[1,2],shift:{x:0,y:0}},
   {id:8,type:'rowSpacing',name:'rows',row1Ids:[1,2],row2Ids:[4,5],shift:{x:0,y:0}});
  const cal={mmPerPx:.005,p1:{x:130,y:750},p2:{x:330,y:750},lengthMm:1,refName:'fixture-01.png',refW:1400,refH:850,refId:1};
@@ -170,4 +172,96 @@ test('AI pending proposals survive group deletion and busy detection blocks imag
  await page.keyboard.press('Control+a');assert.deepEqual(await selected(),[1,2,3,4,5,6]);
  await page.keyboard.press('Delete');assert.equal(await page.locator('#measCount').textContent(),'0');assert.equal(await page.locator('#aiReviewList .meas-item').count(),1);
  await page.keyboard.press('Control+z');assert.equal(await page.locator('#measCount').textContent(),'6');assert.equal(await page.locator('#aiReviewList .meas-item').count(),1);
+});
+
+async function pick(ids){await row(ids[0]).click();for(const id of ids.slice(1))await row(id).click({modifiers:['Control']});}
+async function assign(rowNumber,ids){await page.locator('#planRowMembers').selectOption(ids.map(String));await page.locator('#planAssign'+rowNumber).click();}
+
+test('two Ctrl-selected circles measure directly using their IDs; preview is read-only and Undo restores sources',async()=>{
+ await fixture();await pick([1,2]);const before=await project();
+ await page.locator('#selectionGapBtn').click();assert.equal(await page.locator('#planPreview .plan-preview-item').count(),1);
+ assert.deepEqual(await project(),before);assert.equal(await page.locator('#planComputeBtn').isEnabled(),true);
+ await page.locator('#planComputeBtn').click();const after=await project(),gap=after.images[0].measures.at(-1);
+ assert.equal(gap.id,7);assert.equal(gap.type,'circleGap');assert.deepEqual(gap.circleIds,[1,2]);assert.equal(gap.p1.x,235);assert.equal(gap.p2.x,415);
+ assert.deepEqual(after.images[0].measures.slice(0,6),before.images[0].measures);
+ await page.keyboard.press('Control+z');assert.deepEqual((await project()).images[0].measures,before.images[0].measures);assert.deepEqual(await selected(),[1,2]);
+});
+
+test('marquee selection feeds edge measurement without selecting the circles again',async()=>{
+ const image=await fixture();await box({x:150,y:150},{x:500,y:250},image.view);assert.deepEqual(await selected(),[1,2]);
+ await page.locator('#selectionGapBtn').click();await page.locator('#planComputeBtn').click();
+ assert.deepEqual((await project()).images[0].measures.at(-1).circleIds,[1,2]);await page.locator('#undoBtn').click();assert.deepEqual(await selected(),[1,2]);
+});
+
+test('three or more circles require explicit pairs, reject invalid bulk input atomically, and allow preview removal',async()=>{
+ await fixture();await pick([1,2,3]);await page.locator('#selectionGapBtn').click();
+ assert.equal(await page.locator('#planComputeBtn').isDisabled(),true);
+ await page.locator('#planPairA').selectOption('1');await page.locator('#planPairB').selectOption('3');await page.locator('#planAddPair').click();
+ await page.locator('#planPairA').selectOption('3');await page.locator('#planPairB').selectOption('1');await page.locator('#planAddPair').click();
+ assert.equal(await page.locator('#planPreview .plan-preview-item').count(),1);
+ await page.locator('#planPairsInput').fill('1,2\n2,999');await page.locator('#planImportPairs').click();
+ assert.equal(await page.locator('#planPreview .plan-preview-item').count(),1);assert((await page.locator('#planInputError').textContent()).includes('Không thêm cặp'));
+ await page.locator('#planPairsInput').fill('2,3');await page.locator('#planImportPairs').click();assert.equal(await page.locator('#planPreview .plan-preview-item').count(),2);
+ await page.locator('#planPreview .plan-preview-item').last().getByText('Bỏ cặp').click();
+ await page.locator('#planComputeBtn').click();const measures=(await project()).images[0].measures;
+ assert.equal(measures.length,7);assert.deepEqual(measures.at(-1).circleIds,[1,3]);
+});
+
+test('large circle selections create only the explicitly requested pairs with one Undo',async()=>{
+ await fixture({circleCount:120});await page.keyboard.press('Control+a');await page.locator('#selectionGapBtn').click();
+ assert.equal(await page.locator('#planComputeBtn').isDisabled(),true);
+ const lines=Array.from({length:60},(_,i)=>`${2*i+1},${2*i+2}`).join('\n');await page.locator('#planPairsInput').fill(lines);await page.locator('#planImportPairs').click();
+ assert.equal(await page.locator('#planPreview .plan-preview-item').count(),60);assert.equal((await project()).images[0].measures.length,120);
+ await page.locator('#planComputeBtn').click();const measures=(await project()).images[0].measures;assert.equal(measures.length,180);assert.equal(measures[120].id,121);
+ assert(measures.slice(120).every((m,i)=>JSON.stringify(m.circleIds)===JSON.stringify([2*i+1,2*i+2])));
+ await page.keyboard.press('Control+z');assert.equal((await project()).images[0].measures.length,120);assert.equal((await selected()).length,120);
+});
+
+test('four selected circles assigned to two rows use exact source centers and one Undo',async()=>{
+ await fixture();await pick([1,2,4,5]);const before=await project();await page.locator('#selectionRowsBtn').click();
+ assert.equal(await page.locator('#planComputeBtn').isDisabled(),true);await assign(1,[1,2]);await assign(2,[4,5]);
+ assert.equal(await page.locator('#planPreview .plan-preview-item').count(),1);assert.deepEqual(await project(),before);
+ await page.locator('#planComputeBtn').click();const m=(await project()).images[0].measures.at(-1);
+ assert.equal(m.type,'rowSpacing');assert.deepEqual(m.row1Ids,[1,2]);assert.deepEqual(m.row2Ids,[4,5]);assert.equal(m.distancePx,250);
+ await page.keyboard.press('Control+z');assert.deepEqual((await project()).images[0].measures,before.images[0].measures);assert.deepEqual(await selected(),[1,2,4,5]);
+});
+
+test('three assigned rows create H1-H2 and H2-H3 only, round-trip using the old schema, and Undo as a batch',async()=>{
+ await fixture({thirdRow:true});await page.keyboard.press('Control+a');const before=await project();await page.locator('#selectionRowsBtn').click();await page.locator('#planRowCount').selectOption('3');
+ await assign(1,[1,2]);await assign(2,[4,5]);await assign(3,[7,8]);
+ assert.equal(await page.locator('#planPreview .plan-preview-item').count(),2);
+ const colors=await page.locator('#planRowLegend span').evaluateAll(nodes=>nodes.map(n=>n.style.color));assert.equal(new Set(colors).size,3);
+ assert.deepEqual(await project(),before);
+ if(process.env.MICROCAD_SCREENSHOT_DIR){fs.mkdirSync(process.env.MICROCAD_SCREENSHOT_DIR,{recursive:true});await page.setViewportSize({width:1366,height:768});await page.locator('#fitBtn').click();await page.locator('#planPreview').scrollIntoViewIfNeeded();await page.mouse.move(0,0);await page.waitForFunction(()=>!document.querySelector('#toast').classList.contains('show'));await page.waitForTimeout(300);await page.screenshot({path:path.join(process.env.MICROCAD_SCREENSHOT_DIR,'three-row-preview-1366x768.png')});}
+ await page.locator('#planComputeBtn').click();const after=await project(),created=after.images[0].measures.slice(8);
+ assert.equal(created.length,2);assert.deepEqual(created.map(m=>[m.row1Ids,m.row2Ids]),[[[1,2],[4,5]],[[4,5],[7,8]]]);assert(created.every(m=>m.distancePx===250));
+ await page.keyboard.press('Control+z');assert.deepEqual((await project()).images[0].measures,before.images[0].measures);assert.equal((await selected()).length,8);
+ page.once('dialog',d=>d.accept());await page.locator('#fileProject').setInputFiles({name:'three-row-results.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(after))});
+ await page.waitForFunction(()=>document.querySelector('#busyPanel').hidden);assert.deepEqual((await project()).images[0].measures,after.images[0].measures);
+});
+
+test('row assignments are exclusive, minimum counts are enforced, and unused circles remain unused',async()=>{
+ await fixture();await page.keyboard.press('Control+a');await page.locator('#selectionRowsBtn').click();
+ await assign(1,[1,2]);await assign(2,[2,4,5]);assert((await page.locator('#planRowLegend').textContent()).includes('Hàng 1: 1 lỗ'));assert.equal(await page.locator('#planComputeBtn').isDisabled(),true);
+ await assign(1,[2]);assert.equal(await page.locator('#planComputeBtn').isEnabled(),true);await page.locator('#planComputeBtn').click();
+ const m=(await project()).images[0].measures.at(-1);assert.deepEqual(m.row1Ids,[1,2]);assert.deepEqual(m.row2Ids,[4,5]);
+});
+
+test('preview and cancellation leave all export bytes unchanged; mixed selections cannot start plans',async()=>{
+ await fixture({dependencies:true});await page.keyboard.press('Control+a');assert.equal(await page.locator('#selectionGapBtn').isDisabled(),true);assert.equal(await page.locator('#selectionRowsBtn').isDisabled(),true);
+ await pick([1,2]);const outputs={};for(const selector of ['#saveProjectBtn','#exportCsvBtn','#exportPngBtn','#exportAllBtn'])outputs[selector]=await download(selector);
+ await page.locator('#selectionGapBtn').click();
+ for(const [selector,bytes] of Object.entries(outputs))assert.deepEqual(await download(selector),bytes);
+ await page.locator('#planCancelBtn').click();assert.deepEqual(await selected(),[1,2]);
+ await page.locator('#selectionGapBtn').click();await page.keyboard.press('Escape');assert.equal(await page.locator('#selectionMeasurePanel').isVisible(),false);assert.equal((await project()).images[0].measures.length,8);
+ await page.keyboard.press('Control+a');await page.locator('#selectionCirclesOnlyBtn').click();assert.deepEqual(await selected(),[1,2,3,4,5,6]);assert.equal(await page.locator('#selectionGapBtn').isEnabled(),true);
+});
+
+test('invalid third-row geometry prevents partial creation and changing images cancels a plan',async()=>{
+ await fixture({images:2,thirdRow:true,badThirdRow:true});await page.keyboard.press('Control+a');const before=await project();await page.locator('#selectionRowsBtn').click();await page.locator('#planRowCount').selectOption('3');
+ await assign(1,[1,2]);await assign(2,[4,5]);await assign(3,[7,8]);
+ assert.equal(await page.locator('#planComputeBtn').isDisabled(),true);assert((await page.locator('#planPreview').textContent()).includes('H2–H3'));
+ assert.deepEqual(await project(),before);await page.locator('#planCancelBtn').click();assert.equal(await page.locator('#selectionMeasurePanel').isVisible(),false);
+ await pick([1,2]);await page.locator('#selectionGapBtn').click();await page.keyboard.press('ArrowDown');
+ assert.equal(await page.locator('#imagePosition').textContent(),'2 / 2');assert.equal(await page.locator('#selectionMeasurePanel').isVisible(),false);
 });

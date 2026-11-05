@@ -44,6 +44,7 @@
 @media(max-width:1099px){.workspace{grid-template-columns:56px 168px minmax(0,1fr) 260px}.workspace.library-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 260px}.workspace.inspector-collapsed{grid-template-columns:56px 168px minmax(0,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 0}.image-library .image-section{padding:8px}.image-entry{grid-template-columns:36px minmax(0,1fr);padding:6px}.image-entry img{width:36px;height:32px}.footer{gap:8px}.footer .coordinates{min-width:135px}}
 @media(max-width:900px){.side{position:static;top:auto;bottom:auto;right:auto}.mobile-side{display:inline-flex!important}.workspace{grid-template-columns:52px 144px minmax(200px,1fr) 0}.workspace.library-collapsed{grid-template-columns:52px 0 minmax(200px,1fr) 260px}.workspace.inspector-collapsed{grid-template-columns:52px 144px minmax(200px,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:52px 0 minmax(200px,1fr) 0}.workspace:not(.library-collapsed) .side{visibility:hidden}.workspace.library-collapsed:not(.inspector-collapsed) .side{visibility:visible}.docname{max-width:100%}.view-chip{display:none}.tools{padding:6px 4px}.brand-mark{display:none}.brand{min-width:90px}.footer .foot-item:first-child{display:block}.footer .foot-item{flex-shrink:0}}
 @media(max-width:600px){.workspace{grid-template-columns:48px 110px minmax(160px,1fr) 0}.workspace.library-collapsed{grid-template-columns:48px 0 minmax(160px,1fr) min(240px,45vw)}.workspace.inspector-collapsed{grid-template-columns:48px 110px minmax(160px,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:48px 0 minmax(160px,1fr) 0}.image-entry{display:block}.image-entry img{width:100%;height:48px}.image-entry strong{margin-top:4px}.dock-heading{padding:0 6px;font-size:9px}.dock-caption{display:none}.top-actions .btn span.subtext{display:none}.command-text{font-size:10px}.welcome p{margin:0 0 12px}.welcome-btns{flex-wrap:wrap}.footer{font-size:9px}}
+#selectionMeasurePanel .side-acts select{min-width:0;flex:1;width:0}#selectionMeasurePanel .field{margin:6px 0}#planRowMembers{max-height:230px;width:100%}.plan-row-legend{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;font:11px Consolas,monospace}.plan-preview-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}.plan-preview-item>span{flex:1;overflow-wrap:anywhere}#planPreview{max-height:230px;overflow:auto}#planInputError:empty{display:none}#selectionMeasurePanel[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -143,6 +144,7 @@ let inspectorMode='tool';
 // Selection is transient UI state, outside project/export and measurement records.
 let selectedIds=new Set(),selectionPrimary=null,selectionImage=null,selectionAnchor=null,selectionBox=null;
 const selectionUndo=new WeakMap();
+let selectionMeasurePlan=null;
 let width=800,height=600,dpr=1,framePending=false,toastTimer=null,calPair=null,spacePressed=false,requestId=0;
 const COLORS={rowSpacing:'#f4d35e',circleGap:'#ffbd59',edges:'#ff8765',distance:'#f87fb4',centers:'#a997ff',line:'#f87fb4',circle:'#4de1f3',legacyCircle:'#a7f36a',center:'#a997ff',angle:'#ffe27a',cal:'#ffffff'};
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y), pt=(x,y)=>({x,y}), mid=(a,b)=>pt((a.x+b.x)/2,(a.y+b.y)/2);
@@ -193,6 +195,7 @@ function syncSelection(){
  selectedIds=new Set([...selectedIds].filter(id=>valid.has(id)));
  if(!valid.has(doc.selected))doc.selected=[...selectedIds].at(-1)??null;
  selectionPrimary=doc.selected;selectionImage=doc.imgId;
+ if(selectionMeasurePlan&&(selectionMeasurePlan.imageId!==doc.imgId||selectionMeasurePlan.ids.length!==selectedIds.size||selectionMeasurePlan.ids.some(id=>!selectedIds.has(id))))selectionMeasurePlan=null;
 }
 function selectMeasurements(ids,primary=null){
  const valid=new Set(doc.measures.map(m=>m.id));selectedIds=new Set(ids.filter(id=>valid.has(id)));
@@ -271,7 +274,7 @@ function renderList(){
 function historyPush(){syncSelection();dirty=true;let metadata=selectionUndo.get(doc.history)||[];
  metadata.length=doc.history.length;metadata.push({entry:JSON.stringify({measures:doc.measures,cal:doc.cal,selected:doc.selected,aiPending:doc.aiPending}),ids:[...selectedIds]});
  doc.history.push(metadata.at(-1).entry);if(doc.history.length>75){doc.history.shift();metadata.shift();}selectionUndo.set(doc.history,metadata);}
-function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];selectionBox=null;doc.mouse.down=false;doc.mouse.mode='';setStatus(helpers[doc.tool]);
+function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];selectionBox=null;selectionMeasurePlan=null;doc.mouse.down=false;doc.mouse.mode='';setStatus(helpers[doc.tool]);
  const metadata=selectionUndo.get(doc.history),saved=metadata?.[doc.history.length-1],entry=doc.history.pop();if(metadata)metadata.length=doc.history.length;
  let p=JSON.parse(entry);doc.measures=p.measures;doc.cal=p.cal;doc.selected=p.selected;doc.aiPending=p.aiPending??[];
  selectMeasurements(saved?.entry===entry?saved.ids:p.selected===null?[]:[p.selected],p.selected);updateUI();render();toast('Đã hoàn tác')}
@@ -348,7 +351,7 @@ function drawScene(context,w,h,v,{exportMode=false,includePreview=true}={}){
  doc.view=currentView;
  if(!exportMode){doc.lastLabelBoxes=boxes;drawRulers(context,w,h,v)}
 }
-function render(){if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,width,height,doc.view);drawSelectionBox(ctx);if(doc.camera)render()})}
+function render(){if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,width,height,doc.view);drawSelectionBox(ctx);drawSelectionMeasurePreview(ctx);if(doc.camera)render()})}
 function circumcircle(a,b,c){
  // Translate to the first point to avoid cancellation at large image coordinates.
  const bx=b.x-a.x,by=b.y-a.y,cx=c.x-a.x,cy=c.y-a.y,d=2*(bx*cy-by*cx);
@@ -842,6 +845,113 @@ async function requestAi(record){const form=new FormData();form.append('file',aw
 async function aiDetectCurrent(){if(!aiOnline||!doc.source||busy)return;setBusy(true,'AI Experimental: phân đoạn và tạo đề xuất…');try{const result=await requestAi(doc);doc.aiPending=normalizeAiDetections(doc,result);dirty=true;updateUI();render();renderImageList();const review=doc.aiPending.filter(x=>x.review_required).length;toast(`AI tạo ${doc.aiPending.length} đề xuất · ${review} cần review · chưa thêm phép đo.`);}catch(e){toast('AI Detect thất bại: '+(e?.message||e)+'. Công cụ thủ công vẫn hoạt động.',true)}finally{setBusy(false);setAiState(aiOnline,$('aiEngineStatus').textContent)}}
 async function aiDetectAll(){if(!aiOnline||!images.length||busy)return;stashActive();const originalId=activeId;cancelRequested=false;let done=0,total=0,failed=[];try{for(let i=0;i<images.length;i++){if(cancelRequested)break;const record=images[i];setBusy(true,`AI Batch ${i+1}/${images.length}: ${record.imgName}`,i,images.length);await breathe();try{const result=await requestAi(record);record.aiPending=normalizeAiDetections(record,result);total+=record.aiPending.length;done++;}catch(e){failed.push(`${record.imgName}: ${e?.message||e}`)}}dirty=dirty||done>0;}finally{setBusy(false);activeId=null;if(originalId!==null)activateImage(originalId);renderImageList();setAiState(aiOnline,$('aiEngineStatus').textContent)}toast(`AI Batch tạo ${total} đề xuất trên ${done}/${images.length} ảnh. Hãy mở từng ảnh để chấp nhận/loại bỏ.`,!!failed.length);if(failed.length)alert('AI không xử lý được:\n'+failed.join('\n'));}
 
+// Plans keep only source IDs and explicit user assignments; previews never allocate IDs.
+const planRowColors=['','#f4d35e','#c77dff','#50e5dc'];
+function selectedPlanCircles(){return doc.measures.filter(m=>selectedIds.has(m.id)&&m.type==='circle');}
+function startSelectionMeasurePlan(kind){
+ syncSelection();const circles=selectedPlanCircles(),minimum=kind==='gap'?2:4;
+ if(doc.tool!=='select'||circles.length!==selectedIds.size||circles.length<minimum)return;
+ selectionMeasurePlan={imageId:doc.imgId,kind,ids:circles.map(m=>m.id),pairs:kind==='gap'&&circles.length===2?[circles.map(m=>m.id)]:[],rowCount:2,assignments:new Map()};
+ $('selectionMeasurePanel').dataset.pool='';inspectorMode='tool';renderInspector();render();
+ $('selectionMeasurePanel').scrollIntoView({block:'nearest'});
+}
+function planCircles(plan){
+ if(plan.imageId!==doc.imgId)throw new Error('Ảnh đã thay đổi. Hãy chọn lại đường tròn.');
+ const byId=new Map(doc.measures.filter(m=>m.type==='circle').map(m=>[m.id,m]));
+ if(plan.ids.some(id=>!byId.has(id)))throw new Error('Đường tròn nguồn không còn tồn tại.');return byId;
+}
+function selectionPlanPreview(){
+ const plan=selectionMeasurePlan;if(!plan)return [];
+ const byId=planCircles(plan);
+ if(plan.kind==='gap'){
+  if(!plan.pairs.length)throw new Error('Chưa có cặp. Chọn A/B hoặc nhập danh sách cặp muốn đo.');
+  return plan.pairs.map(([a,b])=>({kind:'gap',ids:[a,b],label:`${byId.get(a).name} (#${a}) ↔ ${byId.get(b).name} (#${b})`,geometry:circleGapGeometry(byId.get(a),byId.get(b))}));
+ }
+ const rows=Array.from({length:plan.rowCount},(_,i)=>plan.ids.filter(id=>plan.assignments.get(id)===i+1));
+ if(rows.some(ids=>ids.length<2))throw new Error('Mỗi hàng cần ít nhất 2 đường tròn. Các lỗ chưa gán không tham gia tính.');
+ return rows.slice(1).map((ids,i)=>{
+  try{return {kind:'rows',rows:[rows[i],ids],label:`H${i+1}–H${i+2}`,geometry:rowSpacingGeometry(rows[i].map(id=>byId.get(id).c),ids.map(id=>byId.get(id).c))};}
+  catch(e){throw new Error(`H${i+1}–H${i+2}: ${e.message}`);}
+ });
+}
+function queueSelectionPairs(pairs){
+ const plan=selectionMeasurePlan;if(!plan||plan.kind!=='gap')return;
+ try{
+  const allowed=new Set(plan.ids),keys=new Set(plan.pairs.map(ids=>[...ids].sort((a,b)=>a-b).join(':'))),pending=[];
+  for(const ids of pairs){
+   if(ids.length!==2||ids.some(id=>!Number.isInteger(id)||!allowed.has(id))||ids[0]===ids[1])throw new Error('Mỗi cặp cần 2 ID khác nhau trong vùng chọn. Không thêm cặp nào.');
+   const key=[...ids].sort((a,b)=>a-b).join(':');if(!keys.has(key)){keys.add(key);pending.push(ids);}
+  }
+  plan.pairs.push(...pending);$('planInputError').textContent='';renderSelectionMeasurePlan();render();
+ }catch(e){$('planInputError').textContent=e.message;}
+}
+function assignSelectionRow(row){
+ if(!selectionMeasurePlan||selectionMeasurePlan.kind!=='rows')return;
+ for(const option of $('planRowMembers').selectedOptions)selectionMeasurePlan.assignments.set(Number(option.value),row);
+ renderSelectionMeasurePlan();render();
+}
+function renderSelectionMeasurePlan(){
+ const panel=$('selectionMeasurePanel');if(!panel)return;
+ const circles=selectedPlanCircles(),allCircles=circles.length===selectedIds.size;
+ $('selectionCirclesOnlyBtn').hidden=allCircles||circles.length<2;
+ $('selectionGapBtn').disabled=doc.tool!=='select'||!allCircles||circles.length<2;
+ $('selectionRowsBtn').disabled=doc.tool!=='select'||!allCircles||circles.length<4;
+ $('selectionGapBtn').title='Ở công cụ CHỌN: chỉ chọn ít nhất 2 đường tròn đã đo.';$('selectionRowsBtn').title='Ở công cụ CHỌN: chỉ chọn ít nhất 4 đường tròn đã đo; hỗ trợ 2 hoặc 3 hàng.';
+ const plan=selectionMeasurePlan;panel.hidden=!plan||inspectorMode!=='tool'||doc.tool!=='select';if(!plan){panel.dataset.pool='';return;}
+ const byId=planCircles(plan);$('planTitle').textContent=plan.kind==='gap'?'Đo mép–mép từ vùng chọn':'Đo khoảng cách các hàng';
+ $('planSourceCount').textContent=`${plan.ids.length} đường tròn nguồn · chưa thêm phép đo`;
+ $('planGapControls').hidden=plan.kind!=='gap';$('planRowControls').hidden=plan.kind!=='rows';
+ const pool=plan.ids.join(',');
+ if(panel.dataset.pool!==pool){
+  for(const selector of [$('planPairA'),$('planPairB')])selector.replaceChildren(...plan.ids.map(id=>new Option(`${byId.get(id).name} · #${id}`,String(id))));
+  $('planPairB').selectedIndex=Math.min(1,plan.ids.length-1);$('planRowMembers').replaceChildren();panel.dataset.pool=pool;$('planPairsInput').value='';$('planInputError').textContent='';
+ }
+ if(plan.kind==='rows'){
+  $('planRowCount').value=String(plan.rowCount);$('planAssign3').hidden=plan.rowCount!==3;
+  const picked=new Set([...$('planRowMembers').selectedOptions].map(o=>Number(o.value)));
+  $('planRowMembers').replaceChildren(...plan.ids.map(id=>{const row=plan.assignments.get(id)||0,o=new Option(`${row?'H'+row:'Chưa gán'} · ${byId.get(id).name} · #${id}`,String(id));o.style.color=planRowColors[row]||'#dce8f8';o.selected=picked.has(id);return o;}));
+  $('planRowLegend').replaceChildren(...Array.from({length:plan.rowCount},(_,i)=>{const span=document.createElement('span');span.style.color=planRowColors[i+1];span.textContent=`Hàng ${i+1}: ${plan.ids.filter(id=>plan.assignments.get(id)===i+1).length} lỗ`;return span;}));
+ }
+ const list=$('planPreview');list.replaceChildren();$('planComputeBtn').disabled=true;
+ try{
+  const preview=selectionPlanPreview();
+  for(const [index,item] of preview.entries()){
+   const row=document.createElement('div');row.className='plan-preview-item';
+   const text=document.createElement('span');text.textContent=`${item.label}: ${formatMeasurement({type:item.kind==='gap'?'circleGap':'rowSpacing',...item.geometry})}${item.kind==='gap'?' · '+gapRelations[item.geometry.relation]:''}`;row.append(text);
+   if(item.kind==='gap'){const remove=document.createElement('button');remove.className='btn small';remove.textContent='Bỏ cặp';remove.onclick=()=>{plan.pairs.splice(index,1);renderSelectionMeasurePlan();render();};row.append(remove);}list.append(row);
+  }
+  $('planComputeBtn').disabled=false;
+ }catch(e){list.textContent=e.message;}
+}
+function computeSelectionMeasurePlan(){
+ if(!selectionMeasurePlan||busy||doc.camera)return;
+ try{
+  const plan=selectionMeasurePlan,preview=selectionPlanPreview(),byId=planCircles(plan);
+  // Validate every pair of rows before taking one history snapshot or creating IDs.
+  historyPush();const created=preview.map(item=>item.kind==='gap'?makeCircleGap(byId.get(item.ids[0]),byId.get(item.ids[1])):
+   {id:idSeed++,type:'rowSpacing',name:`Khoảng cách ${item.label}`,row1Ids:[...item.rows[0]],row2Ids:[...item.rows[1]],...item.geometry,shift:{x:0,y:0}});
+  doc.measures.push(...created);selectionMeasurePlan=null;selectMeasurements(created.map(m=>m.id));updateUI();render();toast(`Đã tạo ${created.length} phép đo. Ctrl+Z để hoàn tác toàn bộ lần tính.`);
+ }catch(e){$('planInputError').textContent=e.message;}
+}
+function drawSelectionMeasurePreview(context){
+ const plan=selectionMeasurePlan;if(!plan||plan.imageId!==doc.imgId||inspectorMode!=='tool')return;
+ context.save();context.setLineDash([5,4]);context.lineWidth=2;
+ if(plan.kind==='rows')for(const circle of doc.measures){const row=plan.assignments.get(circle.id);if(!row||circle.type!=='circle')continue;const p=screen(circle.c);context.strokeStyle=planRowColors[row];context.beginPath();context.arc(p.x,p.y,circle.r*doc.view.z+3,0,2*Math.PI);context.stroke();context.fillStyle=planRowColors[row];context.font='bold 12px Consolas,monospace';context.fillText(`H${row}`,p.x+5,p.y-5);}
+ try{for(const item of selectionPlanPreview()){const a=screen(item.geometry.p1),b=screen(item.geometry.p2);context.strokeStyle=plan.kind==='gap'?'#ffbd59':'#f4d35e';context.beginPath();context.moveTo(a.x,a.y);context.lineTo(b.x,b.y);context.stroke();cross(context,a,5,context.strokeStyle);cross(context,b,5,context.strokeStyle);}}catch{}
+ context.restore();
+}
+function installSelectionMeasureUI(){
+ const actions=document.createElement('div');actions.className='side-acts';actions.innerHTML='<button class="btn small primary" id="selectionGapBtn">Đo mép–mép</button><button class="btn small primary" id="selectionRowsBtn">Đo khoảng cách 2 hàng</button><button class="btn small" id="selectionCirclesOnlyBtn" hidden>Chỉ giữ đường tròn</button>';$('selectionActions').prepend(actions);
+ const panel=document.createElement('section');panel.id='selectionMeasurePanel';panel.className='side-section';panel.hidden=true;
+ panel.innerHTML='<div class="sec-label" id="planTitle"></div><div class="muted" id="planSourceCount"></div><div id="planGapControls"><div class="side-acts"><select class="field" id="planPairA" aria-label="Đường tròn A"></select><select class="field" id="planPairB" aria-label="Đường tròn B"></select></div><button class="btn small" id="planAddPair">Thêm cặp xem trước</button><label class="muted" for="planPairsInput">Nhiều cặp: mỗi dòng nhập ID A, ID B. Chỉ các cặp bạn chỉ định được tạo.</label><textarea class="field" rows="3" id="planPairsInput" placeholder="12, 18&#10;18, 27"></textarea><button class="btn small" id="planImportPairs">Thêm danh sách cặp</button></div><div id="planRowControls"><label class="muted" for="planRowCount">Số hàng</label><select class="field" id="planRowCount"><option value="2">2 hàng → H1–H2</option><option value="3">3 hàng → H1–H2, H2–H3</option></select><label class="muted" for="planRowMembers">Chọn lỗ (Ctrl/Shift chọn nhiều), rồi gán hàng. Mỗi lỗ chỉ thuộc một hàng. Lỗ chưa gán không được tính.</label><select class="field" id="planRowMembers" multiple size="7"></select><div class="side-acts"><button class="btn small" id="planAssign1">→ Hàng 1</button><button class="btn small" id="planAssign2">→ Hàng 2</button><button class="btn small" id="planAssign3">→ Hàng 3</button><button class="btn small" id="planUnassign">Bỏ gán</button></div><div class="plan-row-legend" id="planRowLegend"></div></div><div class="warning visible" id="planInputError" role="status"></div><div class="sec-label">Xem trước · chưa lưu</div><div class="muted" id="planPreview"></div><div class="side-acts"><button class="btn small primary" id="planComputeBtn">Tính toán</button><button class="btn small" id="planCancelBtn">Hủy</button></div>';
+ $('measurementPanel').before(panel);
+ $('selectionCirclesOnlyBtn').onclick=()=>{selectMeasurements(selectedPlanCircles().map(m=>m.id));updateUI();render();};$('selectionGapBtn').onclick=()=>startSelectionMeasurePlan('gap');$('selectionRowsBtn').onclick=()=>startSelectionMeasurePlan('rows');
+ $('planAddPair').onclick=()=>queueSelectionPairs([[Number($('planPairA').value),Number($('planPairB').value)]]);
+ $('planImportPairs').onclick=()=>queueSelectionPairs($('planPairsInput').value.trim().split(/\r?\n/).filter(line=>line.trim()).map(line=>line.trim().split(/[,;\s]+/).map(Number)));
+ for(let row=0;row<=3;row++)$(row?'planAssign'+row:'planUnassign').onclick=()=>assignSelectionRow(row);
+ $('planRowCount').onchange=()=>{const plan=selectionMeasurePlan;if(!plan)return;plan.rowCount=Number($('planRowCount').value);for(const [id,row] of plan.assignments)if(row>plan.rowCount)plan.assignments.delete(id);renderSelectionMeasurePlan();render();};
+ $('planCancelBtn').onclick=()=>{selectionMeasurePlan=null;renderInspector();render();};$('planComputeBtn').onclick=computeSelectionMeasurePlan;renderSelectionMeasurePlan();
+}
 function renderInspector(){
  const ai=inspectorMode==='ai',help=inspectorMode==='help',cal=!ai&&!help&&doc.tool==='calibrate',row=!ai&&!help&&doc.tool==='rowSpacing';
  $('calibrationPanel').hidden=!cal;
@@ -855,6 +965,7 @@ function renderInspector(){
  $('inspectorToolHelp').textContent=ai?'Phát hiện chỉ tạo đề xuất. Kiểm tra và chấp nhận từng kết quả trước khi dùng làm phép đo.':helpers[doc.tool];
  $('footerUnit').textContent=doc.unit==='um'?'µm':'mm';
  for(const [id,mode] of [['inspectorToolBtn','tool'],['inspectorAiBtn','ai'],['inspectorHelpBtn','help']])$(id).setAttribute('aria-pressed',String(inspectorMode===mode));
+ renderSelectionMeasurePlan();
 }
 function installWorkspaceUI(){
  const workspace=document.querySelector('.workspace');
@@ -872,7 +983,7 @@ function installWorkspaceUI(){
  function responsiveDocks(){workspace.classList.remove('library-collapsed');workspace.classList.toggle('inspector-collapsed',tablet.matches);syncDocks();}
  tablet.addEventListener('change',responsiveDocks);mobile.addEventListener('change',responsiveDocks);desktop.addEventListener('change',responsiveDocks);responsiveDocks();renderInspector();
 }
-installRowSpacingUI();init();installAiUI();installWorkspaceUI();
+installRowSpacingUI();init();installAiUI();installWorkspaceUI();installSelectionMeasureUI();
 })();
 </script>
 </body>

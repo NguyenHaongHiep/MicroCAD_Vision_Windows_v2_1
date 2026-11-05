@@ -1,5 +1,8 @@
 # Issue #3 — Image navigation and CAD multiselect
 
+Quy trình đo hình học từ vùng chọn đã được bổ sung ở
+[Đo hình học từ vùng chọn nhiều đường tròn](SELECTION_MEASUREMENT_WORKFLOW.md).
+
 Branch `feat/image-navigation-multiselect` bắt đầu từ `feat/cad-workspace-ui`,
 commit `e78d34883cb7c7fc04c3108e91747e0cef1e8d98`; checkout ban đầu sạch. Giữ toàn
 bộ layout Phase 1 và các bản sửa Issue #1. Đặc tả do chủ dự án cung cấp trực tiếp;
