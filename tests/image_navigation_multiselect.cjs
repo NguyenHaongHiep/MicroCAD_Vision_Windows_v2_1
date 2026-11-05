@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 let browser,server,page,errors,base;
 before(async()=>{
- server=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html; charset=utf-8');res.end(fs.readFileSync(path.join(__dirname,'../MicroCAD_Vision.html')));});
+ server=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html; charset=utf-8');res.end(fs.readFileSync(process.env.MICROCAD_UI_HTML||path.join(__dirname,'../MicroCAD_Vision.html')));});
  await new Promise(r=>server.listen(0,'127.0.0.1',r));base=`http://127.0.0.1:${server.address().port}`;
  browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
 });
@@ -17,7 +17,8 @@ async function startPage(dpi=1){
 }
 beforeEach(()=>startPage());
 afterEach(async()=>{await page.close();assert.deepEqual(errors,[]);});
-async function download(selector){const pending=page.waitForEvent('download');await page.locator(selector).click();return fs.readFileSync(await(await pending).path());}
+// Chromium rate-limits bursts above ten downloads/second on fast runners.
+async function download(selector){await page.waitForTimeout(150);const pending=page.waitForEvent('download');await page.locator(selector).click();return fs.readFileSync(await(await pending).path());}
 async function project(){return JSON.parse((await download('#saveProjectBtn')).toString());}
 function circle(id,x,y,ai=false){return {id,type:'circle',name:`M${id}`,c:{x,y},r:35,fitRms:0,shift:{x:0,y:0},edgePts:[{x:x+35,y},{x,y:y+35},{x:x-35,y}],...(ai?{ai:true,autoConfidence:.9,reviewRequired:false,angularCoverage:1,modelVersion:'accepted-fixture'}:{})};}
 async function fixture({images=1,zoom=.5,pan={x:55,y:85},dependencies=false,thirdRow=false,badThirdRow=false,circleCount=0}={}){

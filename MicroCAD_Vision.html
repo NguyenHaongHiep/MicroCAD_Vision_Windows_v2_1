@@ -98,6 +98,7 @@
  </section></aside>
 <section class="canvas-area" id="viewport">
  <canvas id="stage" aria-label="Ảnh và bản vẽ đo"></canvas>
+ <div class="glass" id="aiCanvasReveal" role="status" hidden style="position:absolute;left:34px;bottom:92px;padding:6px 10px;pointer-events:none;font:11px Consolas,monospace"></div>
  <canvas id="magnifier" class="magnifier" width="160" height="160" aria-hidden="true"></canvas>
  <div class="canvas-head"><div class="glass docname"><span class="doc-chip" id="docKind">NO IMAGE</span><div style="min-width:0"><div class="file-name" id="docName">Chưa tải ảnh</div><div class="doc-sub" id="docDetails">Mở ảnh từ kính hiển vi hoặc tải ảnh chuẩn</div></div></div><div class="glass view-chip"><span><span class="cross">✛</span> ZOOM</span><span id="imageSizeText">— px</span></div></div>
  <div id="welcome" class="floating welcome"><div class="welcome-graphic"><div class="reticle"><i></i></div></div><h2>Đo lỗ chính xác từ ảnh</h2><p>Tải ảnh từ kính hiển vi, hiệu chuẩn theo vật mẫu có kích thước đã biết rồi ghi kích thước giống AutoCAD.</p><div class="welcome-btns"><button class="btn primary" id="welcomeOpen">▣ Mở ảnh</button><button class="btn" id="welcomeCamera">◉ Bật camera</button></div><button class="demo-link" id="demoBtn">Dùng ảnh minh hoạ để trải nghiệm →</button></div>
@@ -274,7 +275,7 @@ function renderList(){
 function historyPush(){syncSelection();dirty=true;let metadata=selectionUndo.get(doc.history)||[];
  metadata.length=doc.history.length;metadata.push({entry:JSON.stringify({measures:doc.measures,cal:doc.cal,selected:doc.selected,aiPending:doc.aiPending}),ids:[...selectedIds]});
  doc.history.push(metadata.at(-1).entry);if(doc.history.length>75){doc.history.shift();metadata.shift();}selectionUndo.set(doc.history,metadata);}
-function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];selectionBox=null;selectionMeasurePlan=null;doc.mouse.down=false;doc.mouse.mode='';setStatus(helpers[doc.tool]);
+function undo(){stopAiReveal();if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];selectionBox=null;selectionMeasurePlan=null;doc.mouse.down=false;doc.mouse.mode='';setStatus(helpers[doc.tool]);
  const metadata=selectionUndo.get(doc.history),saved=metadata?.[doc.history.length-1],entry=doc.history.pop();if(metadata)metadata.length=doc.history.length;
  let p=JSON.parse(entry);doc.measures=p.measures;doc.cal=p.cal;doc.selected=p.selected;doc.aiPending=p.aiPending??[];
  selectMeasurements(saved?.entry===entry?saved.ids:p.selected===null?[]:[p.selected],p.selected);updateUI();render();toast('Đã hoàn tác')}
@@ -401,7 +402,7 @@ function deleteMeasurements(ids){
  selectionBox=null;updateUI();render();toast(`Đã xóa ${removed.size} phép đo (gồm phép đo phụ thuộc nếu có). Ctrl+Z để khôi phục.`);
 }
 function stopCamera(){doc.camera=false;if(doc.stream){doc.stream.getTracks().forEach(t=>t.stop());doc.stream=null}let v=$('cameraVideo');v.pause();v.srcObject=null;updateHeader();render()}
-function resetForNewImage(img,url,name,mode){stashActive(); activeId=null;stopCamera();doc.cal=latestCalibration?structuredClone(latestCalibration):null;doc.source=img;doc.dataUrl=url;doc.width=img.naturalWidth;doc.height=img.naturalHeight;doc.imgName=name;doc.role=mode;doc.imgId=++requestId;doc.measures=[];doc.aiPending=[];doc.selected=null;doc.pending=[];doc.history=[];doc.ready=true;doc.thumb=null;activeId=doc.imgId;images.push(snapshotDoc());dirty=true;
+function resetForNewImage(img,url,name,mode){stopAiReveal();stashActive(); activeId=null;stopCamera();doc.cal=latestCalibration?structuredClone(latestCalibration):null;doc.source=img;doc.dataUrl=url;doc.width=img.naturalWidth;doc.height=img.naturalHeight;doc.imgName=name;doc.role=mode;doc.imgId=++requestId;doc.measures=[];doc.aiPending=[];doc.selected=null;doc.pending=[];doc.history=[];doc.ready=true;doc.thumb=null;activeId=doc.imgId;images.push(snapshotDoc());dirty=true;
  fit();updateHeader();updateUI();setTool(mode==='reference'?'calibrate':'select');if(doc.cal&&mode==='image')toast('Đã áp dụng hệ số từ ảnh chuẩn. Hãy kiểm tra điều kiện phóng đại trước khi đo.');else toast(mode==='reference'?'Chọn K và lấy 2 điểm chuẩn trên ảnh':'Đã mở ảnh · bắt đầu đo');
 }
 function readDataUrl(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error('Không đọc được tệp'));r.readAsDataURL(file)})}
@@ -468,6 +469,7 @@ function stashActive(){if(activeId===null||doc.camera)return;const i=images.find
 function makeThumb(img){const c=document.createElement('canvas');c.width=84;c.height=64;const g=c.getContext('2d');g.fillStyle='#192330';g.fillRect(0,0,84,64);const z=Math.min(84/img.naturalWidth,64/img.naturalHeight);g.drawImage(img,(84-img.naturalWidth*z)/2,(64-img.naturalHeight*z)/2,img.naturalWidth*z,img.naturalHeight*z);return c.toDataURL('image/jpeg',.65);}
 function activateImage(id){
  if(busy||$('calModal').classList.contains('open'))return;
+ stopAiReveal();
  stashActive();const target=images.find(r=>r.imgId===id);if(!target)return;
  stopCamera();Object.assign(doc,target);activeId=id;
  doc.pending=[];doc.hover=null;doc.mouse.down=false;doc.lastLabelBoxes=[];
@@ -822,11 +824,34 @@ function drawRowSpacing(context,m,label,color,selected,shift,boxes){
 // Experimental local AI: proposals are previewed first and become measurements only after explicit acceptance.
 const AI_API='http://127.0.0.1:8000',AI_CONF=.25,AI_IMGSZ=640;
 let aiOnline=false,aiHealthTimer=null,aiProposalSeed=1;
+// Display-only animation AFTER the single inference response, never model streaming.
+let aiReveal=null;
+function stopAiReveal(){if(aiReveal?.frame)cancelAnimationFrame(aiReveal.frame);aiReveal=null;updateAiRevealStatus();}
+function updateAiRevealStatus(){
+ const status=$('aiRevealStatus'),button=$('aiShowAllBtn');if(!status||!button)return;
+ const active=aiReveal&&aiReveal.imageId===doc.imgId&&aiReveal.pending===doc.aiPending;
+ const total=(doc.aiPending||[]).length,shown=active?Math.min(total,Math.floor((performance.now()-aiReveal.started)/aiReveal.interval)+1):total;
+ const message=active?`Hiển thị sau suy luận: ${shown}/${total}`:`${total}/${total} đề xuất · kết quả sau suy luận`;if(status.textContent!==message)status.textContent=message;
+ button.hidden=!active;const canvasStatus=$('aiCanvasReveal');canvasStatus.hidden=!total;if(canvasStatus.textContent!==message)canvasStatus.textContent=message;
+}
+function startAiReveal(){
+ stopAiReveal();const pending=doc.aiPending||[];
+ if(!pending.length||matchMedia('(prefers-reduced-motion: reduce)').matches){updateAiRevealStatus();return;}
+ const state={imageId:doc.imgId,pending,started:performance.now(),interval:Math.min(140,4000/pending.length),frame:0};aiReveal=state;
+ function tick(){
+  if(aiReveal!==state)return;
+  if(doc.imgId!==state.imageId||doc.aiPending!==state.pending){stopAiReveal();render();return;}
+  if(performance.now()-state.started>(pending.length-1)*state.interval+240){stopAiReveal();render();return;}
+  updateAiRevealStatus();render();state.frame=requestAnimationFrame(tick);
+ }
+ tick();
+}
 function installAiUI(){
  const badge=document.createElement('span');badge.id='aiEngineStatus';badge.className='status-pill';badge.textContent='AI OFFLINE';badge.setAttribute('role','status');badge.setAttribute('aria-live','polite');badge.style.marginLeft='5px';document.querySelector('.session').append(badge);
- const panel=document.createElement('section');panel.className='side-section';panel.id='aiReviewPanel';panel.innerHTML='<div class="sec-label">AI DETECT · YOLO <span class="status-pill" id="aiProposalCount">0 đề xuất</span></div><div class="side-acts" style="margin:9px 0"><button class="btn small primary" id="aiDetectBtn" title="Chỉ tạo đề xuất AI; cần xác nhận trước khi thêm phép đo">AI Detect · Ảnh này</button><button class="btn small" id="aiBatchBtn" title="Tạo đề xuất AI cho từng ảnh; không tự chấp nhận">AI Batch Detect · Tất cả ảnh</button></div><div id="aiReviewList" class="muted">Chạy AI Detect để tạo vòng preview. Kết quả không thay đổi phép đo cho đến khi bạn bấm Chấp nhận.</div><div id="aiReviewActions" class="side-acts" style="display:none"><button class="btn small primary" id="aiAcceptAllBtn">Chấp nhận tất cả</button><button class="btn small" id="aiRejectAllBtn">Loại bỏ tất cả</button></div><div class="ai-note">AI là thử nghiệm. Confidence khác với độ chính xác đo; các kết quả cần review phải kiểm tra thủ công.</div>';
+ const panel=document.createElement('section');panel.className='side-section';panel.id='aiReviewPanel';panel.innerHTML='<div class="sec-label">AI DETECT · YOLO <span class="status-pill" id="aiProposalCount">0 đề xuất</span></div><div class="side-acts" style="margin:9px 0"><button class="btn small primary" id="aiDetectBtn" title="Chỉ tạo đề xuất AI; cần xác nhận trước khi thêm phép đo">AI Detect · Ảnh này</button><button class="btn small" id="aiBatchBtn" title="Tạo đề xuất AI cho từng ảnh; không tự chấp nhận">AI Batch Detect · Tất cả ảnh</button></div><div class="muted" id="aiRevealStatus" role="status" aria-live="polite"></div><button class="btn small" id="aiShowAllBtn" hidden>Hiển thị tất cả</button><div id="aiReviewList" class="muted">Chạy AI Detect để tạo vòng preview. Kết quả không thay đổi phép đo cho đến khi bạn bấm Chấp nhận.</div><div id="aiReviewActions" class="side-acts" style="display:none"><button class="btn small primary" id="aiAcceptAllBtn">Chấp nhận tất cả</button><button class="btn small" id="aiRejectAllBtn">Loại bỏ tất cả</button></div><div class="ai-note">AI là thử nghiệm. Confidence khác với độ chính xác đo; các kết quả cần review phải kiểm tra thủ công.</div>';
  const sections=[...$('sidePanel').querySelectorAll('.side-section')],listSection=sections.find(x=>x.querySelector('#measureList'));$('sidePanel').insertBefore(panel,listSection||null);
  $('aiDetectBtn').onclick=aiDetectCurrent;$('aiBatchBtn').onclick=aiDetectAll;$('aiAcceptAllBtn').onclick=()=>acceptAiProposals((doc.aiPending||[]).map(x=>x.proposalId));$('aiRejectAllBtn').onclick=()=>rejectAiProposals((doc.aiPending||[]).map(x=>x.proposalId));
+ $('aiShowAllBtn').onclick=()=>{stopAiReveal();render();};updateAiRevealStatus();
  checkAiHealth();aiHealthTimer=setInterval(checkAiHealth,5000);
 }
 async function checkAiHealth(){try{const response=await fetch(AI_API+'/health',{signal:AbortSignal.timeout(1500)}),data=await response.json();aiOnline=response.ok&&data.status==='online'&&data.model_ready===true;setAiState(aiOnline,aiOnline?`AI ONLINE · ${data.device}`:'AI OFFLINE / MODEL');}catch{aiOnline=false;setAiState(false,'AI OFFLINE');}}
@@ -837,13 +862,38 @@ function normalizeAiDetections(record,result){
  return result.detections.filter(f=>[f.center_x,f.center_y,f.radius_px,f.fit_error,f.confidence].every(Number.isFinite)&&f.radius_px>0).map(f=>({...f,proposalId:aiProposalSeed++,modelVersion:result.model_version,createdAt:Date.now()}));
 }
 function applyAiDetections(record,detections){let added=0;for(const f of detections){const duplicate=record.measures.some(m=>m.type==='circle'&&dist(m.c,{x:f.center_x,y:f.center_y})<Math.max(m.r,f.radius_px)*.45&&Math.abs(m.r-f.radius_px)<Math.max(m.r,f.radius_px)*.35);if(duplicate)continue;const id=idSeed++,count=record.measures.filter(m=>m.type==='circle').length+1,review=!!f.review_required;record.measures.push({id,type:'circle',name:`${review?'⚠ Kiểm tra · ':''}Lỗ AI ${count}`,c:{x:f.center_x,y:f.center_y},r:f.radius_px,edgePts:(f.polygon||[]).slice(0,64).map(p=>({x:p[0],y:p[1]})),fitRms:f.fit_error,ai:true,autoConfidence:f.confidence,angularCoverage:f.angular_coverage,reviewRequired:review,modelVersion:f.modelVersion,shift:{x:0,y:0}});record.selected=id;added++;}return added;}
-function drawAiProposals(context){const pending=doc.aiPending||[];if(!pending.length)return;context.save();context.strokeStyle='#50e5dc';context.fillStyle='#50e5dc';context.lineWidth=2;context.setLineDash([5,4]);for(const p of pending){const c=screen({x:p.center_x,y:p.center_y}),r=p.radius_px*doc.view.z;context.beginPath();context.arc(c.x,c.y,r,0,Math.PI*2);context.stroke();context.setLineDash([]);context.font='700 11px Consolas,monospace';const review=p.review_required?' · REVIEW':'';context.fillText(`AI ${(p.confidence*100).toFixed(0)}%${review}`,c.x+r+5,c.y-5);context.setLineDash([5,4]);}context.restore();}
-function renderAiReviewPanel(){const list=$('aiReviewList'),actions=$('aiReviewActions'),count=$('aiProposalCount');if(!list||!count)return;const pending=doc.aiPending||[];count.textContent=`${pending.length} đề xuất`;actions.style.display=pending.length?'flex':'none';if(!pending.length){list.textContent='Chạy AI Detect để tạo vòng preview. Kết quả không thay đổi phép đo cho đến khi bạn bấm Chấp nhận.';return;}list.replaceChildren();for(const p of pending){const item=document.createElement('div');item.className='meas-item';item.style.setProperty('--measure-color','#50e5dc');const diameter=doc.cal?`${num(p.diameter_px*doc.cal.mmPerPx*1000,2)} µm`:`${num(p.diameter_px,2)} px`;item.innerHTML=`<div class="meas-top"><span class="meas-type">AI ${Math.round(p.confidence*100)}%</span><span class="meas-name">${p.review_required?'⚠ CẦN REVIEW':'Đề xuất AI'}</span></div><div class="meas-val">Ø ${diameter}</div><div class="meas-foot">Ø ${num(p.diameter_px,2)} px · residual ${num(p.fit_error,2)} px · coverage ${Math.round((p.angular_coverage||0)*100)}%</div>`;const row=document.createElement('div');row.className='side-acts';const accept=document.createElement('button');accept.className='btn small primary';accept.textContent='Chấp nhận';accept.onclick=()=>acceptAiProposals([p.proposalId]);const reject=document.createElement('button');reject.className='btn small';reject.textContent='Loại bỏ';reject.onclick=()=>rejectAiProposals([p.proposalId]);row.append(accept,reject);item.append(row);list.append(item);}}
-function acceptAiProposals(ids){const picked=(doc.aiPending||[]).filter(x=>ids.includes(x.proposalId));if(!picked.length)return;historyPush();const added=applyAiDetections(doc,picked);doc.aiPending=(doc.aiPending||[]).filter(x=>!ids.includes(x.proposalId));dirty=true;setTool('select');updateUI();render();renderImageList();toast(added?`Đã chấp nhận ${added} phép đo AI. Ctrl+Z để hoàn tác.`:'Không thêm đề xuất trùng với phép đo hiện có.',!added);}
-function rejectAiProposals(ids){const before=(doc.aiPending||[]).length;doc.aiPending=(doc.aiPending||[]).filter(x=>!ids.includes(x.proposalId));if(before!==doc.aiPending.length){dirty=true;updateUI();render();renderImageList();toast('Đã loại bỏ đề xuất AI.');}}
+function drawAiProposals(context){
+ const pending=doc.aiPending||[];if(!pending.length)return;
+ const active=aiReveal&&aiReveal.imageId===doc.imgId&&aiReveal.pending===pending;
+ const elapsed=active?performance.now()-aiReveal.started:Infinity;
+ context.save();context.strokeStyle='#50e5dc';context.fillStyle='#50e5dc';context.lineWidth=2;
+ for(const [index,p] of pending.entries()){
+  const age=active?elapsed-index*aiReveal.interval:Infinity;if(age<0)break;
+  context.globalAlpha=Math.min(1,age/220);const c=screen({x:p.center_x,y:p.center_y}),r=p.radius_px*doc.view.z;
+  const polygon=Array.isArray(p.polygon)?p.polygon.filter(q=>Array.isArray(q)&&q.length>=2&&q.slice(0,2).every(Number.isFinite)):[];
+  context.setLineDash([]);
+  if(polygon.length>=3){context.beginPath();for(const [i,q] of polygon.entries()){const v=screen({x:q[0],y:q[1]});i?context.lineTo(v.x,v.y):context.moveTo(v.x,v.y);}context.closePath();context.save();context.globalAlpha*=.12;context.fill();context.restore();context.stroke();}
+  context.setLineDash([5,4]);context.beginPath();context.arc(c.x,c.y,r,0,Math.PI*2);context.stroke();context.setLineDash([]);cross(context,c,5,'#50e5dc');
+  context.font='700 10px Consolas,monospace';const label=`#${index+1} ${(p.confidence*100).toFixed(0)}%${p.review_required?' !':''}`,labelWidth=context.measureText(label).width,x=Math.min(width-labelWidth-4,c.x+r+4);context.save();context.fillStyle='#102230df';context.fillRect(x-2,c.y-16,labelWidth+4,15);context.fillStyle='#b8ffff';context.fillText(label,x,c.y-5);context.restore();
+ }
+ context.restore();
+}
+function renderAiReviewPanel(){const list=$('aiReviewList'),actions=$('aiReviewActions'),count=$('aiProposalCount');if(!list||!count)return;updateAiRevealStatus();const pending=doc.aiPending||[];count.textContent=`${pending.length} đề xuất`;actions.style.display=pending.length?'flex':'none';if(!pending.length){list.textContent='Chạy AI Detect để tạo vòng preview. Kết quả không thay đổi phép đo cho đến khi bạn bấm Chấp nhận.';return;}list.replaceChildren();for(const p of pending){const item=document.createElement('div');item.className='meas-item';item.style.setProperty('--measure-color','#50e5dc');const diameter=doc.cal?`${num(p.diameter_px*doc.cal.mmPerPx*1000,2)} µm`:`${num(p.diameter_px,2)} px`;item.innerHTML=`<div class="meas-top"><span class="meas-type">AI ${Math.round(p.confidence*100)}%</span><span class="meas-name">${p.review_required?'⚠ CẦN REVIEW':'Đề xuất AI'}</span></div><div class="meas-val">Ø ${diameter}</div><div class="meas-foot">Ø ${num(p.diameter_px,2)} px · residual ${num(p.fit_error,2)} px · coverage ${Math.round((p.angular_coverage||0)*100)}%</div>`;const row=document.createElement('div');row.className='side-acts';const accept=document.createElement('button');accept.className='btn small primary';accept.textContent='Chấp nhận';accept.onclick=()=>acceptAiProposals([p.proposalId]);const reject=document.createElement('button');reject.className='btn small';reject.textContent='Loại bỏ';reject.onclick=()=>rejectAiProposals([p.proposalId]);row.append(accept,reject);item.append(row);list.append(item);}}
+function acceptAiProposals(ids){stopAiReveal();const picked=(doc.aiPending||[]).filter(x=>ids.includes(x.proposalId));if(!picked.length)return;historyPush();const added=applyAiDetections(doc,picked);doc.aiPending=(doc.aiPending||[]).filter(x=>!ids.includes(x.proposalId));dirty=true;setTool('select');updateUI();render();renderImageList();toast(added?`Đã chấp nhận ${added} phép đo AI. Ctrl+Z để hoàn tác.`:'Không thêm đề xuất trùng với phép đo hiện có.',!added);}
+function rejectAiProposals(ids){stopAiReveal();const before=(doc.aiPending||[]).length;doc.aiPending=(doc.aiPending||[]).filter(x=>!ids.includes(x.proposalId));if(before!==doc.aiPending.length){dirty=true;updateUI();render();renderImageList();toast('Đã loại bỏ đề xuất AI.');}}
 async function requestAi(record){const form=new FormData();form.append('file',await recordBlob(record),record.imgName||'image.png');const response=await fetch(`${AI_API}/detect?conf=${AI_CONF}&imgsz=${AI_IMGSZ}`,{method:'POST',body:form,signal:AbortSignal.timeout(120000)});if(!response.ok){let detail='HTTP '+response.status;try{detail=(await response.json()).detail||detail}catch{}throw new Error(detail)}return response.json();}
-async function aiDetectCurrent(){if(!aiOnline||!doc.source||busy)return;setBusy(true,'AI Experimental: phân đoạn và tạo đề xuất…');try{const result=await requestAi(doc);doc.aiPending=normalizeAiDetections(doc,result);dirty=true;updateUI();render();renderImageList();const review=doc.aiPending.filter(x=>x.review_required).length;toast(`AI tạo ${doc.aiPending.length} đề xuất · ${review} cần review · chưa thêm phép đo.`);}catch(e){toast('AI Detect thất bại: '+(e?.message||e)+'. Công cụ thủ công vẫn hoạt động.',true)}finally{setBusy(false);setAiState(aiOnline,$('aiEngineStatus').textContent)}}
-async function aiDetectAll(){if(!aiOnline||!images.length||busy)return;stashActive();const originalId=activeId;cancelRequested=false;let done=0,total=0,failed=[];try{for(let i=0;i<images.length;i++){if(cancelRequested)break;const record=images[i];setBusy(true,`AI Batch ${i+1}/${images.length}: ${record.imgName}`,i,images.length);await breathe();try{const result=await requestAi(record);record.aiPending=normalizeAiDetections(record,result);total+=record.aiPending.length;done++;}catch(e){failed.push(`${record.imgName}: ${e?.message||e}`)}}dirty=dirty||done>0;}finally{setBusy(false);activeId=null;if(originalId!==null)activateImage(originalId);renderImageList();setAiState(aiOnline,$('aiEngineStatus').textContent)}toast(`AI Batch tạo ${total} đề xuất trên ${done}/${images.length} ảnh. Hãy mở từng ảnh để chấp nhận/loại bỏ.`,!!failed.length);if(failed.length)alert('AI không xử lý được:\n'+failed.join('\n'));}
+async function aiDetectCurrent(){
+ if(!aiOnline||!doc.source||busy)return;stopAiReveal();
+ const imageId=doc.imgId,source=doc.source,record=snapshotDoc();
+ setBusy(true,'Đang phân tích ảnh · YOLO đang xử lý toàn bộ ảnh…');
+ try{
+  const result=await requestAi(record);if(doc.imgId!==imageId||doc.source!==source)return;
+  doc.aiPending=normalizeAiDetections(record,result);dirty=true;updateUI();render();renderImageList();startAiReveal();
+  toast(`YOLO đã trả ${doc.aiPending.length} đề xuất. Hiển thị tuần tự sau suy luận; chưa thêm phép đo.`);
+ }catch(e){toast('AI Detect thất bại: '+(e?.message||e)+'. Công cụ thủ công vẫn hoạt động.',true);}
+ finally{setBusy(false);setAiState(aiOnline,$('aiEngineStatus').textContent);}
+}
+async function aiDetectAll(){stopAiReveal();if(!aiOnline||!images.length||busy)return;stashActive();const originalId=activeId;cancelRequested=false;let done=0,total=0,failed=[];try{for(let i=0;i<images.length;i++){if(cancelRequested)break;const record=images[i];setBusy(true,`AI Batch ${i+1}/${images.length}: ${record.imgName}`,i,images.length);await breathe();try{const result=await requestAi(record);record.aiPending=normalizeAiDetections(record,result);total+=record.aiPending.length;done++;}catch(e){failed.push(`${record.imgName}: ${e?.message||e}`)}}dirty=dirty||done>0;}finally{setBusy(false);activeId=null;if(originalId!==null)activateImage(originalId);renderImageList();setAiState(aiOnline,$('aiEngineStatus').textContent)}toast(`AI Batch tạo ${total} đề xuất trên ${done}/${images.length} ảnh. Hãy mở từng ảnh để chấp nhận/loại bỏ.`,!!failed.length);if(failed.length)alert('AI không xử lý được:\n'+failed.join('\n'));}
 
 // Plans keep only source IDs and explicit user assignments; previews never allocate IDs.
 const planRowColors=['','#f4d35e','#c77dff','#50e5dc'];
