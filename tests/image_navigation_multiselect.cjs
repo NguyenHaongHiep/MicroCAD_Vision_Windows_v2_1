@@ -17,7 +17,8 @@ async function startPage(dpi=1){
 }
 beforeEach(()=>startPage());
 afterEach(async()=>{await page.close();assert.deepEqual(errors,[]);});
-async function download(selector){const pending=page.waitForEvent('download');await page.locator(selector).click();return fs.readFileSync(await(await pending).path());}
+// Pace burst exports on fast Chromium runners (same test-only fix as visualization branch).
+async function download(selector){await page.waitForTimeout(150);const pending=page.waitForEvent('download');await page.locator(selector).click();return fs.readFileSync(await(await pending).path());}
 async function project(){return JSON.parse((await download('#saveProjectBtn')).toString());}
 function circle(id,x,y,ai=false){return {id,type:'circle',name:`M${id}`,c:{x,y},r:35,fitRms:0,shift:{x:0,y:0},edgePts:[{x:x+35,y},{x,y:y+35},{x:x-35,y}],...(ai?{ai:true,autoConfidence:.9,reviewRequired:false,angularCoverage:1,modelVersion:'accepted-fixture'}:{})};}
 async function fixture({images=1,zoom=.5,pan={x:55,y:85},dependencies=false,thirdRow=false,badThirdRow=false,circleCount=0}={}){
