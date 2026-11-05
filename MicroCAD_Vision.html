@@ -90,7 +90,7 @@
  <button class="tool" id="undoBtn" title="Hoàn tác [Ctrl+Z]"><span>↶</span><span class="tool-label">UNDO</span></button>
 </nav>
  <aside class="image-library" id="imageLibrary" aria-label="Thư viện ảnh"><div class="dock-heading">THƯ VIỆN ẢNH <span class="dock-caption">PROJECT</span></div><section class="side-section image-section"><div class="sec-label">Bộ ảnh <span id="imageCount">0 ảnh</span></div>
- <div class="image-nav"><button class="btn small" id="prevImage" aria-label="Ảnh trước">←</button><span id="imagePosition">0 / 0</span><button class="btn small" id="nextImage" aria-label="Ảnh sau">→</button></div>
+ <div class="image-nav"><button class="btn small" id="prevImage" aria-label="Ảnh trước">←</button><span id="imagePosition" title="Dùng ↑ / ↓ để chuyển ảnh khi không nhập liệu">0 / 0</span><button class="btn small" id="nextImage" aria-label="Ảnh sau">→</button></div>
  <div id="imageList" class="image-list" aria-label="Danh sách ảnh"></div>
  <label class="muted"><input type="checkbox" id="includeUnmeasured"> Xuất cả ảnh chưa đo vào ZIP</label>
  <div class="muted">Chuẩn mới nhất tự áp dụng cho toàn bộ bộ ảnh và ảnh nhập sau. Chỉ dùng khi cùng độ phóng đại và tỷ lệ pixel.</div>
@@ -109,7 +109,7 @@
 
  <section class="side-section" id="calibrationPanel"><div class="sec-label">01 / Hiệu chuẩn ảnh <span class="status-pill" id="calStatus">CHƯA CHUẨN</span></div><div class="cal-card"><div class="dim-label">Hệ số chiều dài / pixel</div><div class="scale-big" id="scaleValue">—</div><div class="scale-sub" id="scaleInfo">Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.</div><div class="side-acts"><button class="btn small primary" id="calBtn">⤢ Lấy chuẩn</button><button class="btn small" id="newRefBtn">Mở ảnh chuẩn</button></div><div class="tiny">Lấy chuẩn xong sẽ tự áp dụng cho mọi ảnh trong bộ.</div></div><div class="warning" id="calWarning">⚠ Chuẩn được lấy từ ảnh khác. Chỉ tái sử dụng hệ số khi cùng độ phóng đại, khoảng cách làm việc, thiết lập ảnh và tỷ lệ pixel.</div></section>
  <section class="side-section" id="drawingPanel"><div class="sec-label">02 / Cài đặt bản vẽ</div><div class="micro-row"><span class="dim-label">Đơn vị hiển thị</span><div class="unit-select"><select id="unitSelect" aria-label="Đơn vị"><option value="um">µm</option><option value="mm">mm</option></select></div></div><div class="micro-row"><span class="dim-label">Bám tâm đường tròn</span><label style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px"><input id="snapToggle" type="checkbox" checked> SNAP</label></div><div class="micro-row" style="margin-bottom:0"><span class="dim-label">Đối tượng đang chọn</span><strong id="selectedCount" style="font-family:Consolas,monospace">0</strong></div></section>
- <section class="side-section" id="measurementPanel"><div class="sec-label">03 / Danh sách kích thước <span id="measCount">0</span></div><div class="tips" style="margin-bottom:10px"><b>Ø NHIỀU [M]</b>: chọn ít nhất 3 điểm trên vành lỗ; Enter để khớp vòng tròn. Độ lệch RMS cho biết mức méo so với vòng tròn.<br><b>Ø + MÉP [B]</b>: chọn 3 điểm mỗi lỗ rồi tính khe giữa hai đường tròn.<br><b>MÉP 2Ø [G]</b>: chọn hai đường tròn đã đo. Khe tính từ đường tròn khớp, không dò biên ảnh.</div><div id="measureList" class="meas-list"><div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div></div><div class="edit-box" id="editBox"><div class="dim-label">Tên/ghi chú kích thước</div><div class="edit-row"><input class="field" id="measNameEdit" maxlength="40" placeholder="Ví dụ: Lỗ số 1"><button class="btn small" id="updateNameBtn">Lưu</button></div><button class="btn small" id="deleteMeasureBtn" style="width:100%;margin-top:8px;border-color:#573a4c;color:#f0a2b4">× Xóa phép đo đang chọn</button></div></section>
+ <section class="side-section" id="measurementPanel"><div class="sec-label">03 / Danh sách kích thước <span id="measCount">0</span></div><div class="tips" style="margin-bottom:10px"><b>Ø NHIỀU [M]</b>: chọn ít nhất 3 điểm trên vành lỗ; Enter để khớp vòng tròn. Độ lệch RMS cho biết mức méo so với vòng tròn.<br><b>Ø + MÉP [B]</b>: chọn 3 điểm mỗi lỗ rồi tính khe giữa hai đường tròn.<br><b>MÉP 2Ø [G]</b>: chọn hai đường tròn đã đo. Khe tính từ đường tròn khớp, không dò biên ảnh.</div><div class="muted" id="selectionSummary" hidden></div><div id="selectionActions" hidden><button class="btn small" id="deleteMeasureBtn" style="width:100%;margin-top:8px;border-color:#573a4c;color:#f0a2b4">× Xóa phép đo đang chọn</button></div><div id="measureList" class="meas-list" role="listbox" aria-multiselectable="true" aria-label="Phép đo"><div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div></div><div class="edit-box" id="editBox"><div class="dim-label">Tên/ghi chú kích thước</div><div class="edit-row"><input class="field" id="measNameEdit" maxlength="40" placeholder="Ví dụ: Lỗ số 1"><button class="btn small" id="updateNameBtn">Lưu</button></div></div></section>
  <section class="side-section" id="projectPanel"><div class="sec-label">04 / Dự án</div><div style="display:flex;gap:7px"><button class="btn small" hidden id="saveCsvBtn">↓ Lưu CSV</button></div><div class="muted" style="margin-top:11px">Save All tạo ZIP gồm PNG và CSV tổng hợp. Lưu JSON giữ toàn bộ ảnh gốc, phép đo và chuẩn để mở lại. Lưu dự án trước khi đóng cửa sổ.</div></section>
  <section class="side-section" id="helpPanel"><div class="sec-label">Hướng dẫn nhanh</div><div class="tips"><strong>1.</strong> Mở ảnh cần đo hoặc ảnh chuẩn.<br><strong>2.</strong> Bấm <b>K</b>, chọn hai đầu đoạn chuẩn, nhập chiều dài thực. Chuẩn tự áp dụng toàn bộ ảnh.<br><strong>3.</strong> Trong <b>AI DETECT · YOLO</b>, chạy phát hiện cho ảnh này hoặc toàn bộ ảnh.<br><strong>4.</strong> Kiểm tra vòng cyan, confidence và trạng thái review; chỉ bấm <b>Chấp nhận</b> với kết quả đúng.<br><strong>5.</strong> Dùng <b>M</b> để đo hoặc bổ sung thủ công khi cần.<br><strong>6.</strong> Bấm <b>Save All · ZIP</b> để xuất PNG và CSV toàn bộ bộ ảnh.<br><br>Cuộn chuột để zoom, <b>H</b> để pan, <b>Esc</b> để hủy thao tác.</div><div class="tiny">AI YOLO là công cụ thử nghiệm. Confidence không phải độ chính xác kích thước; luôn kiểm tra trực quan và xác nhận bằng mẫu chuẩn trước khi dùng kết quả kiểm định.</div></section>
 </aside>
@@ -140,12 +140,15 @@ const $=id=>document.getElementById(id), canvas=$('stage'), viewport=$('viewport
 const doc={source:null,dataUrl:null,imgName:'',imgId:0,role:'image',width:0,height:0,cal:null,measures:[],aiPending:[],selected:null,tool:'select',pending:[],hover:null,view:{z:1,x:0,y:0},camera:false,stream:null,mouse:{down:false,mode:'',x:0,y:0},snap:true,unit:'um',history:[],lastLabelBoxes:[],ready:false};
 // Inspector navigation is UI-only; opening AI never changes the canvas tool.
 let inspectorMode='tool';
+// Selection is transient UI state, outside project/export and measurement records.
+let selectedIds=new Set(),selectionPrimary=null,selectionImage=null,selectionAnchor=null,selectionBox=null;
+const selectionUndo=new WeakMap();
 let width=800,height=600,dpr=1,framePending=false,toastTimer=null,calPair=null,spacePressed=false,requestId=0;
 const COLORS={rowSpacing:'#f4d35e',circleGap:'#ffbd59',edges:'#ff8765',distance:'#f87fb4',centers:'#a997ff',line:'#f87fb4',circle:'#4de1f3',legacyCircle:'#a7f36a',center:'#a997ff',angle:'#ffe27a',cal:'#ffffff'};
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y), pt=(x,y)=>({x,y}), mid=(a,b)=>pt((a.x+b.x)/2,(a.y+b.y)/2);
 const typeName={rowSpacing:'2 HÀNG',circleGap:'MÉP 2Ø',edges:'EDGE (thủ công)',distance:'DIST',circle:'DIAM',centers:'C-C',angle:'ANGLE'};
 const toolTitles={rowSpacing:'Khoảng cách 2 hàng',circleGap:'Mép hai đường tròn',circlePair:'Hai đường kính và khe mép',edges:'Mép - mép thủ công',select:'Chọn',pan:'Di chuyển',calibrate:'Hiệu chuẩn',distance:'Đo chiều dài',circle:'Đo Ø lỗ',circleMulti:'Đo Ø nhiều điểm',centers:'Tâm - tâm',angle:'Đo góc'};
-const helpers={circleGap:'Chọn hai đường tròn đã đo: bấm vành, bên trong hoặc mục đường tròn trong danh sách. Tính khe nhỏ nhất giữa hai đường tròn đã dựng, không dò biên ảnh.',circlePair:'Bấm 3 điểm trên vành lỗ 1, rồi 3 điểm trên vành lỗ 2. Tạo hai đường kính và khe mép giữa hai đường tròn trong một lần.',edges:'Chọn 2 điểm trên hai mép lỗ khác nhau, theo phương bạn muốn đo. Khoảng cách thẳng thủ công; không tự tìm cực tiểu. Không bám tâm.',select:'Nhấn chọn một nhãn kích thước và kéo để di chuyển. Xóa bằng Delete.',pan:'Giữ chuột và kéo để di chuyển ảnh. Cuộn chuột để phóng to / thu nhỏ.',calibrate:'Nhấn hai điểm đầu và cuối của một đoạn chuẩn có chiều dài thực đã biết.',distance:'Chọn điểm đầu rồi chọn điểm cuối để tạo Dimension theo 2 điểm.',circle:'Chọn chính xác ba điểm nằm trên cùng một biên của lỗ. Tự tính tâm và Ø.',circleMulti:'Chọn từ 3 đến 64 điểm trên vành lỗ, rồi nhấn Enter hoặc Hoàn tất lỗ. Backspace bỏ điểm cuối.',centers:'Chọn hai tâm lỗ. Bật SNAP để hút vào tâm các đường tròn đã đo.',angle:'Chọn điểm thứ nhất → đỉnh góc → điểm thứ ba để tính góc.'};
+const helpers={circleGap:'Chọn hai đường tròn đã đo: bấm vành, bên trong hoặc mục đường tròn trong danh sách. Tính khe nhỏ nhất giữa hai đường tròn đã dựng, không dò biên ảnh.',circlePair:'Bấm 3 điểm trên vành lỗ 1, rồi 3 điểm trên vành lỗ 2. Tạo hai đường kính và khe mép giữa hai đường tròn trong một lần.',edges:'Chọn 2 điểm trên hai mép lỗ khác nhau, theo phương bạn muốn đo. Khoảng cách thẳng thủ công; không tự tìm cực tiểu. Không bám tâm.',select:'Chọn hình hoặc nhãn. Ctrl/Cmd thêm/bỏ; Shift chọn dải trong danh sách. Kéo trái→phải: nằm trong khung; phải→trái: giao khung. Delete xóa, Esc bỏ chọn.',pan:'Giữ chuột và kéo để di chuyển ảnh. Cuộn chuột để phóng to / thu nhỏ.',calibrate:'Nhấn hai điểm đầu và cuối của một đoạn chuẩn có chiều dài thực đã biết.',distance:'Chọn điểm đầu rồi chọn điểm cuối để tạo Dimension theo 2 điểm.',circle:'Chọn chính xác ba điểm nằm trên cùng một biên của lỗ. Tự tính tâm và Ø.',circleMulti:'Chọn từ 3 đến 64 điểm trên vành lỗ, rồi nhấn Enter hoặc Hoàn tất lỗ. Backspace bỏ điểm cuối.',centers:'Chọn hai tâm lỗ. Bật SNAP để hút vào tâm các đường tròn đã đo.',angle:'Chọn điểm thứ nhất → đỉnh góc → điểm thứ ba để tính góc.'};
 helpers.rowSpacing='Chọn ít nhất 2 tâm cho Hàng 1, chuyển sang Hàng 2, chọn ít nhất 2 tâm rồi bấm Tính khoảng cách.';
 function escapeHTML(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function toast(s,err=false){let e=$('toast');e.textContent=s;e.className='toast show'+(err?' err':'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.className='toast',3500)}
@@ -161,12 +164,13 @@ function updateHeader(){
  $('snapshotBtn').style.display=doc.camera?'inline-flex':'none';$('cameraBtn').innerHTML=doc.camera?'■ Dừng camera':'◉ <span class="subtext">USB Camera</span>';
 }
 function updateUI(){
+ syncSelection();
  $('calStatus').textContent=doc.cal?'ĐÃ CHUẨN':'CHƯA CHUẨN';$('calStatus').classList.toggle('good',!!doc.cal);
  $('scaleValue').textContent=doc.cal?num(doc.cal.mmPerPx*1000,3)+' µm/px':'—';
  $('scaleInfo').textContent=doc.cal?`${num(doc.cal.mmPerPx,6)} mm/px · Chuẩn từ: ${doc.cal.refName}`:'Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.';
  let warn=doc.cal&&(doc.cal.refId!==doc.imgId);
  $('calWarning').classList.toggle('visible',!!warn);
- $('footerScale').textContent=doc.cal?num(doc.cal.mmPerPx*1000,4)+' µm/px':'UNCALIBRATED';$('footerCount').textContent=String(doc.measures.length);$('footerTool').textContent=doc.tool.toUpperCase();$('measCount').textContent=String(doc.measures.length);$('selectedCount').textContent=doc.selected===null?'0':'1';
+ $('footerScale').textContent=doc.cal?num(doc.cal.mmPerPx*1000,4)+' µm/px':'UNCALIBRATED';$('footerCount').textContent=String(doc.measures.length);$('footerTool').textContent=doc.tool.toUpperCase();$('measCount').textContent=String(doc.measures.length);$('selectedCount').textContent=String(selectedIds.size);
  $('exportPngBtn').disabled=!doc.source||doc.camera;$('exportCsvBtn').disabled=!doc.measures.length;$('saveCsvBtn').disabled=!doc.measures.length;$('saveProjectBtn').disabled=!doc.source||doc.camera;
  if($('aiEngineStatus'))setAiState(aiOnline,$('aiEngineStatus').textContent);
  renderList();renderAiReviewPanel();renderRowPanel();renderImageList();renderInspector();
@@ -180,16 +184,98 @@ function formatMeasurement(m){
 }
 function basePx(m){return m.type==='circle'?m.r*2:m.type==='angle'?m.angle:dist(m.p1,m.p2)}
 function mLabel(m){const prefix=m.type==='circle'?'Ø ':m.type==='centers'?'C–C ':m.type==='angle'?'∠ ':'';return `${m.name?m.name+' · ':''}${prefix}${formatMeasurement(m)}`}
+function syncSelection(){
+ const valid=new Set(doc.measures.map(m=>m.id));
+ if(selectionImage!==doc.imgId||selectionPrimary!==doc.selected){
+  selectedIds=new Set(valid.has(doc.selected)?[doc.selected]:[]);
+  if(selectionImage!==doc.imgId){selectionAnchor=null;selectionBox=null;}
+ }
+ selectedIds=new Set([...selectedIds].filter(id=>valid.has(id)));
+ if(!valid.has(doc.selected))doc.selected=[...selectedIds].at(-1)??null;
+ selectionPrimary=doc.selected;selectionImage=doc.imgId;
+}
+function selectMeasurements(ids,primary=null){
+ const valid=new Set(doc.measures.map(m=>m.id));selectedIds=new Set(ids.filter(id=>valid.has(id)));
+ doc.selected=selectedIds.has(primary)?primary:[...selectedIds].at(-1)??null;
+ selectionPrimary=doc.selected;selectionImage=doc.imgId;
+}
+function selectMeasurement(id,event,{range=false}={}){
+ syncSelection();const additive=event.ctrlKey||event.metaKey;
+ if(range&&event.shiftKey){
+  const ids=doc.measures.map(m=>m.id),a=ids.indexOf(selectionAnchor),b=ids.indexOf(id);
+  const picked=a<0?[id]:ids.slice(Math.min(a,b),Math.max(a,b)+1);
+  selectMeasurements(additive?[...selectedIds,...picked]:picked,id);
+  if(a<0)selectionAnchor=id;
+ }else if(additive){const ids=new Set(selectedIds);ids.has(id)?ids.delete(id):ids.add(id);selectMeasurements([...ids],id);selectionAnchor=id;}
+ else{selectMeasurements([id],id);selectionAnchor=id;}
+}
+function navigateImage(delta){
+ if(busy||doc.camera||doc.mouse.down||selectionBox||$('calModal').classList.contains('open'))return false;
+ const index=images.findIndex(r=>r.imgId===activeId),target=images[index+delta];
+ if(index<0||!target)return false;activateImage(target.imgId);return activeId===target.imgId;
+}
+// Original-pixel selection primitives only; annotations and AI proposals are excluded.
+function selectionSegments(m){return m.type==='angle'?[[m.p1,m.p2],[m.p2,m.p3]]:m.p1&&m.p2?[[m.p1,m.p2]]:[];}
+function selectionPointInRect(p,r){return p.x>=r.left&&p.x<=r.right&&p.y>=r.top&&p.y<=r.bottom;}
+function selectionSegmentIntersects(a,b,r){
+ let lo=0,hi=1;const dx=b.x-a.x,dy=b.y-a.y;
+ for(const [p,q] of [[-dx,a.x-r.left],[dx,r.right-a.x],[-dy,a.y-r.top],[dy,r.bottom-a.y]]){
+  if(Math.abs(p)<1e-12){if(q<0)return false;continue;}
+  const t=q/p;if(p<0)lo=Math.max(lo,t);else hi=Math.min(hi,t);if(lo>hi)return false;
+ }return true;
+}
+function measurementInSelectionRect(m,r,crossing){
+ if(m.type==='circle'){
+  if(!crossing)return m.c.x-m.r>=r.left&&m.c.x+m.r<=r.right&&m.c.y-m.r>=r.top&&m.c.y+m.r<=r.bottom;
+  const dx=Math.max(r.left-m.c.x,0,m.c.x-r.right),dy=Math.max(r.top-m.c.y,0,m.c.y-r.bottom);
+  const far=Math.max(...[r.left,r.right].flatMap(x=>[r.top,r.bottom].map(y=>(x-m.c.x)**2+(y-m.c.y)**2)));
+  return dx*dx+dy*dy<=m.r*m.r&&far>=m.r*m.r;
+ }
+ const segments=selectionSegments(m);return segments.length>0&&(crossing?segments.some(([a,b])=>selectionSegmentIntersects(a,b,r)):segments.every(pair=>pair.every(p=>selectionPointInRect(p,r))));
+}
+function selectionSegmentDistance(p,a,b){
+ const dx=b.x-a.x,dy=b.y-a.y,length=dx*dx+dy*dy;
+ const t=length?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/length)):0;
+ return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy);
+}
+function hitMeasurement(p){
+ const tolerance=7/doc.view.z;
+ return [...doc.measures].reverse().find(m=>m.type==='circle'?Math.abs(dist(p,m.c)-m.r)<=tolerance||dist(p,m.c)<=tolerance:selectionSegments(m).some(([a,b])=>selectionSegmentDistance(p,a,b)<=tolerance));
+}
+function finishSelectionBox(){
+ const box=selectionBox;if(!box)return;
+ if(Math.hypot(box.endScreen.x-box.startScreen.x,box.endScreen.y-box.startScreen.y)<4){if(!box.additive)selectMeasurements([]);}
+ else{
+  const r={left:Math.min(box.start.x,box.end.x),right:Math.max(box.start.x,box.end.x),top:Math.min(box.start.y,box.end.y),bottom:Math.max(box.start.y,box.end.y)};
+  const ids=doc.measures.filter(m=>measurementInSelectionRect(m,r,box.endScreen.x<box.startScreen.x)).map(m=>m.id);
+  selectMeasurements(box.additive?[...box.initial,...ids]:ids);selectionAnchor=doc.selected;
+ }
+ selectionBox=null;updateUI();render();
+}
+function drawSelectionBox(context){
+ if(!selectionBox)return;const a=screen(selectionBox.start),b=screen(selectionBox.end);
+ if(Math.hypot(b.x-a.x,b.y-a.y)<4)return;const crossing=b.x<a.x;
+ context.save();context.strokeStyle=crossing?'#a9e99a':'#61d6df';context.fillStyle=crossing?'#a9e99a22':'#61d6df22';context.lineWidth=1;
+ context.setLineDash(crossing?[6,4]:[]);context.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);context.strokeRect(a.x,a.y,b.x-a.x,b.y-a.y);context.restore();
+}
 function renderList(){
  const list=$('measureList');if(!doc.measures.length){list.innerHTML='<div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div>';}
- else list.innerHTML=doc.measures.map((m,i)=>`<div class="meas-item ${m.id===doc.selected?'selected':''}" style="--measure-color:${m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type]}" data-id="${m.id}"><div class="meas-top"><span class="meas-type">${m.ai?'AI ✓ Ø':m.auto?'LEGACY Ø':m.type==='circle'?'THỦ CÔNG Ø':typeName[m.type]}</span><span class="meas-name" title="${escapeHTML(m.name)}">${escapeHTML(m.name)||'Phép đo '+(i+1)}</span><button class="iconbtn remove-one" data-id="${m.id}" title="Xóa">✕</button></div><div class="meas-val">${escapeHTML((m.type==='circle'?'Ø ':m.type==='angle'?'∠ ':'')+formatMeasurement(m))}</div><div class="meas-foot">${m.type==='angle'?'Góc · '+num(basePx(m),2)+'°':num(basePx(m),2)+' px'} · ${m.type==='rowSpacing'?`${m.row1Ids.length} + ${m.row2Ids.length} tâm · lệch ${num(m.angleDifferenceDeg,2)}°`:m.type==='circle'?`${m.ai?`AI ${Math.round((m.autoConfidence||0)*100)}% · `:m.auto?`<span class="legacy-score">Legacy ${Math.round((m.autoConfidence||0)*100)}%</span> · `:''}${m.edgePts?.length||3} điểm · lệch RMS ${num(m.fitRms||0,2)} px`:m.type==='circleGap'?gapRelations[m.relation]:m.type==='centers'?'Tâm đến tâm':'2 điểm'}</div></div>`).join('');
- list.querySelectorAll('.meas-item').forEach(e=>e.addEventListener('click',evt=>{if(evt.target.closest('.remove-one'))return;const id=Number(e.dataset.id);if(doc.tool==='rowSpacing'){toggleRowCircle(id);return;}if(doc.tool==='circleGap'){chooseGapCircle(id);return;}doc.selected=id;updateUI();render()}));
+ else list.innerHTML=doc.measures.map((m,i)=>`<div class="meas-item ${selectedIds.has(m.id)?'selected':''}" style="--measure-color:${m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type]}" data-id="${m.id}" role="option" aria-selected="${selectedIds.has(m.id)}"><div class="meas-top"><span class="meas-type">${m.ai?'AI ✓ Ø':m.auto?'LEGACY Ø':m.type==='circle'?'THỦ CÔNG Ø':typeName[m.type]}</span><span class="meas-name" title="${escapeHTML(m.name)}">${escapeHTML(m.name)||'Phép đo '+(i+1)}</span><button class="iconbtn remove-one" data-id="${m.id}" title="Xóa">✕</button></div><div class="meas-val">${escapeHTML((m.type==='circle'?'Ø ':m.type==='angle'?'∠ ':'')+formatMeasurement(m))}</div><div class="meas-foot">${m.type==='angle'?'Góc · '+num(basePx(m),2)+'°':num(basePx(m),2)+' px'} · ${m.type==='rowSpacing'?`${m.row1Ids.length} + ${m.row2Ids.length} tâm · lệch ${num(m.angleDifferenceDeg,2)}°`:m.type==='circle'?`${m.ai?`AI ${Math.round((m.autoConfidence||0)*100)}% · `:m.auto?`<span class="legacy-score">Legacy ${Math.round((m.autoConfidence||0)*100)}%</span> · `:''}${m.edgePts?.length||3} điểm · lệch RMS ${num(m.fitRms||0,2)} px`:m.type==='circleGap'?gapRelations[m.relation]:m.type==='centers'?'Tâm đến tâm':'2 điểm'}</div></div>`).join('');
+ list.querySelectorAll('.meas-item').forEach(e=>e.addEventListener('click',evt=>{if(evt.target.closest('.remove-one'))return;const id=Number(e.dataset.id);if(doc.tool==='rowSpacing'){toggleRowCircle(id);return;}if(doc.tool==='circleGap'){chooseGapCircle(id);return;}selectMeasurement(id,evt,{range:true});updateUI();render()}));
  list.querySelectorAll('.remove-one').forEach(e=>e.addEventListener('click',evt=>{evt.stopPropagation();deleteMeasurement(Number(e.dataset.id))}));
- const selected=doc.measures.find(m=>m.id===doc.selected);$('editBox').classList.toggle('visible',!!selected);if(selected)$('measNameEdit').value=selected.name||'';
+ const selected=selectedIds.size===1?doc.measures.find(m=>m.id===doc.selected):null;$('editBox').classList.toggle('visible',!!selected);if(selected)$('measNameEdit').value=selected.name||'';
+ $('selectionActions').hidden=!selectedIds.size;$('selectionSummary').hidden=selectedIds.size<2;
+ $('selectionSummary').textContent=`Đã chọn ${selectedIds.size} phép đo. Kéo nhãn chỉ di chuyển nhãn đang kéo.`;
+ $('deleteMeasureBtn').textContent=selectedIds.size>1?`× Xóa ${selectedIds.size} phép đo đã chọn`:'× Xóa phép đo đang chọn';
 }
-function historyPush(){dirty=true;doc.history.push(JSON.stringify({measures:doc.measures,cal:doc.cal,selected:doc.selected,aiPending:doc.aiPending}));if(doc.history.length>75)doc.history.shift()}
-function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];setStatus(helpers[doc.tool]);let p=JSON.parse(doc.history.pop());doc.measures=p.measures;doc.cal=p.cal;doc.selected=p.selected;doc.aiPending=p.aiPending??[];updateUI();render();toast('Đã hoàn tác')}
-function setTool(t){if($('calModal').classList.contains('open'))return;inspectorMode='tool';doc.tool=t;doc.pending=[];circleSelection=[];if(t!=='rowSpacing'){rowSelection=[[],[]];activeRow=0;}doc.selected=t==='select'?doc.selected:null;document.querySelectorAll('[data-tool]').forEach(b=>(b.classList.toggle('active',b.dataset.tool===t),b.setAttribute('aria-pressed',String(b.dataset.tool===t))));$('toolMode').textContent=t.toUpperCase();setStatus(helpers[t]);$('finishCircleBtn').classList.remove('visible');updateUI();render()}
+function historyPush(){syncSelection();dirty=true;let metadata=selectionUndo.get(doc.history)||[];
+ metadata.length=doc.history.length;metadata.push({entry:JSON.stringify({measures:doc.measures,cal:doc.cal,selected:doc.selected,aiPending:doc.aiPending}),ids:[...selectedIds]});
+ doc.history.push(metadata.at(-1).entry);if(doc.history.length>75){doc.history.shift();metadata.shift();}selectionUndo.set(doc.history,metadata);}
+function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];selectionBox=null;doc.mouse.down=false;doc.mouse.mode='';setStatus(helpers[doc.tool]);
+ const metadata=selectionUndo.get(doc.history),saved=metadata?.[doc.history.length-1],entry=doc.history.pop();if(metadata)metadata.length=doc.history.length;
+ let p=JSON.parse(entry);doc.measures=p.measures;doc.cal=p.cal;doc.selected=p.selected;doc.aiPending=p.aiPending??[];
+ selectMeasurements(saved?.entry===entry?saved.ids:p.selected===null?[]:[p.selected],p.selected);updateUI();render();toast('Đã hoàn tác')}
+function setTool(t){if($('calModal').classList.contains('open'))return;inspectorMode='tool';if(selectionBox){selectionBox=null;doc.mouse.down=false;doc.mouse.mode='';}doc.tool=t;doc.pending=[];circleSelection=[];if(t!=='rowSpacing'){rowSelection=[[],[]];activeRow=0;}doc.selected=t==='select'?doc.selected:null;document.querySelectorAll('[data-tool]').forEach(b=>(b.classList.toggle('active',b.dataset.tool===t),b.setAttribute('aria-pressed',String(b.dataset.tool===t))));$('toolMode').textContent=t.toUpperCase();setStatus(helpers[t]);$('finishCircleBtn').classList.remove('visible');updateUI();render()}
 function fit(){if(!doc.source)return;let pad=85;doc.view.z=Math.max(.05,Math.min((width-pad*2)/doc.width,(height-pad*2)/doc.height));doc.view.x=(width-doc.width*doc.view.z)/2;doc.view.y=(height-doc.height*doc.view.z)/2;updateZoom();render()}
 function updateZoom(){$('zoomText').textContent=num(doc.view.z*100,0)+'%'}
 function resize(){let rect=viewport.getBoundingClientRect();width=Math.max(1,rect.width);height=Math.max(1,rect.height);dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);render()}
@@ -251,7 +337,7 @@ function drawScene(context,w,h,v,{exportMode=false,includePreview=true}={}){
   context.restore();if(!exportMode){context.strokeStyle='#677e98';context.lineWidth=1;context.strokeRect(xx-.5,yy-.5,ww+1,hh+1);}
  }
  const currentView=doc.view;doc.view=v;
- let boxes=[];if(!exportMode)drawAiProposals(context);for(let m of doc.measures){let color=m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type],sel=!exportMode&&m.id===doc.selected;if(m.type==='circle')dimCircle(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='rowSpacing')drawRowSpacing(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='circleGap')drawCircleGap(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='angle')dimAngle(context,m,mLabel(m),color,sel,m.shift,boxes);else dimLine(context,m.p1,m.p2,mLabel(m),color,sel,m.shift,boxes,m.id)}
+ let boxes=[];if(!exportMode)drawAiProposals(context);for(let m of doc.measures){let color=m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type],sel=!exportMode&&selectedIds.has(m.id);if(m.type==='circle')dimCircle(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='rowSpacing')drawRowSpacing(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='circleGap')drawCircleGap(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='angle')dimAngle(context,m,mLabel(m),color,sel,m.shift,boxes);else dimLine(context,m.p1,m.p2,mLabel(m),color,sel,m.shift,boxes,m.id)}
  if(!exportMode&&doc.cal&&doc.cal.refId===doc.imgId&&doc.cal.p1&&doc.cal.p2){let a=screen(doc.cal.p1),b=screen(doc.cal.p2);drawSegment(context,a,b,COLORS.cal,2,[6,3]);cross(context,a,7,COLORS.cal);cross(context,b,7,COLORS.cal);let m=mid(a,b);pill(context,'REF '+num(doc.cal.lengthMm,4)+' mm',m.x,m.y-30,COLORS.cal,false)}
  if(includePreview&&!exportMode)drawCircleToolPreview(context);
  if(includePreview&&doc.pending.length){let arr=doc.pending;let hover=doc.hover;for(let p of arr)cross(context,screen(p),9,'#fff18a');if(hover&&inImage(hover)){
@@ -262,7 +348,7 @@ function drawScene(context,w,h,v,{exportMode=false,includePreview=true}={}){
  doc.view=currentView;
  if(!exportMode){doc.lastLabelBoxes=boxes;drawRulers(context,w,h,v)}
 }
-function render(){if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,width,height,doc.view);if(doc.camera)render()})}
+function render(){if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,width,height,doc.view);drawSelectionBox(ctx);if(doc.camera)render()})}
 function circumcircle(a,b,c){
  // Translate to the first point to avoid cancellation at large image coordinates.
  const bx=b.x-a.x,by=b.y-a.y,cx=c.x-a.x,cy=c.y-a.y,d=2*(bx*cy-by*cx);
@@ -302,7 +388,15 @@ function nextPoint(p){if(!inImage(p))return;if(doc.camera){toast('Hãy chụp �
 }
 let idSeed=1;
 function addMeasure(m){historyPush();let id=idSeed++;m.id=id;m.name=`${m.type==='circle'?'Lỗ':m.type==='edges'?'Mép–mép':m.type==='distance'?'Khoảng cách':m.type==='centers'?'Tâm-tâm':'Góc'} ${doc.measures.filter(x=>x.type===m.type).length+1}`;m.shift={x:0,y:0};doc.measures.push(m);doc.pending=[];setStatus(helpers[doc.tool]);doc.selected=id;updateUI();render();toast(`Đã thêm ${typeName[m.type]}: ${formatMeasurement(m)}`)}
-function deleteMeasurement(id){let index=doc.measures.findIndex(m=>m.id===id);if(index<0)return;historyPush();const removed=doc.measures.filter(m=>m.id===id||m.type==='circleGap'&&m.circleIds.includes(id)||m.type==='rowSpacing'&&[...(m.row1Ids||[]),...(m.row2Ids||[])].includes(id)).map(m=>m.id);doc.measures=doc.measures.filter(m=>!removed.includes(m.id));circleSelection=[];rowSelection=rowSelection.map(ids=>ids.filter(x=>x!==id));if(removed.includes(doc.selected))doc.selected=null;updateUI();render();toast(removed.length>1?'Đã xóa đường tròn và các phép đo phụ thuộc. Ctrl+Z để khôi phục.':'Đã xóa phép đo')}
+function deleteMeasurement(id){deleteMeasurements([id]);}
+function deleteMeasurements(ids){
+ const removed=new Set(ids.filter(id=>doc.measures.some(m=>m.id===id)));if(!removed.size)return;
+ for(const m of doc.measures)if(m.type==='circleGap'&&m.circleIds.some(id=>removed.has(id))||m.type==='rowSpacing'&&[...(m.row1Ids||[]),...(m.row2Ids||[])].some(id=>removed.has(id)))removed.add(m.id);
+ historyPush();doc.measures=doc.measures.filter(m=>!removed.has(m.id));circleSelection=[];
+ rowSelection=rowSelection.map(row=>row.filter(id=>!removed.has(id)));
+ selectMeasurements([...selectedIds].filter(id=>!removed.has(id)),doc.selected);
+ selectionBox=null;updateUI();render();toast(`Đã xóa ${removed.size} phép đo (gồm phép đo phụ thuộc nếu có). Ctrl+Z để khôi phục.`);
+}
 function stopCamera(){doc.camera=false;if(doc.stream){doc.stream.getTracks().forEach(t=>t.stop());doc.stream=null}let v=$('cameraVideo');v.pause();v.srcObject=null;updateHeader();render()}
 function resetForNewImage(img,url,name,mode){stashActive(); activeId=null;stopCamera();doc.cal=latestCalibration?structuredClone(latestCalibration):null;doc.source=img;doc.dataUrl=url;doc.width=img.naturalWidth;doc.height=img.naturalHeight;doc.imgName=name;doc.role=mode;doc.imgId=++requestId;doc.measures=[];doc.aiPending=[];doc.selected=null;doc.pending=[];doc.history=[];doc.ready=true;doc.thumb=null;activeId=doc.imgId;images.push(snapshotDoc());dirty=true;
  fit();updateHeader();updateUI();setTool(mode==='reference'?'calibrate':'select');if(doc.cal&&mode==='image')toast('Đã áp dụng hệ số từ ảnh chuẩn. Hãy kiểm tra điều kiện phóng đại trước khi đo.');else toast(mode==='reference'?'Chọn K và lấy 2 điểm chuẩn trên ảnh':'Đã mở ảnh · bắt đầu đo');
@@ -325,18 +419,29 @@ function pointerDown(e){if(busy||$('calModal').classList.contains('open')||!doc.
  if(doc.tool==='rowSpacing'){const p=world(pos),threshold=14/doc.view.z;let winner=doc.measures.filter(m=>m.type==='circle').map(m=>({m,d:Math.min(dist(p,m.c),Math.abs(dist(p,m.c)-m.r))})).filter(x=>x.d<=threshold).sort((a,b)=>a.d-b.d)[0]?.m;if(winner)toggleRowCircle(winner.id);else toast('Bấm vào tâm, vành hoặc mục đường tròn trong danh sách.',true);return;}
  if(doc.tool==='select'){
   let hit=[...doc.lastLabelBoxes].reverse().find(b=>pos.x>=b.left-5&&pos.x<=b.right+5&&pos.y>=b.top-5&&pos.y<=b.bottom+5);
-  if(hit){doc.selected=hit.id;doc.mouse.mode='label';historyPush();const m=doc.measures.find(m=>m.id===hit.id);if(m){m.shift.x+=hit.autoShift.x;m.shift.y+=hit.autoShift.y;}}else{doc.selected=null;doc.mouse.mode='';}
+  const geometry=hit?null:hitMeasurement(world(pos));
+  if(hit||geometry){
+   const id=hit?.id??geometry.id;
+   if(e.ctrlKey||e.metaKey){selectMeasurement(id,e);doc.mouse.mode='';}
+   else if(hit){
+    if(selectedIds.has(id))selectMeasurements([...selectedIds],id);else selectMeasurement(id,e);
+    doc.mouse.mode='label';historyPush();const m=doc.measures.find(m=>m.id===id);if(m){m.shift.x+=hit.autoShift.x;m.shift.y+=hit.autoShift.y;}
+   }else{selectMeasurement(id,e);doc.mouse.mode='';}
+  }else{
+   const point=world(pos);selectionBox={start:point,end:point,startScreen:pos,endScreen:pos,initial:[...selectedIds],additive:e.ctrlKey||e.metaKey||e.shiftKey};doc.mouse.mode='marquee';
+  }
   updateUI();render();return;
  }
  doc.mouse.mode='tool';nextPoint(world(pos))
 }
 function pointerMove(e){let pos=eventPos(e),w=world(pos);doc.hover=w;$('coordinateText').textContent=inImage(w)?`X: ${num(w.x,1)} px    Y: ${num(w.y,1)} px`:'X: —    Y: —';
  updateMagnifier(pos);
+ if(doc.mouse.down&&doc.mouse.mode==='marquee'&&selectionBox){selectionBox.end=w;selectionBox.endScreen=pos;render();}
  if(doc.mouse.down){let dx=pos.x-doc.mouse.x,dy=pos.y-doc.mouse.y;if(doc.mouse.mode==='pan'){doc.view.x+=dx;doc.view.y+=dy;render()}else if(doc.mouse.mode==='label'&&doc.selected!==null){let m=doc.measures.find(m=>m.id===doc.selected);if(m){m.shift.x+=dx/doc.view.z;m.shift.y+=dy/doc.view.z;dirty=true;render()}}}
  doc.mouse.x=pos.x;doc.mouse.y=pos.y;
  if(doc.pending.length||circleSelection.length)render()
 }
-function pointerUp(){doc.mouse.down=false;doc.mouse.mode='';canvas.style.cursor=doc.tool==='pan'?'grab':doc.tool==='select'?'default':'crosshair'}
+function pointerUp(e){if(doc.mouse.mode==='marquee'){if(e?.type!=='pointercancel')finishSelectionBox();selectionBox=null;render();}doc.mouse.down=false;doc.mouse.mode='';canvas.style.cursor=doc.tool==='pan'?'grab':doc.tool==='select'?'default':'crosshair'}
 function updateMagnifier(pos){
  const lens=$('magnifier'),p=world(pos);if(!magnifierEnabled||!inImage(p)||!doc.source){lens.style.display='none';return;}
  const size=160,half=12,g=lens.getContext('2d');lens.style.display='block';
@@ -573,14 +678,20 @@ function makeDemo(){let w=1400,h=850,c=document.createElement('canvas');c.width=
  for(let [x,y,r] of holes){let halo=g.createRadialGradient(x,y,r*.75,x,y,r*1.45);halo.addColorStop(0,'#7d6960a0');halo.addColorStop(.65,'#6d56404a');halo.addColorStop(1,'#7c675000');g.fillStyle=halo;g.beginPath();g.arc(x,y,r*1.48,0,Math.PI*2);g.fill();let ring=g.createRadialGradient(x-r*.2,y-r*.2,1,x,y,r);ring.addColorStop(0,'#1b2429');ring.addColorStop(.73,'#182326');ring.addColorStop(.91,'#252725');ring.addColorStop(1,'#826e60');g.fillStyle=ring;g.beginPath();g.arc(x,y,r,0,2*Math.PI);g.fill();g.lineWidth=5;g.strokeStyle='#6c6150a0';g.stroke();}
  g.fillStyle='#1e2529e6';g.fillRect(82,704,345,95);g.strokeStyle='#f8e6ba';g.lineWidth=3;g.beginPath();g.moveTo(130,750);g.lineTo(330,750);g.stroke();for(let x=130;x<=330;x+=50){g.beginPath();g.moveTo(x,741);g.lineTo(x,759);g.stroke()}g.fillStyle='#f5efe0';g.font='bold 17px Segoe UI';g.fillText('DEMO REFERENCE : 1.00 mm',109,785);g.font='bold 16px Consolas';g.fillText('SYNTHETIC DEMO - NOT METROLOGY DATA',830,788);
  let url=c.toDataURL('image/jpeg',.9);createImg(url).then(i=>resetForNewImage(i,url,'laser_fabric_DEMO.jpg','reference')).then(()=>toast('Mẫu: bấm 2 đầu vạch vàng dài 200 px, nhập 1 mm, sau đó đo lỗ.'))}
-function keyboard(e){if(busy)return;let tag=e.target?.tagName;if(e.key==='Escape'){if(doc.tool==='rowSpacing'){cancelRowSpacing();return;}$('calModal').classList.remove('open');calPair=null;doc.pending=[];circleSelection=[];$('finishCircleBtn').classList.remove('visible');setStatus(helpers[doc.tool]);render();return}if($('calModal').classList.contains('open')||tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA')return;
+function keyboard(e){if(busy)return;let tag=e.target?.tagName;if(e.key==='Escape'){if(doc.tool==='select'){selectMeasurements([]);selectionAnchor=null;selectionBox=null;doc.mouse.down=false;doc.mouse.mode='';updateUI();}if(doc.tool==='rowSpacing'){cancelRowSpacing();return;}$('calModal').classList.remove('open');calPair=null;doc.pending=[];circleSelection=[];$('finishCircleBtn').classList.remove('visible');setStatus(helpers[doc.tool]);render();return}if($('calModal').classList.contains('open')||tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA'||e.target?.isContentEditable||e.target?.closest?.('[contenteditable]:not([contenteditable="false"])'))return;
  if(doc.tool==='circleMulti'&&e.key==='Enter'){e.preventDefault();finishMultiCircle();return}
  if(doc.tool==='circleMulti'&&e.key==='Backspace'&&doc.pending.length){e.preventDefault();doc.pending.pop();$('finishCircleBtn').classList.toggle('visible',doc.pending.length>=3);setStatus(`${doc.pending.length}/64 điểm · ${helpers.circleMulti}`);render();return}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undo();return}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveProject();return}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='a'&&doc.tool==='select'&&!doc.camera){e.preventDefault();selectMeasurements(doc.measures.map(m=>m.id));selectionAnchor=doc.selected;updateUI();render();return;}
  if(e.ctrlKey||e.metaKey||e.altKey)return;
+ if(e.key==='ArrowUp'||e.key==='ArrowDown'){
+  const widget=e.target?.closest?.('[role=combobox],[role=listbox],[role=tree],[role=menu],[role=grid],[role=slider],[role=spinbutton]');
+  const modal=[...document.querySelectorAll('[role=dialog][aria-modal=true],dialog[open]')].some(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden');
+  if(!widget&&!modal&&navigateImage(e.key==='ArrowUp'?-1:1))e.preventDefault();return;
+ }
  if(e.code==='Space'){spacePressed=true;canvas.style.cursor='grab';e.preventDefault()}
- if((e.key==='Delete'||e.key==='Backspace')&&doc.selected!==null){deleteMeasurement(doc.selected);return}
+ if((e.key==='Delete'||e.key==='Backspace')&&selectedIds.size){e.preventDefault();deleteMeasurements([...selectedIds]);return}
  if(e.key.toLowerCase()==='q'){toggleMagnifier();return}
  let tool={v:'select',h:'pan',k:'calibrate',l:'distance',c:'circle',m:'circleMulti',d:'centers',e:'edges',g:'circleGap',b:'circlePair',a:'angle',r:'rowSpacing'}[e.key.toLowerCase()];if(tool)setTool(tool)
 }
@@ -591,7 +702,7 @@ function init(){
  $('fitBtn').onclick=fit;$('undoBtn').onclick=undo;$('magnifierBtn').onclick=toggleMagnifier;$('finishCircleBtn').onclick=finishMultiCircle;$('unitSelect').onchange=e=>{doc.unit=e.target.value;dirty=true;updateUI();render()};$('snapToggle').onchange=e=>{doc.snap=e.target.checked};
  $('confirmCalBtn').onclick=confirmCalibration;$('cancelCalBtn').onclick=()=>{$('calModal').classList.remove('open');calPair=null;doc.pending=[];render()};$('calLength').addEventListener('keydown',e=>{if(e.key==='Enter')confirmCalibration()});
  document.querySelectorAll('[data-tool]').forEach(e=>e.onclick=()=>setTool(e.dataset.tool));
- $('deleteMeasureBtn').onclick=()=>{if(doc.selected!==null)deleteMeasurement(doc.selected)};$('updateNameBtn').onclick=()=>{let m=doc.measures.find(m=>m.id===doc.selected);if(!m)return;historyPush();m.name=$('measNameEdit').value.trim();updateUI();render();toast('Đã cập nhật nhãn')};
+ $('deleteMeasureBtn').onclick=()=>deleteMeasurements([...selectedIds]);$('updateNameBtn').onclick=()=>{let m=doc.measures.find(m=>m.id===doc.selected);if(!m||selectedIds.size!==1)return;historyPush();m.name=$('measNameEdit').value.trim();updateUI();render();toast('Đã cập nhật nhãn')};
  $('mobileSideBtn').onclick=()=>$('sidePanel').classList.toggle('visible');
  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerleave',()=>{$('magnifier').style.display='none'});canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('wheel',zoomWheel,{passive:false});canvas.addEventListener('contextmenu',e=>e.preventDefault());
  window.addEventListener('keydown',keyboard);window.addEventListener('keyup',e=>{if(e.code==='Space'){spacePressed=false;canvas.style.cursor=doc.tool==='pan'?'grab':'crosshair'}});

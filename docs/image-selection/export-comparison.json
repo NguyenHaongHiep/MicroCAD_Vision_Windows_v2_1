@@ -1,0 +1,18 @@
+{
+  "fixed-project.json": {
+    "identical": true,
+    "sha256": "5b54c4e1bb853d1bd09f75084bc2862afc210e315d33df1d1e3972d9dd3d0e64"
+  },
+  "fixed-measurements.csv": {
+    "identical": true,
+    "sha256": "832ad9de7873a730a994eb0b0df0c68325339323238b1f216d82adb6d479cd6b"
+  },
+  "fixed-measurement.png": {
+    "identical": true,
+    "sha256": "58daff43d2811bd7ec71a41ac50369a132c7985150cb03d81290bb553ce0b313"
+  },
+  "fixed-measurements.zip": {
+    "identical": true,
+    "sha256": "e78fb7133d21e87c8b9df60ab33620c69c67e624827827478ae066259f822384"
+  }
+}
