@@ -19,6 +19,32 @@
 .finish-circle{display:none;margin-top:8px}.finish-circle.visible{display:inline-flex}
 .meas-item{border-left:3px solid var(--measure-color,#50e5dc)}.meas-type{color:var(--measure-color,#50e5dc);border-color:var(--measure-color,#50e5dc)}
 .ai-note{margin-top:9px;color:#9db1c6;font-size:10px;line-height:1.5}.legacy-score{color:var(--green)}
+/* Phase 1: independent CAD docks. Measurement rendering and transforms are unchanged. */
+:root{--bg:#11151b;--panel:#191f27;--panel2:#202731;--line:#343e4a;--muted:#a0acba;--cyan:#61d6df;--shadow:none}
+#app{grid-template-rows:48px minmax(0,1fr) 28px}
+.top{padding:0 12px;gap:10px;background:#1b222c}
+.brand{min-width:156px;gap:8px}.brand-mark{width:28px;height:28px;border-radius:4px;box-shadow:none;background:#22323c;font-size:20px}.brand-name{font-size:13px}.brand-sub{font-size:8px;letter-spacing:.06em}
+.top-actions{gap:4px;scrollbar-width:thin;padding:0 0 2px}.top-actions .btn{min-height:28px;padding:0 8px;font-size:11px}.top-actions .separator{height:20px;margin:0 4px}.top-actions .spacer{min-width:8px}
+.btn,.btn.primary{border-radius:4px;background:#252f3b;box-shadow:none;transition:background .12s,border-color .12s}.btn.primary{background:#25434c;border-color:#477780}.btn:hover,.btn.primary:hover{background:#304353;box-shadow:none}.btn[aria-pressed="true"]{color:var(--cyan);border-color:#4d8a94;background:#233d47}
+.workspace{grid-template-columns:60px 220px minmax(0,1fr) 308px;overflow:hidden}
+.tools{gap:3px;padding:8px 6px;background:#1b222b}.tool{width:44px;height:40px;min-height:40px;border-radius:4px;transition:none}.tool.active{background:#263f49;box-shadow:inset 2px 0 var(--cyan);border-color:#42616d}.tool-sep{margin:3px 0}.tool-spacer{min-height:4px}.tool span{font-size:17px}.tool .tool-label{font-size:8px}
+.image-library{min-width:0;min-height:0;display:flex;flex-direction:column;background:#181e26;border-right:1px solid var(--line);overflow:hidden}
+.dock-heading{height:41px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:750;letter-spacing:.06em;border-bottom:1px solid var(--line);flex-shrink:0}.dock-caption{font:10px Consolas,monospace;color:#9aabba;letter-spacing:.04em}
+.image-library .image-section{display:flex;flex:1;min-height:0;flex-direction:column;padding:12px;border:0}.image-section .sec-label{margin-bottom:10px}.image-nav{font-size:11px;flex-shrink:0}.image-list{flex:1;min-height:60px;max-height:none;align-content:start;overflow:auto;margin:0 0 12px;gap:6px}.image-entry{padding:8px;border-radius:4px;grid-template-columns:48px minmax(0,1fr);gap:8px;background:#202832}.image-entry img{width:48px;height:40px}.image-entry strong{font-size:11px}.image-entry small{font-size:10px;line-height:1.5}.image-entry[aria-current="true"]{border-color:#4e919c;background:#263b45;box-shadow:inset 2px 0 var(--cyan)}.image-section>.muted{font-size:10px;line-height:1.6;flex-shrink:0}
+.side{position:static;width:auto;min-width:0;min-height:0;display:block;overflow:auto;background:#191f28;box-shadow:none;border-left:1px solid var(--line)}.side-head{padding:0 12px;min-height:41px;gap:8px}.side-title{font-size:11px}.side-section{padding:14px 12px}.sec-label{font-size:10px;letter-spacing:.07em;color:#b4c1ce}.inspector-tabs{display:flex;gap:4px;padding:8px 12px;border-bottom:1px solid var(--line)}.inspector-tabs .btn{flex:1;min-width:0}.inspector-tabs .btn:last-child{flex:0 0 28px}.tool-guide p{margin:0;line-height:1.7}.tool-guide .sec-label{margin-bottom:8px}
+.cal-card,.tips{border-radius:4px;background:#202a35;box-shadow:none;padding:10px}.scale-big{font-size:21px}.side-acts{flex-wrap:wrap}.side-acts .btn{min-width:0;white-space:normal;line-height:1.4;padding:6px 8px}.side-section .tips{font-size:11px}.meas-item{border-radius:4px;background:#212b36;padding:10px}.meas-val{font-size:19px}.meas-item.selected{background:#233d46;border-color:#528b96}.meas-foot{line-height:1.6}.edit-row .field{min-width:0}.status-pill,.field,.unit-select select{border-radius:4px}.warning{border-radius:4px}.side-section[hidden],.btn[hidden]{display:none!important}
+.side-head{position:sticky;top:0;background:#191f28;z-index:2}.inspector-tabs{position:sticky;top:41px;background:#191f28;z-index:2}
+#measurementPanel>.tips{display:none}#projectPanel{display:none}#drawingPanel .micro-row:last-child{margin-bottom:0}
+.canvas-area{background:#111820}.canvas-area:after{box-shadow:none}.glass{background:#1b2732ed;border-color:#3b4a59;backdrop-filter:none;border-radius:4px;box-shadow:none}.canvas-head{top:8px;left:34px;right:8px;gap:8px}.docname{padding:6px 9px;max-width:78%;gap:7px}.doc-chip{font-size:8px;border-radius:3px;letter-spacing:.06em}.file-name{font-size:11px}.doc-sub{font-size:9px}.view-chip{padding:6px 8px;font-size:10px}.view-chip>span:first-child{display:none}.viewport-bottom{left:34px;right:8px;bottom:8px}.command{padding:8px 10px;min-width:0;max-width:100%;width:100%}.command-head{font-size:9px;margin-bottom:4px}.command-text{font-size:11px;line-height:1.5}.welcome-graphic,.signal.live{animation:none}.welcome-graphic{border-radius:8px;box-shadow:none;background:#203640}.welcome h2{font-size:21px}.welcome p{font-size:12px}
+.footer{padding:0 10px;gap:16px;background:#1b232d;font-size:10px;overflow-x:auto}.footer .coordinates{min-width:150px;color:#bed4df}.footer .end{font-size:9px}.session{display:flex;gap:5px;font-size:9px}.session #sessionText,.session .signal{display:none}.session .status-pill{font-size:8px;margin:0!important;white-space:nowrap}.footer .status-pill{font-size:9px;padding:2px 5px}.status-pill.good{color:#b8e693}.toast{border-radius:4px;font-size:12px;min-width:220px;max-width:calc(100vw - 30px);bottom:38px}.modal-card{border-radius:6px;background:#1b2633}
+.workspace.library-collapsed{grid-template-columns:60px 0 minmax(0,1fr) 308px}.workspace.inspector-collapsed{grid-template-columns:60px 220px minmax(0,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:60px 0 minmax(0,1fr) 0}.library-collapsed .image-library,.inspector-collapsed .side{visibility:hidden;pointer-events:none}
+@media(min-width:1600px){.workspace{grid-template-columns:60px 240px minmax(0,1fr) 320px}.workspace.library-collapsed{grid-template-columns:60px 0 minmax(0,1fr) 320px}.workspace.inspector-collapsed{grid-template-columns:60px 240px minmax(0,1fr) 0}}
+@media(min-width:1280px){#libraryToggleBtn{display:none}}
+@media(max-width:1279px){.workspace{grid-template-columns:56px 180px minmax(0,1fr) 280px}.workspace.library-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 280px}.workspace.inspector-collapsed{grid-template-columns:56px 180px minmax(0,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 0}.brand{min-width:124px}.brand-sub{display:none}.top{gap:6px;padding:0 8px}.top-actions .btn{font-size:10px;padding:0 6px}.session{display:none}.footer{gap:10px}.footer .end{display:none}}
+@media(max-width:1099px){.workspace{grid-template-columns:56px 168px minmax(0,1fr) 260px}.workspace.library-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 260px}.workspace.inspector-collapsed{grid-template-columns:56px 168px minmax(0,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:56px 0 minmax(0,1fr) 0}.image-library .image-section{padding:8px}.image-entry{grid-template-columns:36px minmax(0,1fr);padding:6px}.image-entry img{width:36px;height:32px}.footer{gap:8px}.footer .coordinates{min-width:135px}}
+@media(max-width:900px){.side{position:static;top:auto;bottom:auto;right:auto}.mobile-side{display:inline-flex!important}.workspace{grid-template-columns:52px 144px minmax(200px,1fr) 0}.workspace.library-collapsed{grid-template-columns:52px 0 minmax(200px,1fr) 260px}.workspace.inspector-collapsed{grid-template-columns:52px 144px minmax(200px,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:52px 0 minmax(200px,1fr) 0}.workspace:not(.library-collapsed) .side{visibility:hidden}.workspace.library-collapsed:not(.inspector-collapsed) .side{visibility:visible}.docname{max-width:100%}.view-chip{display:none}.tools{padding:6px 4px}.brand-mark{display:none}.brand{min-width:90px}.footer .foot-item:first-child{display:block}.footer .foot-item{flex-shrink:0}}
+@media(max-width:600px){.workspace{grid-template-columns:48px 110px minmax(160px,1fr) 0}.workspace.library-collapsed{grid-template-columns:48px 0 minmax(160px,1fr) min(240px,45vw)}.workspace.inspector-collapsed{grid-template-columns:48px 110px minmax(160px,1fr) 0}.workspace.library-collapsed.inspector-collapsed{grid-template-columns:48px 0 minmax(160px,1fr) 0}.image-entry{display:block}.image-entry img{width:100%;height:48px}.image-entry strong{margin-top:4px}.dock-heading{padding:0 6px;font-size:9px}.dock-caption{display:none}.top-actions .btn span.subtext{display:none}.command-text{font-size:10px}.welcome p{margin:0 0 12px}.welcome-btns{flex-wrap:wrap}.footer{font-size:9px}}
+#selectionMeasurePanel .side-acts select{min-width:0;flex:1;width:0}#selectionMeasurePanel .field{margin:6px 0}#planRowMembers{max-height:230px;width:100%}.plan-row-legend{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;font:11px Consolas,monospace}.plan-preview-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}.plan-preview-item>span{flex:1;overflow-wrap:anywhere}#planPreview{max-height:230px;overflow:auto}#planInputError:empty{display:none}#selectionMeasurePanel[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -35,10 +61,11 @@
   <button class="btn" id="cameraBtn">◉ <span class="subtext">USB Camera</span></button>
   <button class="btn primary" id="snapshotBtn" style="display:none">◎ Chụp ảnh</button>
   <div class="spacer"></div>
+  <button class="btn small" id="saveProjectBtn">↓ Lưu JSON</button>
   <button class="btn" id="exportCsvBtn" title="Xuất dữ liệu đo dạng CSV">↧ CSV</button>
   <button class="btn primary" id="exportPngBtn" title="Lưu ảnh gốc kèm kích thước">↓ Lưu ảnh PNG</button>
   <button class="btn primary" id="exportAllBtn" title="Xuất tất cả ảnh đã đo và CSV trong một ZIP">↓ Save All · ZIP</button>
-  <button class="btn small mobile-side" id="mobileSideBtn" style="display:none">☷</button>
+  <button class="btn small" id="libraryToggleBtn" title="Thu gọn hoặc mở thư viện ảnh" aria-controls="imageLibrary" aria-expanded="true">▤ Bộ ảnh</button><button class="btn small" id="mobileSideBtn" title="Thu gọn hoặc mở bảng thuộc tính" aria-controls="sidePanel" aria-expanded="true">☷ Thuộc tính</button>
  </div>
  <div class="separator"></div>
  <div class="session"><span class="signal" id="signal"></span><span id="sessionText">SẴN SÀNG</span></div>
@@ -63,29 +90,41 @@
  <button class="tool" id="magnifierBtn" title="Bật hoặc tắt kính lúp [Q]" aria-label="Bật kính lúp" aria-pressed="false"><span>⊕</span><span class="tool-label">KÍNH LÚP</span></button>
  <button class="tool" id="undoBtn" title="Hoàn tác [Ctrl+Z]"><span>↶</span><span class="tool-label">UNDO</span></button>
 </nav>
-<section class="canvas-area" id="viewport">
- <canvas id="stage" aria-label="Ảnh và bản vẽ đo"></canvas>
- <canvas id="magnifier" class="magnifier" width="160" height="160" aria-hidden="true"></canvas>
- <div class="canvas-head"><div class="glass docname"><span class="doc-chip" id="docKind">NO IMAGE</span><div style="min-width:0"><div class="file-name" id="docName">Chưa tải ảnh</div><div class="doc-sub" id="docDetails">Mở ảnh từ kính hiển vi hoặc tải ảnh chuẩn</div></div></div><div class="glass view-chip"><span><span class="cross">✛</span> <span id="zoomText">100%</span></span><span id="imageSizeText">— px</span></div></div>
- <div id="welcome" class="floating welcome"><div class="welcome-graphic"><div class="reticle"><i></i></div></div><h2>Đo lỗ chính xác từ ảnh</h2><p>Tải ảnh từ kính hiển vi, hiệu chuẩn theo vật mẫu có kích thước đã biết rồi ghi kích thước giống AutoCAD.</p><div class="welcome-btns"><button class="btn primary" id="welcomeOpen">▣ Mở ảnh</button><button class="btn" id="welcomeCamera">◉ Bật camera</button></div><button class="demo-link" id="demoBtn">Dùng ảnh minh hoạ để trải nghiệm →</button></div>
- <div class="viewport-bottom"><div class="glass command"><div class="command-head">▸ Command line · <span id="toolMode">SELECT</span></div><div class="command-text" id="toolHint">Chọn công cụ ở bên trái hoặc mở một ảnh để bắt đầu.</div><button class="btn small primary finish-circle" id="finishCircleBtn">✓ Hoàn tất lỗ (Enter)</button></div><div class="glass legend"><span id="coordinateText">X: — &nbsp; Y: —</span></div></div>
-</section>
-<aside class="side" id="sidePanel">
- <div class="side-head"><div class="side-title">BẢNG THUỘC TÍNH</div><span class="kbd" title="Phiên bản thử nghiệm">v2.3 AUTO BATCH</span></div>
- <section class="side-section image-section"><div class="sec-label">Bộ ảnh <span id="imageCount">0 ảnh</span></div>
- <div class="image-nav"><button class="btn small" id="prevImage" aria-label="Ảnh trước">←</button><span id="imagePosition">0 / 0</span><button class="btn small" id="nextImage" aria-label="Ảnh sau">→</button></div>
+ <aside class="image-library" id="imageLibrary" aria-label="Thư viện ảnh"><div class="dock-heading">THƯ VIỆN ẢNH <span class="dock-caption">PROJECT</span></div><section class="side-section image-section"><div class="sec-label">Bộ ảnh <span id="imageCount">0 ảnh</span></div>
+ <div class="image-nav"><button class="btn small" id="prevImage" aria-label="Ảnh trước">←</button><span id="imagePosition" title="Dùng ↑ / ↓ để chuyển ảnh khi không nhập liệu">0 / 0</span><button class="btn small" id="nextImage" aria-label="Ảnh sau">→</button></div>
  <div id="imageList" class="image-list" aria-label="Danh sách ảnh"></div>
  <label class="muted"><input type="checkbox" id="includeUnmeasured"> Xuất cả ảnh chưa đo vào ZIP</label>
  <div class="muted">Chuẩn mới nhất tự áp dụng cho toàn bộ bộ ảnh và ảnh nhập sau. Chỉ dùng khi cùng độ phóng đại và tỷ lệ pixel.</div>
- </section>
- <section class="side-section"><div class="sec-label">01 / Hiệu chuẩn ảnh <span class="status-pill" id="calStatus">CHƯA CHUẨN</span></div><div class="cal-card"><div class="dim-label">Hệ số chiều dài / pixel</div><div class="scale-big" id="scaleValue">—</div><div class="scale-sub" id="scaleInfo">Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.</div><div class="side-acts"><button class="btn small primary" id="calBtn">⤢ Lấy chuẩn</button><button class="btn small" id="newRefBtn">Mở ảnh chuẩn</button></div><div class="tiny">Lấy chuẩn xong sẽ tự áp dụng cho mọi ảnh trong bộ.</div></div><div class="warning" id="calWarning">⚠ Chuẩn được lấy từ ảnh khác. Chỉ tái sử dụng hệ số khi cùng độ phóng đại, khoảng cách làm việc, thiết lập ảnh và tỷ lệ pixel.</div></section>
- <section class="side-section"><div class="sec-label">02 / Cài đặt bản vẽ</div><div class="micro-row"><span class="dim-label">Đơn vị hiển thị</span><div class="unit-select"><select id="unitSelect" aria-label="Đơn vị"><option value="um">µm</option><option value="mm">mm</option></select></div></div><div class="micro-row"><span class="dim-label">Bám tâm đường tròn</span><label style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px"><input id="snapToggle" type="checkbox" checked> SNAP</label></div><div class="micro-row" style="margin-bottom:0"><span class="dim-label">Đối tượng đang chọn</span><strong id="selectedCount" style="font-family:Consolas,monospace">0</strong></div></section>
- <section class="side-section"><div class="sec-label">03 / Danh sách kích thước <span id="measCount">0</span></div><div class="tips" style="margin-bottom:10px"><b>Ø NHIỀU [M]</b>: chọn ít nhất 3 điểm trên vành lỗ; Enter để khớp vòng tròn. Độ lệch RMS cho biết mức méo so với vòng tròn.<br><b>Ø + MÉP [B]</b>: chọn 3 điểm mỗi lỗ rồi tính khe giữa hai đường tròn.<br><b>MÉP 2Ø [G]</b>: chọn hai đường tròn đã đo. Khe tính từ đường tròn khớp, không dò biên ảnh.</div><div id="measureList" class="meas-list"><div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div></div><div class="edit-box" id="editBox"><div class="dim-label">Tên/ghi chú kích thước</div><div class="edit-row"><input class="field" id="measNameEdit" maxlength="40" placeholder="Ví dụ: Lỗ số 1"><button class="btn small" id="updateNameBtn">Lưu</button></div><button class="btn small" id="deleteMeasureBtn" style="width:100%;margin-top:8px;border-color:#573a4c;color:#f0a2b4">× Xóa phép đo đang chọn</button></div></section>
- <section class="side-section"><div class="sec-label">04 / Dự án</div><div style="display:flex;gap:7px"><button class="btn small" style="flex:1" id="saveProjectBtn">↓ Lưu JSON</button><button class="btn small" style="flex:1" id="saveCsvBtn">↓ Lưu CSV</button></div><div class="muted" style="margin-top:11px">Save All tạo ZIP gồm PNG và CSV tổng hợp. Lưu JSON giữ toàn bộ ảnh gốc, phép đo và chuẩn để mở lại. Lưu dự án trước khi đóng cửa sổ.</div></section>
- <section class="side-section"><div class="sec-label">Hướng dẫn nhanh</div><div class="tips"><strong>1.</strong> Mở ảnh cần đo hoặc ảnh chuẩn.<br><strong>2.</strong> Bấm <b>K</b>, chọn hai đầu đoạn chuẩn, nhập chiều dài thực. Chuẩn tự áp dụng toàn bộ ảnh.<br><strong>3.</strong> Trong <b>AI DETECT · YOLO</b>, chạy phát hiện cho ảnh này hoặc toàn bộ ảnh.<br><strong>4.</strong> Kiểm tra vòng cyan, confidence và trạng thái review; chỉ bấm <b>Chấp nhận</b> với kết quả đúng.<br><strong>5.</strong> Dùng <b>M</b> để đo hoặc bổ sung thủ công khi cần.<br><strong>6.</strong> Bấm <b>Save All · ZIP</b> để xuất PNG và CSV toàn bộ bộ ảnh.<br><br>Cuộn chuột để zoom, <b>H</b> để pan, <b>Esc</b> để hủy thao tác.</div><div class="tiny">AI YOLO là công cụ thử nghiệm. Confidence không phải độ chính xác kích thước; luôn kiểm tra trực quan và xác nhận bằng mẫu chuẩn trước khi dùng kết quả kiểm định.</div></section>
+ </section></aside>
+<section class="canvas-area" id="viewport">
+ <canvas id="stage" aria-label="Ảnh và bản vẽ đo"></canvas>
+ <canvas id="magnifier" class="magnifier" width="160" height="160" aria-hidden="true"></canvas>
+ <div class="canvas-head"><div class="glass docname"><span class="doc-chip" id="docKind">NO IMAGE</span><div style="min-width:0"><div class="file-name" id="docName">Chưa tải ảnh</div><div class="doc-sub" id="docDetails">Mở ảnh từ kính hiển vi hoặc tải ảnh chuẩn</div></div></div><div class="glass view-chip"><span><span class="cross">✛</span> ZOOM</span><span id="imageSizeText">— px</span></div></div>
+ <div id="welcome" class="floating welcome"><div class="welcome-graphic"><div class="reticle"><i></i></div></div><h2>Đo lỗ chính xác từ ảnh</h2><p>Tải ảnh từ kính hiển vi, hiệu chuẩn theo vật mẫu có kích thước đã biết rồi ghi kích thước giống AutoCAD.</p><div class="welcome-btns"><button class="btn primary" id="welcomeOpen">▣ Mở ảnh</button><button class="btn" id="welcomeCamera">◉ Bật camera</button></div><button class="demo-link" id="demoBtn">Dùng ảnh minh hoạ để trải nghiệm →</button></div>
+ <div class="viewport-bottom"><div class="glass command"><div class="command-head">▸ Command line · <span id="toolMode">SELECT</span></div><div class="command-text" id="toolHint">Chọn công cụ ở bên trái hoặc mở một ảnh để bắt đầu.</div><button class="btn small primary finish-circle" id="finishCircleBtn">✓ Hoàn tất lỗ (Enter)</button></div><div class="glass legend"></div></div>
+</section>
+<aside class="side" id="sidePanel">
+ <div class="side-head"><div class="side-title">THUỘC TÍNH</div><span class="dock-caption" id="inspectorContext">CHỌN</span></div>
+ <div class="inspector-tabs" role="group" aria-label="Ngữ cảnh thuộc tính"><button class="btn small" id="inspectorToolBtn" aria-pressed="true">Công cụ</button><button class="btn small" id="inspectorAiBtn" aria-pressed="false">AI Detect · EXP</button><button class="btn small" id="inspectorHelpBtn" aria-pressed="false" title="Hướng dẫn sử dụng">?</button></div>
+ <section class="side-section tool-guide" id="toolGuide"><div class="sec-label" id="inspectorToolTitle">Chọn</div><p class="muted" id="inspectorToolHelp"></p></section>
+
+ <section class="side-section" id="calibrationPanel"><div class="sec-label">01 / Hiệu chuẩn ảnh <span class="status-pill" id="calStatus">CHƯA CHUẨN</span></div><div class="cal-card"><div class="dim-label">Hệ số chiều dài / pixel</div><div class="scale-big" id="scaleValue">—</div><div class="scale-sub" id="scaleInfo">Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.</div><div class="side-acts"><button class="btn small primary" id="calBtn">⤢ Lấy chuẩn</button><button class="btn small" id="newRefBtn">Mở ảnh chuẩn</button></div><div class="tiny">Lấy chuẩn xong sẽ tự áp dụng cho mọi ảnh trong bộ.</div></div><div class="warning" id="calWarning">⚠ Chuẩn được lấy từ ảnh khác. Chỉ tái sử dụng hệ số khi cùng độ phóng đại, khoảng cách làm việc, thiết lập ảnh và tỷ lệ pixel.</div></section>
+ <section class="side-section" id="drawingPanel"><div class="sec-label">02 / Cài đặt bản vẽ</div><div class="micro-row"><span class="dim-label">Đơn vị hiển thị</span><div class="unit-select"><select id="unitSelect" aria-label="Đơn vị"><option value="um">µm</option><option value="mm">mm</option></select></div></div><div class="micro-row"><span class="dim-label">Bám tâm đường tròn</span><label style="display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px"><input id="snapToggle" type="checkbox" checked> SNAP</label></div><div class="micro-row" style="margin-bottom:0"><span class="dim-label">Đối tượng đang chọn</span><strong id="selectedCount" style="font-family:Consolas,monospace">0</strong></div></section>
+ <section class="side-section" id="measurementPanel"><div class="sec-label">03 / Danh sách kích thước <span id="measCount">0</span></div><div class="tips" style="margin-bottom:10px"><b>Ø NHIỀU [M]</b>: chọn ít nhất 3 điểm trên vành lỗ; Enter để khớp vòng tròn. Độ lệch RMS cho biết mức méo so với vòng tròn.<br><b>Ø + MÉP [B]</b>: chọn 3 điểm mỗi lỗ rồi tính khe giữa hai đường tròn.<br><b>MÉP 2Ø [G]</b>: chọn hai đường tròn đã đo. Khe tính từ đường tròn khớp, không dò biên ảnh.</div><div class="muted" id="selectionSummary" hidden></div><div id="selectionActions" hidden><button class="btn small" id="deleteMeasureBtn" style="width:100%;margin-top:8px;border-color:#573a4c;color:#f0a2b4">× Xóa phép đo đang chọn</button></div><div id="measureList" class="meas-list" role="listbox" aria-multiselectable="true" aria-label="Phép đo"><div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div></div><div class="edit-box" id="editBox"><div class="dim-label">Tên/ghi chú kích thước</div><div class="edit-row"><input class="field" id="measNameEdit" maxlength="40" placeholder="Ví dụ: Lỗ số 1"><button class="btn small" id="updateNameBtn">Lưu</button></div></div></section>
+ <section class="side-section" id="projectPanel"><div class="sec-label">04 / Dự án</div><div style="display:flex;gap:7px"><button class="btn small" hidden id="saveCsvBtn">↓ Lưu CSV</button></div><div class="muted" style="margin-top:11px">Save All tạo ZIP gồm PNG và CSV tổng hợp. Lưu JSON giữ toàn bộ ảnh gốc, phép đo và chuẩn để mở lại. Lưu dự án trước khi đóng cửa sổ.</div></section>
+ <section class="side-section" id="helpPanel"><div class="sec-label">Hướng dẫn nhanh</div><div class="tips"><strong>1.</strong> Mở ảnh cần đo hoặc ảnh chuẩn.<br><strong>2.</strong> Bấm <b>K</b>, chọn hai đầu đoạn chuẩn, nhập chiều dài thực. Chuẩn tự áp dụng toàn bộ ảnh.<br><strong>3.</strong> Trong <b>AI DETECT · YOLO</b>, chạy phát hiện cho ảnh này hoặc toàn bộ ảnh.<br><strong>4.</strong> Kiểm tra vòng cyan, confidence và trạng thái review; chỉ bấm <b>Chấp nhận</b> với kết quả đúng.<br><strong>5.</strong> Dùng <b>M</b> để đo hoặc bổ sung thủ công khi cần.<br><strong>6.</strong> Bấm <b>Save All · ZIP</b> để xuất PNG và CSV toàn bộ bộ ảnh.<br><br>Cuộn chuột để zoom, <b>H</b> để pan, <b>Esc</b> để hủy thao tác.</div><div class="tiny">AI YOLO là công cụ thử nghiệm. Confidence không phải độ chính xác kích thước; luôn kiểm tra trực quan và xác nhận bằng mẫu chuẩn trước khi dùng kết quả kiểm định.</div></section>
 </aside>
 </div>
-<footer class="footer"><div class="foot-item">MODEL <b>2D IMAGE METROLOGY</b></div><div class="foot-item">SCALE <b id="footerScale">UNCALIBRATED</b></div><div class="foot-item">MEASUREMENTS <b id="footerCount">0</b></div><div class="foot-item">TOOL <b id="footerTool">SELECT</b></div><div class="end">MICROCAD VISION · OFFLINE READY</div></footer>
+<footer class="footer" aria-label="Trạng thái đo lường">
+ <div class="foot-item coordinates" id="coordinateText">X: — &nbsp; Y: —</div>
+ <div class="foot-item">ZOOM <b id="zoomText">100%</b></div>
+ <div class="foot-item status-unit">UNIT <b id="footerUnit">µm</b></div>
+ <div class="foot-item">CAL <b id="footerScale">UNCALIBRATED</b></div>
+ <div class="foot-item">TOOL <b id="footerTool">SELECT</b></div>
+ <div class="foot-item">MEAS <b id="footerCount">0</b></div>
+ <span class="status-pill" id="footerAi" role="status">AI OFFLINE</span>
+ <span class="end">MICROCAD VISION</span>
+</footer>
 </div>
 <div id="busyPanel" hidden role="status" aria-live="polite"><div class="glass"><b id="busyText">Đang xử lý…</b><progress id="batchProgress" max="1" value="0"></progress><button id="cancelBatch" class="btn">Hủy</button></div></div>
 <div class="toast" id="toast" role="status"></div>
@@ -100,12 +139,18 @@
 'use strict';
 const $=id=>document.getElementById(id), canvas=$('stage'), viewport=$('viewport'), ctx=canvas.getContext('2d');
 const doc={source:null,dataUrl:null,imgName:'',imgId:0,role:'image',width:0,height:0,cal:null,measures:[],aiPending:[],selected:null,tool:'select',pending:[],hover:null,view:{z:1,x:0,y:0},camera:false,stream:null,mouse:{down:false,mode:'',x:0,y:0},snap:true,unit:'um',history:[],lastLabelBoxes:[],ready:false};
+// Inspector navigation is UI-only; opening AI never changes the canvas tool.
+let inspectorMode='tool';
+// Selection is transient UI state, outside project/export and measurement records.
+let selectedIds=new Set(),selectionPrimary=null,selectionImage=null,selectionAnchor=null,selectionBox=null;
+const selectionUndo=new WeakMap();
+let selectionMeasurePlan=null;
 let width=800,height=600,dpr=1,framePending=false,toastTimer=null,calPair=null,spacePressed=false,requestId=0;
 const COLORS={rowSpacing:'#f4d35e',circleGap:'#ffbd59',edges:'#ff8765',distance:'#f87fb4',centers:'#a997ff',line:'#f87fb4',circle:'#4de1f3',legacyCircle:'#a7f36a',center:'#a997ff',angle:'#ffe27a',cal:'#ffffff'};
 const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y), pt=(x,y)=>({x,y}), mid=(a,b)=>pt((a.x+b.x)/2,(a.y+b.y)/2);
 const typeName={rowSpacing:'2 HÀNG',circleGap:'MÉP 2Ø',edges:'EDGE (thủ công)',distance:'DIST',circle:'DIAM',centers:'C-C',angle:'ANGLE'};
 const toolTitles={rowSpacing:'Khoảng cách 2 hàng',circleGap:'Mép hai đường tròn',circlePair:'Hai đường kính và khe mép',edges:'Mép - mép thủ công',select:'Chọn',pan:'Di chuyển',calibrate:'Hiệu chuẩn',distance:'Đo chiều dài',circle:'Đo Ø lỗ',circleMulti:'Đo Ø nhiều điểm',centers:'Tâm - tâm',angle:'Đo góc'};
-const helpers={circleGap:'Chọn hai đường tròn đã đo: bấm vành, bên trong hoặc mục đường tròn trong danh sách. Tính khe nhỏ nhất giữa hai đường tròn đã dựng, không dò biên ảnh.',circlePair:'Bấm 3 điểm trên vành lỗ 1, rồi 3 điểm trên vành lỗ 2. Tạo hai đường kính và khe mép giữa hai đường tròn trong một lần.',edges:'Chọn 2 điểm trên hai mép lỗ khác nhau, theo phương bạn muốn đo. Khoảng cách thẳng thủ công; không tự tìm cực tiểu. Không bám tâm.',select:'Nhấn chọn một nhãn kích thước và kéo để di chuyển. Xóa bằng Delete.',pan:'Giữ chuột và kéo để di chuyển ảnh. Cuộn chuột để phóng to / thu nhỏ.',calibrate:'Nhấn hai điểm đầu và cuối của một đoạn chuẩn có chiều dài thực đã biết.',distance:'Chọn điểm đầu rồi chọn điểm cuối để tạo Dimension theo 2 điểm.',circle:'Chọn chính xác ba điểm nằm trên cùng một biên của lỗ. Tự tính tâm và Ø.',circleMulti:'Chọn từ 3 đến 64 điểm trên vành lỗ, rồi nhấn Enter hoặc Hoàn tất lỗ. Backspace bỏ điểm cuối.',centers:'Chọn hai tâm lỗ. Bật SNAP để hút vào tâm các đường tròn đã đo.',angle:'Chọn điểm thứ nhất → đỉnh góc → điểm thứ ba để tính góc.'};
+const helpers={circleGap:'Chọn hai đường tròn đã đo: bấm vành, bên trong hoặc mục đường tròn trong danh sách. Tính khe nhỏ nhất giữa hai đường tròn đã dựng, không dò biên ảnh.',circlePair:'Bấm 3 điểm trên vành lỗ 1, rồi 3 điểm trên vành lỗ 2. Tạo hai đường kính và khe mép giữa hai đường tròn trong một lần.',edges:'Chọn 2 điểm trên hai mép lỗ khác nhau, theo phương bạn muốn đo. Khoảng cách thẳng thủ công; không tự tìm cực tiểu. Không bám tâm.',select:'Chọn hình hoặc nhãn. Ctrl/Cmd thêm/bỏ; Shift chọn dải trong danh sách. Kéo trái→phải: nằm trong khung; phải→trái: giao khung. Delete xóa, Esc bỏ chọn.',pan:'Giữ chuột và kéo để di chuyển ảnh. Cuộn chuột để phóng to / thu nhỏ.',calibrate:'Nhấn hai điểm đầu và cuối của một đoạn chuẩn có chiều dài thực đã biết.',distance:'Chọn điểm đầu rồi chọn điểm cuối để tạo Dimension theo 2 điểm.',circle:'Chọn chính xác ba điểm nằm trên cùng một biên của lỗ. Tự tính tâm và Ø.',circleMulti:'Chọn từ 3 đến 64 điểm trên vành lỗ, rồi nhấn Enter hoặc Hoàn tất lỗ. Backspace bỏ điểm cuối.',centers:'Chọn hai tâm lỗ. Bật SNAP để hút vào tâm các đường tròn đã đo.',angle:'Chọn điểm thứ nhất → đỉnh góc → điểm thứ ba để tính góc.'};
 helpers.rowSpacing='Chọn ít nhất 2 tâm cho Hàng 1, chuyển sang Hàng 2, chọn ít nhất 2 tâm rồi bấm Tính khoảng cách.';
 function escapeHTML(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function toast(s,err=false){let e=$('toast');e.textContent=s;e.className='toast show'+(err?' err':'');clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.className='toast',3500)}
@@ -121,15 +166,16 @@ function updateHeader(){
  $('snapshotBtn').style.display=doc.camera?'inline-flex':'none';$('cameraBtn').innerHTML=doc.camera?'■ Dừng camera':'◉ <span class="subtext">USB Camera</span>';
 }
 function updateUI(){
+ syncSelection();
  $('calStatus').textContent=doc.cal?'ĐÃ CHUẨN':'CHƯA CHUẨN';$('calStatus').classList.toggle('good',!!doc.cal);
  $('scaleValue').textContent=doc.cal?num(doc.cal.mmPerPx*1000,3)+' µm/px':'—';
  $('scaleInfo').textContent=doc.cal?`${num(doc.cal.mmPerPx,6)} mm/px · Chuẩn từ: ${doc.cal.refName}`:'Để đo bằng mm hoặc µm, tải ảnh chuẩn và chọn hai đầu của một đoạn có kích thước thật đã biết.';
  let warn=doc.cal&&(doc.cal.refId!==doc.imgId);
  $('calWarning').classList.toggle('visible',!!warn);
- $('footerScale').textContent=doc.cal?num(doc.cal.mmPerPx*1000,4)+' µm/px':'UNCALIBRATED';$('footerCount').textContent=String(doc.measures.length);$('footerTool').textContent=doc.tool.toUpperCase();$('measCount').textContent=String(doc.measures.length);$('selectedCount').textContent=doc.selected===null?'0':'1';
+ $('footerScale').textContent=doc.cal?num(doc.cal.mmPerPx*1000,4)+' µm/px':'UNCALIBRATED';$('footerCount').textContent=String(doc.measures.length);$('footerTool').textContent=doc.tool.toUpperCase();$('measCount').textContent=String(doc.measures.length);$('selectedCount').textContent=String(selectedIds.size);
  $('exportPngBtn').disabled=!doc.source||doc.camera;$('exportCsvBtn').disabled=!doc.measures.length;$('saveCsvBtn').disabled=!doc.measures.length;$('saveProjectBtn').disabled=!doc.source||doc.camera;
  if($('aiEngineStatus'))setAiState(aiOnline,$('aiEngineStatus').textContent);
- renderList();renderAiReviewPanel();renderImageList();
+ renderList();renderAiReviewPanel();renderRowPanel();renderImageList();renderInspector();
 }
 function formatMeasurement(m){
  let p=m.type==='circle'?m.r*2:m.type==='angle'?m.angle:dist(m.p1,m.p2);
@@ -140,16 +186,99 @@ function formatMeasurement(m){
 }
 function basePx(m){return m.type==='circle'?m.r*2:m.type==='angle'?m.angle:dist(m.p1,m.p2)}
 function mLabel(m){const prefix=m.type==='circle'?'Ø ':m.type==='centers'?'C–C ':m.type==='angle'?'∠ ':'';return `${m.name?m.name+' · ':''}${prefix}${formatMeasurement(m)}`}
+function syncSelection(){
+ const valid=new Set(doc.measures.map(m=>m.id));
+ if(selectionImage!==doc.imgId||selectionPrimary!==doc.selected){
+  selectedIds=new Set(valid.has(doc.selected)?[doc.selected]:[]);
+  if(selectionImage!==doc.imgId){selectionAnchor=null;selectionBox=null;}
+ }
+ selectedIds=new Set([...selectedIds].filter(id=>valid.has(id)));
+ if(!valid.has(doc.selected))doc.selected=[...selectedIds].at(-1)??null;
+ selectionPrimary=doc.selected;selectionImage=doc.imgId;
+ if(selectionMeasurePlan&&(selectionMeasurePlan.imageId!==doc.imgId||selectionMeasurePlan.ids.length!==selectedIds.size||selectionMeasurePlan.ids.some(id=>!selectedIds.has(id))))selectionMeasurePlan=null;
+}
+function selectMeasurements(ids,primary=null){
+ const valid=new Set(doc.measures.map(m=>m.id));selectedIds=new Set(ids.filter(id=>valid.has(id)));
+ doc.selected=selectedIds.has(primary)?primary:[...selectedIds].at(-1)??null;
+ selectionPrimary=doc.selected;selectionImage=doc.imgId;
+}
+function selectMeasurement(id,event,{range=false}={}){
+ syncSelection();const additive=event.ctrlKey||event.metaKey;
+ if(range&&event.shiftKey){
+  const ids=doc.measures.map(m=>m.id),a=ids.indexOf(selectionAnchor),b=ids.indexOf(id);
+  const picked=a<0?[id]:ids.slice(Math.min(a,b),Math.max(a,b)+1);
+  selectMeasurements(additive?[...selectedIds,...picked]:picked,id);
+  if(a<0)selectionAnchor=id;
+ }else if(additive){const ids=new Set(selectedIds);ids.has(id)?ids.delete(id):ids.add(id);selectMeasurements([...ids],id);selectionAnchor=id;}
+ else{selectMeasurements([id],id);selectionAnchor=id;}
+}
+function navigateImage(delta){
+ if(busy||doc.camera||doc.mouse.down||selectionBox||$('calModal').classList.contains('open'))return false;
+ const index=images.findIndex(r=>r.imgId===activeId),target=images[index+delta];
+ if(index<0||!target)return false;activateImage(target.imgId);return activeId===target.imgId;
+}
+// Original-pixel selection primitives only; annotations and AI proposals are excluded.
+function selectionSegments(m){return m.type==='angle'?[[m.p1,m.p2],[m.p2,m.p3]]:m.p1&&m.p2?[[m.p1,m.p2]]:[];}
+function selectionPointInRect(p,r){return p.x>=r.left&&p.x<=r.right&&p.y>=r.top&&p.y<=r.bottom;}
+function selectionSegmentIntersects(a,b,r){
+ let lo=0,hi=1;const dx=b.x-a.x,dy=b.y-a.y;
+ for(const [p,q] of [[-dx,a.x-r.left],[dx,r.right-a.x],[-dy,a.y-r.top],[dy,r.bottom-a.y]]){
+  if(Math.abs(p)<1e-12){if(q<0)return false;continue;}
+  const t=q/p;if(p<0)lo=Math.max(lo,t);else hi=Math.min(hi,t);if(lo>hi)return false;
+ }return true;
+}
+function measurementInSelectionRect(m,r,crossing){
+ if(m.type==='circle'){
+  if(!crossing)return m.c.x-m.r>=r.left&&m.c.x+m.r<=r.right&&m.c.y-m.r>=r.top&&m.c.y+m.r<=r.bottom;
+  const dx=Math.max(r.left-m.c.x,0,m.c.x-r.right),dy=Math.max(r.top-m.c.y,0,m.c.y-r.bottom);
+  const far=Math.max(...[r.left,r.right].flatMap(x=>[r.top,r.bottom].map(y=>(x-m.c.x)**2+(y-m.c.y)**2)));
+  return dx*dx+dy*dy<=m.r*m.r&&far>=m.r*m.r;
+ }
+ const segments=selectionSegments(m);return segments.length>0&&(crossing?segments.some(([a,b])=>selectionSegmentIntersects(a,b,r)):segments.every(pair=>pair.every(p=>selectionPointInRect(p,r))));
+}
+function selectionSegmentDistance(p,a,b){
+ const dx=b.x-a.x,dy=b.y-a.y,length=dx*dx+dy*dy;
+ const t=length?Math.max(0,Math.min(1,((p.x-a.x)*dx+(p.y-a.y)*dy)/length)):0;
+ return Math.hypot(p.x-a.x-t*dx,p.y-a.y-t*dy);
+}
+function hitMeasurement(p){
+ const tolerance=7/doc.view.z;
+ return [...doc.measures].reverse().find(m=>m.type==='circle'?Math.abs(dist(p,m.c)-m.r)<=tolerance||dist(p,m.c)<=tolerance:selectionSegments(m).some(([a,b])=>selectionSegmentDistance(p,a,b)<=tolerance));
+}
+function finishSelectionBox(){
+ const box=selectionBox;if(!box)return;
+ if(Math.hypot(box.endScreen.x-box.startScreen.x,box.endScreen.y-box.startScreen.y)<4){if(!box.additive)selectMeasurements([]);}
+ else{
+  const r={left:Math.min(box.start.x,box.end.x),right:Math.max(box.start.x,box.end.x),top:Math.min(box.start.y,box.end.y),bottom:Math.max(box.start.y,box.end.y)};
+  const ids=doc.measures.filter(m=>measurementInSelectionRect(m,r,box.endScreen.x<box.startScreen.x)).map(m=>m.id);
+  selectMeasurements(box.additive?[...box.initial,...ids]:ids);selectionAnchor=doc.selected;
+ }
+ selectionBox=null;updateUI();render();
+}
+function drawSelectionBox(context){
+ if(!selectionBox)return;const a=screen(selectionBox.start),b=screen(selectionBox.end);
+ if(Math.hypot(b.x-a.x,b.y-a.y)<4)return;const crossing=b.x<a.x;
+ context.save();context.strokeStyle=crossing?'#a9e99a':'#61d6df';context.fillStyle=crossing?'#a9e99a22':'#61d6df22';context.lineWidth=1;
+ context.setLineDash(crossing?[6,4]:[]);context.fillRect(a.x,a.y,b.x-a.x,b.y-a.y);context.strokeRect(a.x,a.y,b.x-a.x,b.y-a.y);context.restore();
+}
 function renderList(){
  const list=$('measureList');if(!doc.measures.length){list.innerHTML='<div class="list-empty">Chưa có phép đo nào.<br>Chọn <b>Ø NHIỀU</b> rồi đánh dấu các điểm trên đường biên lỗ.</div>';}
- else list.innerHTML=doc.measures.map((m,i)=>`<div class="meas-item ${m.id===doc.selected?'selected':''}" style="--measure-color:${m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type]}" data-id="${m.id}"><div class="meas-top"><span class="meas-type">${m.ai?'AI Ø':m.auto?'LEGACY Ø':typeName[m.type]}</span><span class="meas-name" title="${escapeHTML(m.name)}">${escapeHTML(m.name)||'Phép đo '+(i+1)}</span><button class="iconbtn remove-one" data-id="${m.id}" title="Xóa">✕</button></div><div class="meas-val">${escapeHTML((m.type==='circle'?'Ø ':m.type==='angle'?'∠ ':'')+formatMeasurement(m))}</div><div class="meas-foot">${m.type==='angle'?'Góc · '+num(basePx(m),2)+'°':num(basePx(m),2)+' px'} · ${m.type==='rowSpacing'?`${m.row1Ids.length} + ${m.row2Ids.length} tâm · lệch ${num(m.angleDifferenceDeg,2)}°`:m.type==='circle'?`${m.ai?`AI ${Math.round((m.autoConfidence||0)*100)}% · `:m.auto?`<span class="legacy-score">Legacy ${Math.round((m.autoConfidence||0)*100)}%</span> · `:''}${m.edgePts?.length||3} điểm · lệch RMS ${num(m.fitRms||0,2)} px`:m.type==='circleGap'?gapRelations[m.relation]:m.type==='centers'?'Tâm đến tâm':'2 điểm'}</div></div>`).join('');
- document.querySelectorAll('.meas-item').forEach(e=>e.addEventListener('click',evt=>{if(evt.target.closest('.remove-one'))return;const id=Number(e.dataset.id);if(doc.tool==='rowSpacing'){toggleRowCircle(id);return;}if(doc.tool==='circleGap'){chooseGapCircle(id);return;}doc.selected=id;updateUI();render()}));
- document.querySelectorAll('.remove-one').forEach(e=>e.addEventListener('click',evt=>{evt.stopPropagation();deleteMeasurement(Number(e.dataset.id))}));
- const selected=doc.measures.find(m=>m.id===doc.selected);$('editBox').classList.toggle('visible',!!selected);if(selected)$('measNameEdit').value=selected.name||'';
+ else list.innerHTML=doc.measures.map((m,i)=>`<div class="meas-item ${selectedIds.has(m.id)?'selected':''}" style="--measure-color:${m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type]}" data-id="${m.id}" role="option" aria-selected="${selectedIds.has(m.id)}"><div class="meas-top"><span class="meas-type">${m.ai?'AI ✓ Ø':m.auto?'LEGACY Ø':m.type==='circle'?'THỦ CÔNG Ø':typeName[m.type]}</span><span class="meas-name" title="${escapeHTML(m.name)}">${escapeHTML(m.name)||'Phép đo '+(i+1)}</span><button class="iconbtn remove-one" data-id="${m.id}" title="Xóa">✕</button></div><div class="meas-val">${escapeHTML((m.type==='circle'?'Ø ':m.type==='angle'?'∠ ':'')+formatMeasurement(m))}</div><div class="meas-foot">${m.type==='angle'?'Góc · '+num(basePx(m),2)+'°':num(basePx(m),2)+' px'} · ${m.type==='rowSpacing'?`${m.row1Ids.length} + ${m.row2Ids.length} tâm · lệch ${num(m.angleDifferenceDeg,2)}°`:m.type==='circle'?`${m.ai?`AI ${Math.round((m.autoConfidence||0)*100)}% · `:m.auto?`<span class="legacy-score">Legacy ${Math.round((m.autoConfidence||0)*100)}%</span> · `:''}${m.edgePts?.length||3} điểm · lệch RMS ${num(m.fitRms||0,2)} px`:m.type==='circleGap'?gapRelations[m.relation]:m.type==='centers'?'Tâm đến tâm':'2 điểm'}</div></div>`).join('');
+ list.querySelectorAll('.meas-item').forEach(e=>e.addEventListener('click',evt=>{if(evt.target.closest('.remove-one'))return;const id=Number(e.dataset.id);if(doc.tool==='rowSpacing'){toggleRowCircle(id);return;}if(doc.tool==='circleGap'){chooseGapCircle(id);return;}selectMeasurement(id,evt,{range:true});updateUI();render()}));
+ list.querySelectorAll('.remove-one').forEach(e=>e.addEventListener('click',evt=>{evt.stopPropagation();deleteMeasurement(Number(e.dataset.id))}));
+ const selected=selectedIds.size===1?doc.measures.find(m=>m.id===doc.selected):null;$('editBox').classList.toggle('visible',!!selected);if(selected)$('measNameEdit').value=selected.name||'';
+ $('selectionActions').hidden=!selectedIds.size;$('selectionSummary').hidden=selectedIds.size<2;
+ $('selectionSummary').textContent=`Đã chọn ${selectedIds.size} phép đo. Kéo nhãn chỉ di chuyển nhãn đang kéo.`;
+ $('deleteMeasureBtn').textContent=selectedIds.size>1?`× Xóa ${selectedIds.size} phép đo đã chọn`:'× Xóa phép đo đang chọn';
 }
-function historyPush(){dirty=true;doc.history.push(JSON.stringify({measures:doc.measures,cal:doc.cal,selected:doc.selected,aiPending:doc.aiPending}));if(doc.history.length>75)doc.history.shift()}
-function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];setStatus(helpers[doc.tool]);let p=JSON.parse(doc.history.pop());doc.measures=p.measures;doc.cal=p.cal;doc.selected=p.selected;doc.aiPending=p.aiPending??[];updateUI();render();toast('Đã hoàn tác')}
-function setTool(t){if($('calModal').classList.contains('open'))return;doc.tool=t;doc.pending=[];circleSelection=[];doc.selected=t==='select'?doc.selected:null;document.querySelectorAll('[data-tool]').forEach(b=>(b.classList.toggle('active',b.dataset.tool===t),b.setAttribute('aria-pressed',String(b.dataset.tool===t))));$('toolMode').textContent=t.toUpperCase();setStatus(helpers[t]);$('finishCircleBtn').classList.remove('visible');updateUI();render()}
+function historyPush(){syncSelection();dirty=true;let metadata=selectionUndo.get(doc.history)||[];
+ metadata.length=doc.history.length;metadata.push({entry:JSON.stringify({measures:doc.measures,cal:doc.cal,selected:doc.selected,aiPending:doc.aiPending}),ids:[...selectedIds]});
+ doc.history.push(metadata.at(-1).entry);if(doc.history.length>75){doc.history.shift();metadata.shift();}selectionUndo.set(doc.history,metadata);}
+function undo(){if(!doc.history.length){toast('Không có thao tác để hoàn tác');return}circleSelection=[];doc.pending=[];selectionBox=null;selectionMeasurePlan=null;doc.mouse.down=false;doc.mouse.mode='';setStatus(helpers[doc.tool]);
+ const metadata=selectionUndo.get(doc.history),saved=metadata?.[doc.history.length-1],entry=doc.history.pop();if(metadata)metadata.length=doc.history.length;
+ let p=JSON.parse(entry);doc.measures=p.measures;doc.cal=p.cal;doc.selected=p.selected;doc.aiPending=p.aiPending??[];
+ selectMeasurements(saved?.entry===entry?saved.ids:p.selected===null?[]:[p.selected],p.selected);updateUI();render();toast('Đã hoàn tác')}
+function setTool(t){if($('calModal').classList.contains('open'))return;inspectorMode='tool';if(selectionBox){selectionBox=null;doc.mouse.down=false;doc.mouse.mode='';}doc.tool=t;doc.pending=[];circleSelection=[];if(t!=='rowSpacing'){rowSelection=[[],[]];activeRow=0;}doc.selected=t==='select'?doc.selected:null;document.querySelectorAll('[data-tool]').forEach(b=>(b.classList.toggle('active',b.dataset.tool===t),b.setAttribute('aria-pressed',String(b.dataset.tool===t))));$('toolMode').textContent=t.toUpperCase();setStatus(helpers[t]);$('finishCircleBtn').classList.remove('visible');updateUI();render()}
 function fit(){if(!doc.source)return;let pad=85;doc.view.z=Math.max(.05,Math.min((width-pad*2)/doc.width,(height-pad*2)/doc.height));doc.view.x=(width-doc.width*doc.view.z)/2;doc.view.y=(height-doc.height*doc.view.z)/2;updateZoom();render()}
 function updateZoom(){$('zoomText').textContent=num(doc.view.z*100,0)+'%'}
 function resize(){let rect=viewport.getBoundingClientRect();width=Math.max(1,rect.width);height=Math.max(1,rect.height);dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);render()}
@@ -211,7 +340,7 @@ function drawScene(context,w,h,v,{exportMode=false,includePreview=true}={}){
   context.restore();if(!exportMode){context.strokeStyle='#677e98';context.lineWidth=1;context.strokeRect(xx-.5,yy-.5,ww+1,hh+1);}
  }
  const currentView=doc.view;doc.view=v;
- let boxes=[];if(!exportMode)drawAiProposals(context);for(let m of doc.measures){let color=m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type],sel=!exportMode&&m.id===doc.selected;if(m.type==='circle')dimCircle(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='rowSpacing')drawRowSpacing(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='circleGap')drawCircleGap(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='angle')dimAngle(context,m,mLabel(m),color,sel,m.shift,boxes);else dimLine(context,m.p1,m.p2,mLabel(m),color,sel,m.shift,boxes,m.id)}
+ let boxes=[];if(!exportMode)drawAiProposals(context);for(let m of doc.measures){let color=m.ai?COLORS.circle:m.auto?COLORS.legacyCircle:COLORS[m.type],sel=!exportMode&&selectedIds.has(m.id);if(m.type==='circle')dimCircle(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='rowSpacing')drawRowSpacing(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='circleGap')drawCircleGap(context,m,mLabel(m),color,sel,m.shift,boxes);else if(m.type==='angle')dimAngle(context,m,mLabel(m),color,sel,m.shift,boxes);else dimLine(context,m.p1,m.p2,mLabel(m),color,sel,m.shift,boxes,m.id)}
  if(!exportMode&&doc.cal&&doc.cal.refId===doc.imgId&&doc.cal.p1&&doc.cal.p2){let a=screen(doc.cal.p1),b=screen(doc.cal.p2);drawSegment(context,a,b,COLORS.cal,2,[6,3]);cross(context,a,7,COLORS.cal);cross(context,b,7,COLORS.cal);let m=mid(a,b);pill(context,'REF '+num(doc.cal.lengthMm,4)+' mm',m.x,m.y-30,COLORS.cal,false)}
  if(includePreview&&!exportMode)drawCircleToolPreview(context);
  if(includePreview&&doc.pending.length){let arr=doc.pending;let hover=doc.hover;for(let p of arr)cross(context,screen(p),9,'#fff18a');if(hover&&inImage(hover)){
@@ -222,7 +351,7 @@ function drawScene(context,w,h,v,{exportMode=false,includePreview=true}={}){
  doc.view=currentView;
  if(!exportMode){doc.lastLabelBoxes=boxes;drawRulers(context,w,h,v)}
 }
-function render(){if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,width,height,doc.view);if(doc.camera)render()})}
+function render(){if(framePending)return;framePending=true;requestAnimationFrame(()=>{framePending=false;ctx.setTransform(dpr,0,0,dpr,0,0);drawScene(ctx,width,height,doc.view);drawSelectionBox(ctx);drawSelectionMeasurePreview(ctx);if(doc.camera)render()})}
 function circumcircle(a,b,c){
  // Translate to the first point to avoid cancellation at large image coordinates.
  const bx=b.x-a.x,by=b.y-a.y,cx=c.x-a.x,cy=c.y-a.y,d=2*(bx*cy-by*cx);
@@ -262,7 +391,15 @@ function nextPoint(p){if(!inImage(p))return;if(doc.camera){toast('Hãy chụp �
 }
 let idSeed=1;
 function addMeasure(m){historyPush();let id=idSeed++;m.id=id;m.name=`${m.type==='circle'?'Lỗ':m.type==='edges'?'Mép–mép':m.type==='distance'?'Khoảng cách':m.type==='centers'?'Tâm-tâm':'Góc'} ${doc.measures.filter(x=>x.type===m.type).length+1}`;m.shift={x:0,y:0};doc.measures.push(m);doc.pending=[];setStatus(helpers[doc.tool]);doc.selected=id;updateUI();render();toast(`Đã thêm ${typeName[m.type]}: ${formatMeasurement(m)}`)}
-function deleteMeasurement(id){let index=doc.measures.findIndex(m=>m.id===id);if(index<0)return;historyPush();const removed=doc.measures.filter(m=>m.id===id||m.type==='circleGap'&&m.circleIds.includes(id)||m.type==='rowSpacing'&&[...(m.row1Ids||[]),...(m.row2Ids||[])].includes(id)).map(m=>m.id);doc.measures=doc.measures.filter(m=>!removed.includes(m.id));circleSelection=[];rowSelection=rowSelection.map(ids=>ids.filter(x=>x!==id));if(removed.includes(doc.selected))doc.selected=null;updateUI();render();toast(removed.length>1?'Đã xóa đường tròn và các phép đo phụ thuộc. Ctrl+Z để khôi phục.':'Đã xóa phép đo')}
+function deleteMeasurement(id){deleteMeasurements([id]);}
+function deleteMeasurements(ids){
+ const removed=new Set(ids.filter(id=>doc.measures.some(m=>m.id===id)));if(!removed.size)return;
+ for(const m of doc.measures)if(m.type==='circleGap'&&m.circleIds.some(id=>removed.has(id))||m.type==='rowSpacing'&&[...(m.row1Ids||[]),...(m.row2Ids||[])].some(id=>removed.has(id)))removed.add(m.id);
+ historyPush();doc.measures=doc.measures.filter(m=>!removed.has(m.id));circleSelection=[];
+ rowSelection=rowSelection.map(row=>row.filter(id=>!removed.has(id)));
+ selectMeasurements([...selectedIds].filter(id=>!removed.has(id)),doc.selected);
+ selectionBox=null;updateUI();render();toast(`Đã xóa ${removed.size} phép đo (gồm phép đo phụ thuộc nếu có). Ctrl+Z để khôi phục.`);
+}
 function stopCamera(){doc.camera=false;if(doc.stream){doc.stream.getTracks().forEach(t=>t.stop());doc.stream=null}let v=$('cameraVideo');v.pause();v.srcObject=null;updateHeader();render()}
 function resetForNewImage(img,url,name,mode){stashActive(); activeId=null;stopCamera();doc.cal=latestCalibration?structuredClone(latestCalibration):null;doc.source=img;doc.dataUrl=url;doc.width=img.naturalWidth;doc.height=img.naturalHeight;doc.imgName=name;doc.role=mode;doc.imgId=++requestId;doc.measures=[];doc.aiPending=[];doc.selected=null;doc.pending=[];doc.history=[];doc.ready=true;doc.thumb=null;activeId=doc.imgId;images.push(snapshotDoc());dirty=true;
  fit();updateHeader();updateUI();setTool(mode==='reference'?'calibrate':'select');if(doc.cal&&mode==='image')toast('Đã áp dụng hệ số từ ảnh chuẩn. Hãy kiểm tra điều kiện phóng đại trước khi đo.');else toast(mode==='reference'?'Chọn K và lấy 2 điểm chuẩn trên ảnh':'Đã mở ảnh · bắt đầu đo');
@@ -285,18 +422,29 @@ function pointerDown(e){if(busy||$('calModal').classList.contains('open')||!doc.
  if(doc.tool==='rowSpacing'){const p=world(pos),threshold=14/doc.view.z;let winner=doc.measures.filter(m=>m.type==='circle').map(m=>({m,d:Math.min(dist(p,m.c),Math.abs(dist(p,m.c)-m.r))})).filter(x=>x.d<=threshold).sort((a,b)=>a.d-b.d)[0]?.m;if(winner)toggleRowCircle(winner.id);else toast('Bấm vào tâm, vành hoặc mục đường tròn trong danh sách.',true);return;}
  if(doc.tool==='select'){
   let hit=[...doc.lastLabelBoxes].reverse().find(b=>pos.x>=b.left-5&&pos.x<=b.right+5&&pos.y>=b.top-5&&pos.y<=b.bottom+5);
-  if(hit){doc.selected=hit.id;doc.mouse.mode='label';historyPush();const m=doc.measures.find(m=>m.id===hit.id);if(m){m.shift.x+=hit.autoShift.x;m.shift.y+=hit.autoShift.y;}}else{doc.selected=null;doc.mouse.mode='';}
+  const geometry=hit?null:hitMeasurement(world(pos));
+  if(hit||geometry){
+   const id=hit?.id??geometry.id;
+   if(e.ctrlKey||e.metaKey){selectMeasurement(id,e);doc.mouse.mode='';}
+   else if(hit){
+    if(selectedIds.has(id))selectMeasurements([...selectedIds],id);else selectMeasurement(id,e);
+    doc.mouse.mode='label';historyPush();const m=doc.measures.find(m=>m.id===id);if(m){m.shift.x+=hit.autoShift.x;m.shift.y+=hit.autoShift.y;}
+   }else{selectMeasurement(id,e);doc.mouse.mode='';}
+  }else{
+   const point=world(pos);selectionBox={start:point,end:point,startScreen:pos,endScreen:pos,initial:[...selectedIds],additive:e.ctrlKey||e.metaKey||e.shiftKey};doc.mouse.mode='marquee';
+  }
   updateUI();render();return;
  }
  doc.mouse.mode='tool';nextPoint(world(pos))
 }
 function pointerMove(e){let pos=eventPos(e),w=world(pos);doc.hover=w;$('coordinateText').textContent=inImage(w)?`X: ${num(w.x,1)} px    Y: ${num(w.y,1)} px`:'X: —    Y: —';
  updateMagnifier(pos);
+ if(doc.mouse.down&&doc.mouse.mode==='marquee'&&selectionBox){selectionBox.end=w;selectionBox.endScreen=pos;render();}
  if(doc.mouse.down){let dx=pos.x-doc.mouse.x,dy=pos.y-doc.mouse.y;if(doc.mouse.mode==='pan'){doc.view.x+=dx;doc.view.y+=dy;render()}else if(doc.mouse.mode==='label'&&doc.selected!==null){let m=doc.measures.find(m=>m.id===doc.selected);if(m){m.shift.x+=dx/doc.view.z;m.shift.y+=dy/doc.view.z;dirty=true;render()}}}
  doc.mouse.x=pos.x;doc.mouse.y=pos.y;
  if(doc.pending.length||circleSelection.length)render()
 }
-function pointerUp(){doc.mouse.down=false;doc.mouse.mode='';canvas.style.cursor=doc.tool==='pan'?'grab':doc.tool==='select'?'default':'crosshair'}
+function pointerUp(e){if(doc.mouse.mode==='marquee'){if(e?.type!=='pointercancel')finishSelectionBox();selectionBox=null;render();}doc.mouse.down=false;doc.mouse.mode='';canvas.style.cursor=doc.tool==='pan'?'grab':doc.tool==='select'?'default':'crosshair'}
 function updateMagnifier(pos){
  const lens=$('magnifier'),p=world(pos);if(!magnifierEnabled||!inImage(p)||!doc.source){lens.style.display='none';return;}
  const size=160,half=12,g=lens.getContext('2d');lens.style.display='block';
@@ -325,7 +473,7 @@ function activateImage(id){
  doc.pending=[];doc.hover=null;doc.mouse.down=false;doc.lastLabelBoxes=[];
  calPair=null;$('calModal').classList.remove('open');
  if(!target.view||!target.view.z){doc.view={z:1,x:0,y:0};fit();}else updateZoom();
- updateHeader();setTool('select');render();
+ const priorInspector=inspectorMode;updateHeader();setTool('select');inspectorMode=priorInspector;renderInspector();render();
 }
 function renderImageList(){
  stashActive();const list=$('imageList');if(!list)return;
@@ -533,13 +681,20 @@ function makeDemo(){let w=1400,h=850,c=document.createElement('canvas');c.width=
  for(let [x,y,r] of holes){let halo=g.createRadialGradient(x,y,r*.75,x,y,r*1.45);halo.addColorStop(0,'#7d6960a0');halo.addColorStop(.65,'#6d56404a');halo.addColorStop(1,'#7c675000');g.fillStyle=halo;g.beginPath();g.arc(x,y,r*1.48,0,Math.PI*2);g.fill();let ring=g.createRadialGradient(x-r*.2,y-r*.2,1,x,y,r);ring.addColorStop(0,'#1b2429');ring.addColorStop(.73,'#182326');ring.addColorStop(.91,'#252725');ring.addColorStop(1,'#826e60');g.fillStyle=ring;g.beginPath();g.arc(x,y,r,0,2*Math.PI);g.fill();g.lineWidth=5;g.strokeStyle='#6c6150a0';g.stroke();}
  g.fillStyle='#1e2529e6';g.fillRect(82,704,345,95);g.strokeStyle='#f8e6ba';g.lineWidth=3;g.beginPath();g.moveTo(130,750);g.lineTo(330,750);g.stroke();for(let x=130;x<=330;x+=50){g.beginPath();g.moveTo(x,741);g.lineTo(x,759);g.stroke()}g.fillStyle='#f5efe0';g.font='bold 17px Segoe UI';g.fillText('DEMO REFERENCE : 1.00 mm',109,785);g.font='bold 16px Consolas';g.fillText('SYNTHETIC DEMO - NOT METROLOGY DATA',830,788);
  let url=c.toDataURL('image/jpeg',.9);createImg(url).then(i=>resetForNewImage(i,url,'laser_fabric_DEMO.jpg','reference')).then(()=>toast('Mẫu: bấm 2 đầu vạch vàng dài 200 px, nhập 1 mm, sau đó đo lỗ.'))}
-function keyboard(e){if(busy)return;let tag=e.target?.tagName;if(e.key==='Escape'){$('calModal').classList.remove('open');calPair=null;doc.pending=[];circleSelection=[];$('finishCircleBtn').classList.remove('visible');setStatus(helpers[doc.tool]);render();return}if($('calModal').classList.contains('open')||tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA')return;
+function keyboard(e){if(busy)return;let tag=e.target?.tagName;if(e.key==='Escape'){if(doc.tool==='select'){selectMeasurements([]);selectionAnchor=null;selectionBox=null;doc.mouse.down=false;doc.mouse.mode='';updateUI();}if(doc.tool==='rowSpacing'){cancelRowSpacing();return;}$('calModal').classList.remove('open');calPair=null;doc.pending=[];circleSelection=[];$('finishCircleBtn').classList.remove('visible');setStatus(helpers[doc.tool]);render();return}if($('calModal').classList.contains('open')||tag==='INPUT'||tag==='SELECT'||tag==='TEXTAREA'||e.target?.isContentEditable||e.target?.closest?.('[contenteditable]:not([contenteditable="false"])'))return;
  if(doc.tool==='circleMulti'&&e.key==='Enter'){e.preventDefault();finishMultiCircle();return}
  if(doc.tool==='circleMulti'&&e.key==='Backspace'&&doc.pending.length){e.preventDefault();doc.pending.pop();$('finishCircleBtn').classList.toggle('visible',doc.pending.length>=3);setStatus(`${doc.pending.length}/64 điểm · ${helpers.circleMulti}`);render();return}
- if(e.code==='Space'){spacePressed=true;canvas.style.cursor='grab';e.preventDefault()}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();undo();return}
  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveProject();return}
- if((e.key==='Delete'||e.key==='Backspace')&&doc.selected!==null){deleteMeasurement(doc.selected);return}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='a'&&doc.tool==='select'&&!doc.camera){e.preventDefault();selectMeasurements(doc.measures.map(m=>m.id));selectionAnchor=doc.selected;updateUI();render();return;}
+ if(e.ctrlKey||e.metaKey||e.altKey)return;
+ if(e.key==='ArrowUp'||e.key==='ArrowDown'){
+  const widget=e.target?.closest?.('[role=combobox],[role=listbox],[role=tree],[role=menu],[role=grid],[role=slider],[role=spinbutton]');
+  const modal=[...document.querySelectorAll('[role=dialog][aria-modal=true],dialog[open]')].some(el=>el.getClientRects().length&&getComputedStyle(el).visibility!=='hidden');
+  if(!widget&&!modal&&navigateImage(e.key==='ArrowUp'?-1:1))e.preventDefault();return;
+ }
+ if(e.code==='Space'){spacePressed=true;canvas.style.cursor='grab';e.preventDefault()}
+ if((e.key==='Delete'||e.key==='Backspace')&&selectedIds.size){e.preventDefault();deleteMeasurements([...selectedIds]);return}
  if(e.key.toLowerCase()==='q'){toggleMagnifier();return}
  let tool={v:'select',h:'pan',k:'calibrate',l:'distance',c:'circle',m:'circleMulti',d:'centers',e:'edges',g:'circleGap',b:'circlePair',a:'angle',r:'rowSpacing'}[e.key.toLowerCase()];if(tool)setTool(tool)
 }
@@ -550,7 +705,7 @@ function init(){
  $('fitBtn').onclick=fit;$('undoBtn').onclick=undo;$('magnifierBtn').onclick=toggleMagnifier;$('finishCircleBtn').onclick=finishMultiCircle;$('unitSelect').onchange=e=>{doc.unit=e.target.value;dirty=true;updateUI();render()};$('snapToggle').onchange=e=>{doc.snap=e.target.checked};
  $('confirmCalBtn').onclick=confirmCalibration;$('cancelCalBtn').onclick=()=>{$('calModal').classList.remove('open');calPair=null;doc.pending=[];render()};$('calLength').addEventListener('keydown',e=>{if(e.key==='Enter')confirmCalibration()});
  document.querySelectorAll('[data-tool]').forEach(e=>e.onclick=()=>setTool(e.dataset.tool));
- $('deleteMeasureBtn').onclick=()=>{if(doc.selected!==null)deleteMeasurement(doc.selected)};$('updateNameBtn').onclick=()=>{let m=doc.measures.find(m=>m.id===doc.selected);if(!m)return;historyPush();m.name=$('measNameEdit').value.trim();updateUI();render();toast('Đã cập nhật nhãn')};
+ $('deleteMeasureBtn').onclick=()=>deleteMeasurements([...selectedIds]);$('updateNameBtn').onclick=()=>{let m=doc.measures.find(m=>m.id===doc.selected);if(!m||selectedIds.size!==1)return;historyPush();m.name=$('measNameEdit').value.trim();updateUI();render();toast('Đã cập nhật nhãn')};
  $('mobileSideBtn').onclick=()=>$('sidePanel').classList.toggle('visible');
  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerleave',()=>{$('magnifier').style.display='none'});canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('wheel',zoomWheel,{passive:false});canvas.addEventListener('contextmenu',e=>e.preventDefault());
  window.addEventListener('keydown',keyboard);window.addEventListener('keyup',e=>{if(e.code==='Space'){spacePressed=false;canvas.style.cursor=doc.tool==='pan'?'grab':'crosshair'}});
@@ -652,7 +807,7 @@ function calculateRowSpacing(){
  }catch(e){toast(e.message,true);renderRowPanel();}
 }
 function cancelRowSpacing(){rowSelection=[[],[]];activeRow=0;setTool('select');renderRowPanel();render();}
-function renderRowPanel(){const p=$('rowSpacingPanel');if(!p)return;p.querySelector('[data-row="0"]').textContent=`Hàng 1 (${rowSelection[0].length})`;p.querySelector('[data-row="1"]').textContent=`Hàng 2 (${rowSelection[1].length})`;p.querySelectorAll('[data-row]').forEach(b=>b.classList.toggle('primary',Number(b.dataset.row)===activeRow));}
+function renderRowPanel(){const p=$('rowSpacingPanel');if(!p)return;p.hidden=doc.tool!=='rowSpacing'||inspectorMode!=='tool';rowSelection=rowSelection.map(ids=>rowCircles(ids).map(c=>c.id));p.querySelector('[data-row="0"]').textContent=`Hàng 1 (${rowSelection[0].length})`;p.querySelector('[data-row="1"]').textContent=`Hàng 2 (${rowSelection[1].length})`;p.querySelectorAll('[data-row]').forEach(b=>b.classList.toggle('primary',Number(b.dataset.row)===activeRow));}
 function installRowSpacingUI(){
  const nav=document.querySelector('.tools'),anchor=nav.querySelector('[data-tool="angle"]');const button=document.createElement('button');button.className='tool';button.dataset.tool='rowSpacing';button.title='Đo khoảng cách vuông góc giữa hai hàng tâm lỗ [R]';button.innerHTML='<span>⋮↔⋮</span><span class="tool-label">2 HÀNG</span>';nav.insertBefore(button,anchor.parentElement===nav?anchor:nav.firstChild);
  const panel=document.createElement('section');panel.id='rowSpacingPanel';panel.className='side-section';panel.innerHTML='<div class="sec-label">Khoảng cách 2 hàng <span class="status-pill">TLS / PCA</span></div><div class="muted">Chọn công cụ, chọn các đường tròn của từng hàng. Chỉ tâm AI đã chấp nhận và đường tròn thủ công mới được dùng.</div><div class="side-acts"><button class="btn small primary" data-row="0">Hàng 1 (0)</button><button class="btn small" data-row="1">Hàng 2 (0)</button></div><div class="side-acts"><button class="btn small primary" id="rowCalculateBtn">Tính khoảng cách</button><button class="btn small" id="rowCancelBtn">Hủy</button></div><div class="tiny">Yêu cầu ≥2 tâm/hàng · giới hạn lệch góc 5°.</div>';
@@ -675,7 +830,7 @@ function installAiUI(){
  checkAiHealth();aiHealthTimer=setInterval(checkAiHealth,5000);
 }
 async function checkAiHealth(){try{const response=await fetch(AI_API+'/health',{signal:AbortSignal.timeout(1500)}),data=await response.json();aiOnline=response.ok&&data.status==='online'&&data.model_ready===true;setAiState(aiOnline,aiOnline?`AI ONLINE · ${data.device}`:'AI OFFLINE / MODEL');}catch{aiOnline=false;setAiState(false,'AI OFFLINE');}}
-function setAiState(ready,text){const badge=$('aiEngineStatus');if(!badge)return;badge.textContent=text;badge.classList.toggle('good',ready);$('aiDetectBtn').disabled=!ready||!doc.source||doc.camera;$('aiBatchBtn').disabled=!ready||!images.length||doc.camera;}
+function setAiState(ready,text){const badge=$('aiEngineStatus');if(!badge)return;badge.textContent=text;badge.classList.toggle('good',ready);$('footerAi').textContent=text;$('footerAi').classList.toggle('good',ready);$('aiDetectBtn').disabled=!ready||!doc.source||doc.camera;$('aiBatchBtn').disabled=!ready||!images.length||doc.camera;}
 async function recordBlob(record){const response=await fetch(record.dataUrl);return response.blob();}
 function normalizeAiDetections(record,result){
  if(result.width!==record.width||result.height!==record.height)throw new Error('Kích thước API không khớp ảnh gốc');
@@ -690,7 +845,145 @@ async function requestAi(record){const form=new FormData();form.append('file',aw
 async function aiDetectCurrent(){if(!aiOnline||!doc.source||busy)return;setBusy(true,'AI Experimental: phân đoạn và tạo đề xuất…');try{const result=await requestAi(doc);doc.aiPending=normalizeAiDetections(doc,result);dirty=true;updateUI();render();renderImageList();const review=doc.aiPending.filter(x=>x.review_required).length;toast(`AI tạo ${doc.aiPending.length} đề xuất · ${review} cần review · chưa thêm phép đo.`);}catch(e){toast('AI Detect thất bại: '+(e?.message||e)+'. Công cụ thủ công vẫn hoạt động.',true)}finally{setBusy(false);setAiState(aiOnline,$('aiEngineStatus').textContent)}}
 async function aiDetectAll(){if(!aiOnline||!images.length||busy)return;stashActive();const originalId=activeId;cancelRequested=false;let done=0,total=0,failed=[];try{for(let i=0;i<images.length;i++){if(cancelRequested)break;const record=images[i];setBusy(true,`AI Batch ${i+1}/${images.length}: ${record.imgName}`,i,images.length);await breathe();try{const result=await requestAi(record);record.aiPending=normalizeAiDetections(record,result);total+=record.aiPending.length;done++;}catch(e){failed.push(`${record.imgName}: ${e?.message||e}`)}}dirty=dirty||done>0;}finally{setBusy(false);activeId=null;if(originalId!==null)activateImage(originalId);renderImageList();setAiState(aiOnline,$('aiEngineStatus').textContent)}toast(`AI Batch tạo ${total} đề xuất trên ${done}/${images.length} ảnh. Hãy mở từng ảnh để chấp nhận/loại bỏ.`,!!failed.length);if(failed.length)alert('AI không xử lý được:\n'+failed.join('\n'));}
 
-installRowSpacingUI();init();installAiUI();
+// Plans keep only source IDs and explicit user assignments; previews never allocate IDs.
+const planRowColors=['','#f4d35e','#c77dff','#50e5dc'];
+function selectedPlanCircles(){return doc.measures.filter(m=>selectedIds.has(m.id)&&m.type==='circle');}
+function startSelectionMeasurePlan(kind){
+ syncSelection();const circles=selectedPlanCircles(),minimum=kind==='gap'?2:4;
+ if(doc.tool!=='select'||circles.length!==selectedIds.size||circles.length<minimum)return;
+ selectionMeasurePlan={imageId:doc.imgId,kind,ids:circles.map(m=>m.id),pairs:kind==='gap'&&circles.length===2?[circles.map(m=>m.id)]:[],rowCount:2,assignments:new Map()};
+ $('selectionMeasurePanel').dataset.pool='';inspectorMode='tool';renderInspector();render();
+ $('selectionMeasurePanel').scrollIntoView({block:'nearest'});
+}
+function planCircles(plan){
+ if(plan.imageId!==doc.imgId)throw new Error('Ảnh đã thay đổi. Hãy chọn lại đường tròn.');
+ const byId=new Map(doc.measures.filter(m=>m.type==='circle').map(m=>[m.id,m]));
+ if(plan.ids.some(id=>!byId.has(id)))throw new Error('Đường tròn nguồn không còn tồn tại.');return byId;
+}
+function selectionPlanPreview(){
+ const plan=selectionMeasurePlan;if(!plan)return [];
+ const byId=planCircles(plan);
+ if(plan.kind==='gap'){
+  if(!plan.pairs.length)throw new Error('Chưa có cặp. Chọn A/B hoặc nhập danh sách cặp muốn đo.');
+  return plan.pairs.map(([a,b])=>({kind:'gap',ids:[a,b],label:`${byId.get(a).name} (#${a}) ↔ ${byId.get(b).name} (#${b})`,geometry:circleGapGeometry(byId.get(a),byId.get(b))}));
+ }
+ const rows=Array.from({length:plan.rowCount},(_,i)=>plan.ids.filter(id=>plan.assignments.get(id)===i+1));
+ if(rows.some(ids=>ids.length<2))throw new Error('Mỗi hàng cần ít nhất 2 đường tròn. Các lỗ chưa gán không tham gia tính.');
+ return rows.slice(1).map((ids,i)=>{
+  try{return {kind:'rows',rows:[rows[i],ids],label:`H${i+1}–H${i+2}`,geometry:rowSpacingGeometry(rows[i].map(id=>byId.get(id).c),ids.map(id=>byId.get(id).c))};}
+  catch(e){throw new Error(`H${i+1}–H${i+2}: ${e.message}`);}
+ });
+}
+function queueSelectionPairs(pairs){
+ const plan=selectionMeasurePlan;if(!plan||plan.kind!=='gap')return;
+ try{
+  const allowed=new Set(plan.ids),keys=new Set(plan.pairs.map(ids=>[...ids].sort((a,b)=>a-b).join(':'))),pending=[];
+  for(const ids of pairs){
+   if(ids.length!==2||ids.some(id=>!Number.isInteger(id)||!allowed.has(id))||ids[0]===ids[1])throw new Error('Mỗi cặp cần 2 ID khác nhau trong vùng chọn. Không thêm cặp nào.');
+   const key=[...ids].sort((a,b)=>a-b).join(':');if(!keys.has(key)){keys.add(key);pending.push(ids);}
+  }
+  plan.pairs.push(...pending);$('planInputError').textContent='';renderSelectionMeasurePlan();render();
+ }catch(e){$('planInputError').textContent=e.message;}
+}
+function assignSelectionRow(row){
+ if(!selectionMeasurePlan||selectionMeasurePlan.kind!=='rows')return;
+ for(const option of $('planRowMembers').selectedOptions)selectionMeasurePlan.assignments.set(Number(option.value),row);
+ renderSelectionMeasurePlan();render();
+}
+function renderSelectionMeasurePlan(){
+ const panel=$('selectionMeasurePanel');if(!panel)return;
+ const circles=selectedPlanCircles(),allCircles=circles.length===selectedIds.size;
+ $('selectionCirclesOnlyBtn').hidden=allCircles||circles.length<2;
+ $('selectionGapBtn').disabled=doc.tool!=='select'||!allCircles||circles.length<2;
+ $('selectionRowsBtn').disabled=doc.tool!=='select'||!allCircles||circles.length<4;
+ $('selectionGapBtn').title='Ở công cụ CHỌN: chỉ chọn ít nhất 2 đường tròn đã đo.';$('selectionRowsBtn').title='Ở công cụ CHỌN: chỉ chọn ít nhất 4 đường tròn đã đo; hỗ trợ 2 hoặc 3 hàng.';
+ const plan=selectionMeasurePlan;panel.hidden=!plan||inspectorMode!=='tool'||doc.tool!=='select';if(!plan){panel.dataset.pool='';return;}
+ const byId=planCircles(plan);$('planTitle').textContent=plan.kind==='gap'?'Đo mép–mép từ vùng chọn':'Đo khoảng cách các hàng';
+ $('planSourceCount').textContent=`${plan.ids.length} đường tròn nguồn · chưa thêm phép đo`;
+ $('planGapControls').hidden=plan.kind!=='gap';$('planRowControls').hidden=plan.kind!=='rows';
+ const pool=plan.ids.join(',');
+ if(panel.dataset.pool!==pool){
+  for(const selector of [$('planPairA'),$('planPairB')])selector.replaceChildren(...plan.ids.map(id=>new Option(`${byId.get(id).name} · #${id}`,String(id))));
+  $('planPairB').selectedIndex=Math.min(1,plan.ids.length-1);$('planRowMembers').replaceChildren();panel.dataset.pool=pool;$('planPairsInput').value='';$('planInputError').textContent='';
+ }
+ if(plan.kind==='rows'){
+  $('planRowCount').value=String(plan.rowCount);$('planAssign3').hidden=plan.rowCount!==3;
+  const picked=new Set([...$('planRowMembers').selectedOptions].map(o=>Number(o.value)));
+  $('planRowMembers').replaceChildren(...plan.ids.map(id=>{const row=plan.assignments.get(id)||0,o=new Option(`${row?'H'+row:'Chưa gán'} · ${byId.get(id).name} · #${id}`,String(id));o.style.color=planRowColors[row]||'#dce8f8';o.selected=picked.has(id);return o;}));
+  $('planRowLegend').replaceChildren(...Array.from({length:plan.rowCount},(_,i)=>{const span=document.createElement('span');span.style.color=planRowColors[i+1];span.textContent=`Hàng ${i+1}: ${plan.ids.filter(id=>plan.assignments.get(id)===i+1).length} lỗ`;return span;}));
+ }
+ const list=$('planPreview');list.replaceChildren();$('planComputeBtn').disabled=true;
+ try{
+  const preview=selectionPlanPreview();
+  for(const [index,item] of preview.entries()){
+   const row=document.createElement('div');row.className='plan-preview-item';
+   const text=document.createElement('span');text.textContent=`${item.label}: ${formatMeasurement({type:item.kind==='gap'?'circleGap':'rowSpacing',...item.geometry})}${item.kind==='gap'?' · '+gapRelations[item.geometry.relation]:''}`;row.append(text);
+   if(item.kind==='gap'){const remove=document.createElement('button');remove.className='btn small';remove.textContent='Bỏ cặp';remove.onclick=()=>{plan.pairs.splice(index,1);renderSelectionMeasurePlan();render();};row.append(remove);}list.append(row);
+  }
+  $('planComputeBtn').disabled=false;
+ }catch(e){list.textContent=e.message;}
+}
+function computeSelectionMeasurePlan(){
+ if(!selectionMeasurePlan||busy||doc.camera)return;
+ try{
+  const plan=selectionMeasurePlan,preview=selectionPlanPreview(),byId=planCircles(plan);
+  // Validate every pair of rows before taking one history snapshot or creating IDs.
+  historyPush();const created=preview.map(item=>item.kind==='gap'?makeCircleGap(byId.get(item.ids[0]),byId.get(item.ids[1])):
+   {id:idSeed++,type:'rowSpacing',name:`Khoảng cách ${item.label}`,row1Ids:[...item.rows[0]],row2Ids:[...item.rows[1]],...item.geometry,shift:{x:0,y:0}});
+  doc.measures.push(...created);selectionMeasurePlan=null;selectMeasurements(created.map(m=>m.id));updateUI();render();toast(`Đã tạo ${created.length} phép đo. Ctrl+Z để hoàn tác toàn bộ lần tính.`);
+ }catch(e){$('planInputError').textContent=e.message;}
+}
+function drawSelectionMeasurePreview(context){
+ const plan=selectionMeasurePlan;if(!plan||plan.imageId!==doc.imgId||inspectorMode!=='tool')return;
+ context.save();context.setLineDash([5,4]);context.lineWidth=2;
+ if(plan.kind==='rows')for(const circle of doc.measures){const row=plan.assignments.get(circle.id);if(!row||circle.type!=='circle')continue;const p=screen(circle.c);context.strokeStyle=planRowColors[row];context.beginPath();context.arc(p.x,p.y,circle.r*doc.view.z+3,0,2*Math.PI);context.stroke();context.fillStyle=planRowColors[row];context.font='bold 12px Consolas,monospace';context.fillText(`H${row}`,p.x+5,p.y-5);}
+ try{for(const item of selectionPlanPreview()){const a=screen(item.geometry.p1),b=screen(item.geometry.p2);context.strokeStyle=plan.kind==='gap'?'#ffbd59':'#f4d35e';context.beginPath();context.moveTo(a.x,a.y);context.lineTo(b.x,b.y);context.stroke();cross(context,a,5,context.strokeStyle);cross(context,b,5,context.strokeStyle);}}catch{}
+ context.restore();
+}
+function installSelectionMeasureUI(){
+ const actions=document.createElement('div');actions.className='side-acts';actions.innerHTML='<button class="btn small primary" id="selectionGapBtn">Đo mép–mép</button><button class="btn small primary" id="selectionRowsBtn">Đo khoảng cách 2 hàng</button><button class="btn small" id="selectionCirclesOnlyBtn" hidden>Chỉ giữ đường tròn</button>';$('selectionActions').prepend(actions);
+ const panel=document.createElement('section');panel.id='selectionMeasurePanel';panel.className='side-section';panel.hidden=true;
+ panel.innerHTML='<div class="sec-label" id="planTitle"></div><div class="muted" id="planSourceCount"></div><div id="planGapControls"><div class="side-acts"><select class="field" id="planPairA" aria-label="Đường tròn A"></select><select class="field" id="planPairB" aria-label="Đường tròn B"></select></div><button class="btn small" id="planAddPair">Thêm cặp xem trước</button><label class="muted" for="planPairsInput">Nhiều cặp: mỗi dòng nhập ID A, ID B. Chỉ các cặp bạn chỉ định được tạo.</label><textarea class="field" rows="3" id="planPairsInput" placeholder="12, 18&#10;18, 27"></textarea><button class="btn small" id="planImportPairs">Thêm danh sách cặp</button></div><div id="planRowControls"><label class="muted" for="planRowCount">Số hàng</label><select class="field" id="planRowCount"><option value="2">2 hàng → H1–H2</option><option value="3">3 hàng → H1–H2, H2–H3</option></select><label class="muted" for="planRowMembers">Chọn lỗ (Ctrl/Shift chọn nhiều), rồi gán hàng. Mỗi lỗ chỉ thuộc một hàng. Lỗ chưa gán không được tính.</label><select class="field" id="planRowMembers" multiple size="7"></select><div class="side-acts"><button class="btn small" id="planAssign1">→ Hàng 1</button><button class="btn small" id="planAssign2">→ Hàng 2</button><button class="btn small" id="planAssign3">→ Hàng 3</button><button class="btn small" id="planUnassign">Bỏ gán</button></div><div class="plan-row-legend" id="planRowLegend"></div></div><div class="warning visible" id="planInputError" role="status"></div><div class="sec-label">Xem trước · chưa lưu</div><div class="muted" id="planPreview"></div><div class="side-acts"><button class="btn small primary" id="planComputeBtn">Tính toán</button><button class="btn small" id="planCancelBtn">Hủy</button></div>';
+ $('measurementPanel').before(panel);
+ $('selectionCirclesOnlyBtn').onclick=()=>{selectMeasurements(selectedPlanCircles().map(m=>m.id));updateUI();render();};$('selectionGapBtn').onclick=()=>startSelectionMeasurePlan('gap');$('selectionRowsBtn').onclick=()=>startSelectionMeasurePlan('rows');
+ $('planAddPair').onclick=()=>queueSelectionPairs([[Number($('planPairA').value),Number($('planPairB').value)]]);
+ $('planImportPairs').onclick=()=>queueSelectionPairs($('planPairsInput').value.trim().split(/\r?\n/).filter(line=>line.trim()).map(line=>line.trim().split(/[,;\s]+/).map(Number)));
+ for(let row=0;row<=3;row++)$(row?'planAssign'+row:'planUnassign').onclick=()=>assignSelectionRow(row);
+ $('planRowCount').onchange=()=>{const plan=selectionMeasurePlan;if(!plan)return;plan.rowCount=Number($('planRowCount').value);for(const [id,row] of plan.assignments)if(row>plan.rowCount)plan.assignments.delete(id);renderSelectionMeasurePlan();render();};
+ $('planCancelBtn').onclick=()=>{selectionMeasurePlan=null;renderInspector();render();};$('planComputeBtn').onclick=computeSelectionMeasurePlan;renderSelectionMeasurePlan();
+}
+function renderInspector(){
+ const ai=inspectorMode==='ai',help=inspectorMode==='help',cal=!ai&&!help&&doc.tool==='calibrate',row=!ai&&!help&&doc.tool==='rowSpacing';
+ $('calibrationPanel').hidden=!cal;
+ if($('aiReviewPanel'))$('aiReviewPanel').hidden=!ai;
+ if($('rowSpacingPanel'))$('rowSpacingPanel').hidden=!row;
+ $('helpPanel').hidden=!help;$('drawingPanel').hidden=cal||ai||help;
+ $('measurementPanel').hidden=cal||help||!doc.measures.length;
+ $('toolGuide').hidden=help;
+ $('inspectorContext').textContent=ai?'AI · EXP':help?'HƯỚNG DẪN':toolTitles[doc.tool];
+ $('inspectorToolTitle').textContent=ai?'AI DETECT · YOLO':toolTitles[doc.tool];
+ $('inspectorToolHelp').textContent=ai?'Phát hiện chỉ tạo đề xuất. Kiểm tra và chấp nhận từng kết quả trước khi dùng làm phép đo.':helpers[doc.tool];
+ $('footerUnit').textContent=doc.unit==='um'?'µm':'mm';
+ for(const [id,mode] of [['inspectorToolBtn','tool'],['inspectorAiBtn','ai'],['inspectorHelpBtn','help']])$(id).setAttribute('aria-pressed',String(inspectorMode===mode));
+ renderSelectionMeasurePlan();
+}
+function installWorkspaceUI(){
+ const workspace=document.querySelector('.workspace');
+ function syncDocks(){
+  $('libraryToggleBtn').setAttribute('aria-expanded',String(!workspace.classList.contains('library-collapsed')));
+  $('mobileSideBtn').setAttribute('aria-expanded',String(!workspace.classList.contains('inspector-collapsed')));
+  $('imageLibrary').inert=workspace.classList.contains('library-collapsed');
+  $('sidePanel').inert=workspace.classList.contains('inspector-collapsed');
+ }
+ $('libraryToggleBtn').onclick=()=>{workspace.classList.toggle('library-collapsed');if(innerWidth<=900&&!workspace.classList.contains('library-collapsed'))workspace.classList.add('inspector-collapsed');syncDocks();};
+ $('mobileSideBtn').onclick=()=>{workspace.classList.toggle('inspector-collapsed');if(innerWidth<=900&&!workspace.classList.contains('inspector-collapsed'))workspace.classList.add('library-collapsed');syncDocks();};
+ for(const [id,mode] of [['inspectorToolBtn','tool'],['inspectorAiBtn','ai'],['inspectorHelpBtn','help']])$(id).onclick=()=>{inspectorMode=mode;renderInspector();};
+ // At tablet widths start with the library open, and let the user dock either pane.
+ const tablet=matchMedia('(max-width:1099px)'),mobile=matchMedia('(max-width:900px)'),desktop=matchMedia('(min-width:1280px)');
+ function responsiveDocks(){workspace.classList.remove('library-collapsed');workspace.classList.toggle('inspector-collapsed',tablet.matches);syncDocks();}
+ tablet.addEventListener('change',responsiveDocks);mobile.addEventListener('change',responsiveDocks);desktop.addEventListener('change',responsiveDocks);responsiveDocks();renderInspector();
+}
+installRowSpacingUI();init();installAiUI();installWorkspaceUI();installSelectionMeasureUI();
 })();
 </script>
 </body>

@@ -33,7 +33,7 @@ def preload_model():
         try:engine()
         except Exception:pass
 @app.get('/health')
-def health():return {'status':'online','model_ready':MODEL.is_file() and _engine is not None,'model_path':str(MODEL),'device':DEVICE,'cuda_available':torch.cuda.is_available(),'error':_engine_error}
+def health():return {'status':'online','model_ready':MODEL.is_file() and _engine is not None,'model_path':str(MODEL),'device':DEVICE,'cuda_available':torch.cuda.is_available(),'error':_engine_error,'pid':os.getpid(),'instance_id':os.getenv('MICROCAD_LAUNCH_ID')}
 @app.get('/model-info')
 def info():return {'model_path':str(MODEL),'model_version':MODEL.name,'exists':MODEL.is_file(),'loaded':_engine is not None,'device':DEVICE,'torch':torch.__version__,'cuda':torch.version.cuda,'gpu':torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,'default_conf':DEFAULT_CONF,'default_imgsz':DEFAULT_IMGSZ,'load_error':_engine_error}
 async def decode(file):
