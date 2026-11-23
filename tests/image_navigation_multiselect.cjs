@@ -4,7 +4,7 @@ const fs=require('node:fs'),path=require('node:path'),http=require('node:http');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 let browser,server,page,errors,base;
 before(async()=>{
- server=http.createServer((req,res)=>{res.setHeader('Content-Type','text/html; charset=utf-8');res.end(fs.readFileSync(path.join(__dirname,'../MicroCAD_Vision.html')));});
+ server=http.createServer(require('./static-server.cjs')(path.resolve(__dirname,'..')));
  await new Promise(r=>server.listen(0,'127.0.0.1',r));base=`http://127.0.0.1:${server.address().port}`;
  browser=await chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
 });
@@ -166,7 +166,7 @@ test('AI pending proposals survive group deletion and busy detection blocks imag
   await pending;await route.fulfill({json:{width:1400,height:850,model_version:'fixture',detections:[{center_x:1030,center_y:200,radius_px:40,diameter_px:80,confidence:.9,fit_error:0,angular_coverage:1,polygon:[],review_required:false}]}});
  });
  await page.waitForFunction(()=>document.querySelector('#aiEngineStatus').textContent.includes('AI ONLINE'));
- await page.locator('#inspectorAiBtn').click();await page.locator('#aiDetectBtn').click();
+ await page.locator('#inspectorAiBtn').click();await page.locator('#aiPreviewOptions summary').click();await page.locator('#aiDetectBtn').click();
  await page.waitForFunction(()=>!document.querySelector('#busyPanel').hidden);
  await page.keyboard.press('ArrowDown');assert.equal(await page.locator('#imagePosition').textContent(),'1 / 5');release();
  await page.locator('#aiReviewList .meas-item').waitFor();

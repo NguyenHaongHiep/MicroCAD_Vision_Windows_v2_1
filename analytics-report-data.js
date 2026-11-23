@@ -82,7 +82,7 @@
     const uncalibrated=model.rows.filter(r=>!Number.isFinite(r.valueMm)).length;
     const experimentDates=[...new Set(model.conditions.map(c=>c.date).filter(Boolean))];
     const conditionDate=experimentDates.length===1?experimentDates[0].replace(/^(\d{4})-(\d{2})-(\d{2})$/,'$3/$2/$1'):'';
-    return {features, byImage, rows, calibrations, diameterMethods, uncalibrated, conditionDate,
+    return {features, byImage, rows, calibrations, diameterMethods, uncalibrated, conditionDate, reviewRequired:model.rows.filter(r=>r.reviewRequired).length,
       source:config.source || model.project || 'Dự án MicroCAD đang mở',
       total:model.rows.length+(model.angles||0),
       edges:model.byType.edges?.length||0,

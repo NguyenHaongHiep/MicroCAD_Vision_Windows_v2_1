@@ -73,6 +73,7 @@ async function testMockedAi(browser) {
     await page.goto(app);
     await load(page,fixtureV3,1);
     await page.locator('#inspectorAiBtn').click();
+    await page.locator('#aiPreviewOptions summary').click();
     await page.locator('#aiDetectBtn').click();
     await page.getByRole('button',{name:'Chấp nhận',exact:true}).waitFor();
     await view(page,'analytics');

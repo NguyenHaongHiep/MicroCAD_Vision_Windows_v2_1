@@ -33,7 +33,11 @@
         const value = calibrated ? px * scale : null;
         rows.push({imageIndex:index, imageId:image.imgId, imageName:image.imgName, measurementId:m.id,
           type:m.type, method:method(m), valuePx:px, valueMm:Number.isFinite(value) ? value : null,
-          mmPerPx:calibrated ? scale : null, calibrationReference:image.cal?.refName || ''});
+          mmPerPx:calibrated ? scale : null, calibrationReference:image.cal?.refName || '',
+          ai:m.ai===true, autoMeasure:m.autoMeasure===true, name:m.name||'',
+          reviewRequired:m.reviewRequired===true || !!(m.ai&&m.type==='circleGap'&&m.relation!=='separate') ||
+            (m.circleIds||[]).some(id=>image.measures.some(source=>source.id===id&&source.reviewRequired)),
+          reviewReasons:m.reviewReasons||[], relation:m.relation||''});
       }
     });
     return rows;
@@ -43,7 +47,7 @@
     return value < tolerance.lsl ? 'below' : value > tolerance.usl ? 'above' : 'within';
   }
   function summarize(rows, tolerance) {
-    const values = rows.filter(r => Number.isFinite(r.valueMm));
+    const values = rows.filter(r => !r.reviewRequired && Number.isFinite(r.valueMm));
     let n=0, mean=0, m2=0, min=Infinity, max=-Infinity, evaluated=0;
     const counts = {below:0, within:0, above:0};
     for (const row of values) {
@@ -52,7 +56,7 @@
       min=Math.min(min,x); max=Math.max(max,x);
       const result=classify(x,typeof tolerance === 'function' ? tolerance(row) : tolerance); if (result) {counts[result]++; evaluated++;}
     }
-    return {count:n, uncalibrated:rows.filter(r=>r.valueMm===null).length,
+    return {count:n, uncalibrated:rows.filter(r=>r.valueMm===null).length, review:rows.filter(r=>r.reviewRequired).length,
       mean:n?mean:null, sampleStdDev:n>1?Math.sqrt(m2/(n-1)):null,
       min:n?min:null, max:n?max:null, counts, evaluated,
       passRate:evaluated?counts.within/evaluated:null};

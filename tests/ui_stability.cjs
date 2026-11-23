@@ -10,10 +10,7 @@ const htmlPath = process.env.MICROCAD_UI_HTML || path.join(root, 'MicroCAD_Visio
 let server, browser, page, errors, base;
 
 before(async () => {
-  server = http.createServer((req, res) => {
-    res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.end(fs.readFileSync(htmlPath));
-  });
+  server = http.createServer(require('./static-server.cjs')(root,htmlPath));
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
   base = `http://127.0.0.1:${server.address().port}`;
   browser = await chromium.launch({headless:true,
@@ -56,6 +53,7 @@ async function propose() {
 }
 async function openAi() {
   if(await page.locator('#inspectorAiBtn').count())await page.locator('#inspectorAiBtn').click();
+  if(!await page.locator('#aiPreviewOptions').evaluate(el=>el.open))await page.locator('#aiPreviewOptions summary').click();
 }
 async function selectRow() {
   await circle();

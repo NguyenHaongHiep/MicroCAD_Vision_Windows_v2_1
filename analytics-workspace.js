@@ -105,10 +105,10 @@
     }
     function drawDashboard(m) {
       syncFilters(m);
-      const stats=m.stats[type]||A.summarize([]), total=m.rows.length+m.angles;
+      const stats=m.stats[type]||A.summarize([]), total=m.rows.filter(r=>!r.reviewRequired).length+m.angles;
       const kpis=[
         ['Tổng số ảnh',m.images.length],['Phép đo hợp lệ',total],['Đường kính',m.byType.circle?.length||0],
-        ['Khe hai đường tròn',m.byType.circleGap?.length||0],['Khe thủ công',m.byType.edges?.length||0],
+        ['Khe hai đường tròn',m.byType.circleGap?.length||0],['Khe thủ công',m.byType.edges?.length||0],['Cần kiểm tra',m.rows.filter(r=>r.reviewRequired).length],
         ['Trung bình (mm)',C.fmt(stats.mean)],['SD mẫu (mm)',C.fmt(stats.sampleStdDev)],['Min / Max (mm)',C.fmt(stats.min)+' / '+C.fmt(stats.max)],
         ['Trong dung sai',C.pct(stats.passRate)],['Dưới LSL',stats.evaluated?stats.counts.below:'—'],['Trên USL',stats.evaluated?stats.counts.above:'—']
       ];
@@ -117,7 +117,7 @@
       }));
       $('arScopeNote').textContent=(m.mixed[type]?'Dung sai khác nhau theo điều kiện. Tỷ lệ đạt dùng giới hạn của từng ảnh. ':
         m.spec[type]?'Target '+C.fmt(m.spec[type].target,9)+' · LSL '+C.fmt(m.spec[type].lsl,9)+' · USL '+C.fmt(m.spec[type].usl,9)+' mm. ':
-        'Chưa có dung sai mặc định cho đặc tính này. ')+stats.uncalibrated+' phép đo của đặc tính này chưa hiệu chuẩn.';
+        'Chưa có dung sai mặc định cho đặc tính này. ')+stats.uncalibrated+' phép đo của đặc tính này chưa hiệu chuẩn. '+stats.review+' phép đo cần kiểm tra bị loại khỏi thống kê và tỷ lệ đạt.';
       const rows=m.byType[type]||[], resolver=m.resolver(type), tolerance=m.spec[type];
       const calibrated=rows.filter(r=>Number.isFinite(r.valueMm));
       const span=calibrated.length?calibrated.at(-1).imageIndex-calibrated[0].imageIndex+1:0;
@@ -157,14 +157,14 @@
       const trace=$('arTrace');
       const traceLimit=300;
       trace.replaceChildren(el('p',rows.length>traceLimit?'Hiển thị '+traceLimit+' / '+rows.length+' dòng. Lọc theo điều kiện, phiên hoặc phương pháp để thu hẹp.':rows.length+' phép đo · Chọn ảnh để mở đúng phép đo.'));
-      const t=table(['Ảnh nguồn','ID','Phương pháp','Giá trị','Hệ số mm/px','Chuẩn'],[]);
+      const t=table(['Ảnh nguồn','ID','Phương pháp','Giá trị','Hệ số mm/px','Chuẩn','Chất lượng'],[]);
       for (const row of rows.slice(0,traceLimit)) {
         const tr=t.tBodies[0].insertRow();
         const a=action((row.imageIndex+1)+' · '+row.imageName,()=>open(row));
         const imgCell=tr.insertCell();imgCell.append(a);
         const meta=tags(row.imageId).filter(Boolean).join(' / ');
         if(meta)imgCell.append(el('small',meta));
-        for (const value of [row.measurementId,A.methodLabel(row.method),row.valueMm===null?C.fmt(row.valuePx,6)+' px':C.fmt(row.valueMm,8)+' mm',C.fmt(row.mmPerPx,12),row.calibrationReference||'—']) tr.insertCell().textContent=value;
+        for (const value of [row.measurementId,A.methodLabel(row.method),row.valueMm===null?C.fmt(row.valuePx,6)+' px':C.fmt(row.valueMm,8)+' mm',C.fmt(row.mmPerPx,12),row.calibrationReference||'—',row.reviewRequired?'Cần kiểm tra · '+row.reviewReasons.join('; '):'Hợp lệ']) tr.insertCell().textContent=value;
       }
       trace.append(t);
     }

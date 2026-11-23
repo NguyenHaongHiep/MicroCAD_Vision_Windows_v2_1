@@ -54,6 +54,7 @@
   function render(destination, model, config) {
     if(config.template==='technical') {
       MicroCADTechnicalReport.render(destination,model,config,{el,table,figure,addEvidence});
+      appendAutoResults(destination,model);
       return;
     }
     const pages=[];
@@ -78,6 +79,8 @@
       const k=el('div');k.append(el('strong',value),el('span',label));kpis.append(k);
     }
     overview.append(kpis);
+    const reviewCount=model.rows.filter(r=>r.reviewRequired).length;
+    if(reviewCount)overview.append(el('p',reviewCount+' phép đo cần kiểm tra bị loại khỏi thống kê và tỷ lệ đạt. Xem chi tiết ở phụ lục AI.','ar-source'));
     const conditions=model.conditions;
     if (conditions.length) {
       const c=conditions.length===1?conditions[0]:null;
@@ -111,6 +114,29 @@
     }
     pages.forEach((p,i)=>p.querySelector('.ar-page-number').textContent='Trang '+(i+1)+' / '+pages.length);
     destination.replaceChildren(...pages);
+    appendAutoResults(destination,model);
+  }
+  function appendAutoResults(destination,model) {
+    const rows=model.rows.filter(r=>r.ai);
+    const results=rows.map(r=>({review:r.reviewRequired,cells:[String(r.imageIndex+1)+' · '+r.imageName.slice(0,65),
+      '#'+r.measurementId+' · '+r.name,Number.isFinite(r.valueMm)?fmt(r.valueMm,6)+' mm':fmt(r.valuePx,3)+' px',
+      r.reviewRequired?'Cần kiểm tra: '+r.reviewReasons.join('; ').slice(0,110):'Qua bộ lọc AI']}));
+    for(const image of model.images){
+      const meta=image.aiAuto;if(!meta)continue;
+      for(const issue of [...(meta.issues||[]),...(meta.rejected||[]),...(meta.error?[{message:meta.error}]:[])])
+        results.push({review:true,cells:[image.imgName.slice(0,65),'Ngoại lệ','—',String(issue.message||issue.reason).slice(0,150)]});
+    }
+    if(!results.length)return;
+    for(let i=0;i<results.length;i+=12){
+      const p=el('article',undefined,'ar-page'),head=el('header',undefined,'ar-page-head');
+      head.append(el('strong','MicroCAD Vision'),el('span','AI DETECT & MEASURE'));
+      const content=el('div',undefined,'ar-page-content');content.append(el('h2','Chi tiết kết quả tự động'),
+        el('p','Mọi phép đo AI trong phạm vi báo cáo. Kết quả cần kiểm tra không tham gia thống kê hoặc tỷ lệ đạt. Chưa hiệu chuẩn: chỉ px.'));
+      const t=table(['Ảnh nguồn','Phép đo','Giá trị','Chất lượng / ngoại lệ'],[]);t.classList.add('ai-report-table');
+      for(const row of results.slice(i,i+12)){const tr=t.tBodies[0].insertRow();tr.className='ai-report-result'+(row.review?' ai-review':'');for(const value of row.cells)tr.insertCell().textContent=value;}
+      content.append(t);const foot=el('footer',undefined,'ar-page-foot');foot.append(el('span',model.project||'MicroCAD'),el('span',undefined,'ar-page-number'));p.append(head,content,foot);destination.append(p);
+    }
+    const pages=[...destination.querySelectorAll('.ar-page')];pages.forEach((p,i)=>p.querySelector('.ar-page-number').textContent=p.classList.contains('tech')?String(i+1).padStart(2,'0')+' / '+String(pages.length).padStart(2,'0'):'Trang '+(i+1)+' / '+pages.length);
   }
   function addEvidence(content,image) {
     const f=el('figure',undefined,'ar-evidence');

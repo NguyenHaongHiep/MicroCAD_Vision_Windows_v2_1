@@ -110,7 +110,7 @@
     }
 
     const overview=page('TỔNG QUAN CHẤT LƯỢNG',config.title||'Báo cáo đo kiểm lỗ laser', model.scope,'tech-overview',
-      'Kết quả được tính từ các phép đo trong phạm vi đã chọn. '+n(data.uncalibrated)+' phép đo chưa hiệu chuẩn không tham gia thống kê mm.');
+      'Kết quả được tính từ các phép đo trong phạm vi đã chọn. '+n(data.uncalibrated)+' phép đo chưa hiệu chuẩn không tham gia thống kê mm.'+(data.reviewRequired?' '+n(data.reviewRequired)+' phép đo cần kiểm tra bị loại khỏi thống kê và tỷ lệ đạt. Xem chi tiết ở phụ lục AI.':''));
     const gap=data.features.circleGap.stats;
     const breakdown=[n(data.features.circle.size)+' Ø',n(data.features.circleGap.size)+' khe',n(data.edges)+' edges'];
     if(data.other)breakdown.push(n(data.other)+' phép đo khác');

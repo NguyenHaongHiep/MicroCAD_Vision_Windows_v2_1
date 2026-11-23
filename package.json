@@ -1,0 +1,13 @@
+{
+  "name": "microcad-vision",
+  "version": "2.3.0",
+  "private": true,
+  "description": "Offline MicroCAD Vision - frontend regression tests",
+  "engines": {"node": ">=22"},
+  "scripts": {
+    "test": "node --test tests/ai-auto-measure.test.cjs tests/selection_geometry.cjs tests/analytics-engine.test.js MicroCAD_AI/tests/test_row_spacing.js KIEM_THU_CAP_NHAT.js",
+    "test:ui": "node --test --test-concurrency=1 tests/ai-auto-measure-ui.cjs tests/analytics-browser.test.js tests/ui_stability.cjs tests/image_navigation_multiselect.cjs",
+    "test:real-fixtures": "node tests/ai-real-fixtures.cjs"
+  },
+  "devDependencies": {"playwright": "1.65.1"}
+}

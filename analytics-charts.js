@@ -64,6 +64,7 @@
     return p.svg;
   }
   function histogram(rows,tolerance,bins=0,light=false,resolve=()=>tolerance) {
+    rows=rows.filter(row=>!row.reviewRequired);
     const p=plot('Histogram · Phép đo thô',light);
     const values=rows.map(row=>row.valueMm).filter(Number.isFinite);
     if (!values.length) return empty(p);
@@ -107,7 +108,7 @@
   }
   function trend(rows,tolerance,{average=false,visible=['LSL','Target','USL'],start,end,open,light=false}={}) {
     const p=plot(average?'Xu hướng · Trung bình ảnh':'Xu hướng · Từng phép đo',light);
-    const calibrated=rows.filter(row=>Number.isFinite(row.valueMm));
+    const calibrated=rows.filter(row=>!row.reviewRequired&&Number.isFinite(row.valueMm));
     if (!calibrated.length) return empty(p);
     const batches=Map.groupBy(calibrated,r=>r.imageIndex);
     const all=[...batches.keys()];
