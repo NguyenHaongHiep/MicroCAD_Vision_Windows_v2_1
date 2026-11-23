@@ -8,7 +8,7 @@ foreach($file in @($source,(Join-Path $repo 'MicroCAD_AI/start_ai.ps1'))){
  Assert ($errors.Count -eq 0) ('Parse errors in '+$file+': '+$errors)
  Assert (([IO.File]::ReadAllBytes($file))[0] -eq 239) 'UTF-8 BOM required for Windows PowerShell Vietnamese messages'
 }
-# Mock COM/Windows process operations; these are not native Windows integration tests.
+# Mock shortcuts and browser windows. The AI helper tests launch real Windows PowerShell children.
 $tokens=$null;$errors=$null
 $ast=[System.Management.Automation.Language.Parser]::ParseFile($source,[ref]$tokens,[ref]$errors)
 foreach($node in $ast.FindAll({param($n) $n -is [System.Management.Automation.Language.FunctionDefinitionAst]},$true)) {Invoke-Expression $node.Extent.Text}
@@ -33,29 +33,39 @@ try {
  Assert ($shortcut.Arguments.Contains('"'+$launcherPath+'"')) 'Unicode/space launcher path must be quoted'
  New-LauncherShortcut 'Stop MicroCAD AI' ' -StopAI' $temp
  Assert ($shortcut.Arguments.EndsWith(' -StopAI')) 'Stop shortcut argument missing'
- $aiScript=Join-Path $temp 'MicroCAD_AI/start_ai.ps1';$StartupTimeoutSeconds=90
+ $aiScript=Join-Path $temp 'MicroCAD_AI/start_ai.ps1';$StartupTimeoutSeconds=9
  $oldLocal=$env:LOCALAPPDATA;$env:LOCALAPPDATA=$temp
- $script:exitCode=0;$script:calls=@()
- function Start-Process {
-  param($FilePath,$ArgumentList,$WindowStyle,[switch]$PassThru,$RedirectStandardOutput,$RedirectStandardError)
-  $script:calls+=@{file=$FilePath;args=$ArgumentList;window=$WindowStyle}
-  Set-Content -LiteralPath $RedirectStandardOutput -Value @('AI_STAGE=LOADING','AI is ready')
-  Set-Content -LiteralPath $RedirectStandardError -Value 'AI unavailable [CUDA]: simulated startup failure'
-  $child=[pscustomobject]@{ExitCode=$script:exitCode}
-  $child | Add-Member ScriptMethod WaitForExit {param($ms) return $true}
-  return $child
+ $oldMode=$env:MICROCAD_LAUNCHER_TEST_MODE
+ New-Item -ItemType Directory (Split-Path $aiScript) -Force | Out-Null
+ function Show-StartupProgress {return $null}
+ @'
+param([switch]$EnsureRunning,[switch]$Stop,[int]$StartupTimeoutSeconds)
+if($Stop){Write-Output 'AI stopped';exit 0}
+if(-not $EnsureRunning -or $StartupTimeoutSeconds -ne 9){exit 11}
+if($env:MICROCAD_LAUNCHER_TEST_MODE -eq 'error'){
+ [Console]::Error.WriteLine('AI unavailable [CUDA]: simulated startup failure')
+ exit 7
+}
+if($env:MICROCAD_LAUNCHER_TEST_MODE -eq 'silent-error'){exit 13}
+Write-Output 'AI_STAGE=LOADING'
+Write-Output 'AI is ready'
+exit 0
+'@ | Set-Content -LiteralPath $aiScript -Encoding UTF8
+ try {
+  $env:MICROCAD_LAUNCHER_TEST_MODE='ready'
+  $result=Invoke-AILifecycle
+  Assert ($result -eq 'AI is ready') 'Successful child must provide its result without stage messages or a false failure'
+  Assert ((Invoke-AILifecycle -Stopping) -eq 'AI stopped') 'Stop command missing'
+  $env:MICROCAD_LAUNCHER_TEST_MODE='error';$failed=$false
+  try{Invoke-AILifecycle}catch{$failed=$_.Exception.Message.Contains('AI unavailable [CUDA]: simulated startup failure') -and $_.Exception.Message.Contains('.err.log')}
+  Assert $failed 'Child failure and its log path must be displayed'
+  $env:MICROCAD_LAUNCHER_TEST_MODE='silent-error';$failed=$false
+  try{Invoke-AILifecycle}catch{$failed=$_.Exception.Message -match '13'}
+  Assert $failed 'Failure without stderr must show the real exit code'
+ } finally {
+  $env:LOCALAPPDATA=$oldLocal
+  $env:MICROCAD_LAUNCHER_TEST_MODE=$oldMode
  }
- $result=Invoke-AILifecycle
- Assert ($result -eq 'AI is ready') 'Stage messages should stay out of the final result'
- Assert ($calls[-1].args.Contains('"'+$aiScript+'"')) 'Child script path must be quoted'
- Assert ($calls[-1].args.Contains('-EnsureRunning')) 'Ensure-running mode missing'
- Assert ($calls[-1].window -eq 'Hidden') 'AI must not require an interactive console'
- Invoke-AILifecycle -Stopping
- Assert ($calls[-1].args.EndsWith('-Stop')) 'Stop command missing'
- $script:exitCode=1;$failed=$false
- try{Invoke-AILifecycle}catch{$failed=$_.Exception.Message.Contains('AI unavailable [CUDA]: simulated startup failure') -and $_.Exception.Message.Contains('.err.log')}
- Assert $failed 'Child startup failure was swallowed'
- $env:LOCALAPPDATA=$oldLocal
  # Exercise the real main script, with browser/Windows operations mocked.
  Copy-Item $source $launcherPath
  Set-Content (Join-Path $temp 'MicroCAD_Vision.html') '<html></html>'
@@ -69,7 +79,6 @@ try {
  $global:launcherTestBrowserCount=0
  & $launcherPath -ManualOnly
  Assert ($global:launcherTestBrowserCount -eq 1) 'Manual launch should open one browser'
- New-Item -ItemType Directory (Join-Path $temp 'MicroCAD_AI') -Force | Out-Null
  Set-Content (Join-Path $temp 'MicroCAD_AI/server.py') '# fixture'
  Set-Content (Join-Path $temp 'MicroCAD_AI/start_ai.ps1') '# fixture'
  & $launcherPath
@@ -81,4 +90,10 @@ try {
  Assert ($LASTEXITCODE -eq 1) 'Missing browser should report failure'
  $env:SystemRoot=$oldSystem;$env:ProgramFiles=$oldProgram;${env:ProgramFiles(x86)}=$oldX86
  Write-Output 'PASS: parsing/BOM, shortcut target/quoting, child success/failure/stop, manual fallback, missing venv/browser, inspect-only'
-} finally {Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue}
+} finally {
+ $resolved=(Resolve-Path -LiteralPath $temp).Path
+ $tempRoot=[IO.Path]::GetFullPath([IO.Path]::GetTempPath()).TrimEnd([IO.Path]::DirectorySeparatorChar)+[IO.Path]::DirectorySeparatorChar
+ if($resolved.StartsWith($tempRoot,[StringComparison]::OrdinalIgnoreCase) -and (Split-Path $resolved -Leaf) -like 'Micro CAD tiếng Việt *'){
+  Remove-Item -LiteralPath $resolved -Recurse -Force -ErrorAction SilentlyContinue
+ }
+}

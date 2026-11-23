@@ -39,9 +39,18 @@ function Invoke-AILifecycle([switch]$Stopping) {
  $prefix=Join-Path $stateDir ('launcher-'+[Guid]::NewGuid().ToString('N'))
  $arguments='-NoLogo -NoProfile -ExecutionPolicy Bypass -File "'+$aiScript+'" '
  if($Stopping){$arguments+='-Stop'}else{$arguments+='-EnsureRunning -StartupTimeoutSeconds '+$StartupTimeoutSeconds}
- $child=Start-Process -FilePath $powershell -ArgumentList $arguments -WindowStyle Hidden -PassThru -RedirectStandardOutput ($prefix+'.out.log') -RedirectStandardError ($prefix+'.err.log')
+ $outputLog=$prefix+'.out.log'
+ $errorLog=$prefix+'.err.log'
+ $child=[System.Diagnostics.Process]::new()
+ $child.StartInfo.FileName=$powershell
+ $child.StartInfo.Arguments=$arguments
+ $child.StartInfo.UseShellExecute=$false
+ $child.StartInfo.CreateNoWindow=$true
+ $child.StartInfo.RedirectStandardOutput=$true
+ $child.StartInfo.RedirectStandardError=$true
+ $outputStream=$null
+ $errorStream=$null
  $progress=$null
- if(-not $Stopping){$progress=Show-StartupProgress}
  $phases=@{
   CHECKING='Đang kiểm tra model và cổng 8000...'
   IMPORTING='Đang kiểm tra các thư viện Python...'
@@ -50,23 +59,40 @@ function Invoke-AILifecycle([switch]$Stopping) {
  }
  $phaseText='Đang kiểm tra môi trường Python...'
  try {
+  # Keep the handle returned by Process.Start. Windows PowerShell 5.1's
+  # Start-Process -PassThru can return a process with no readable exit code.
+  $outputStream=[System.IO.FileStream]::new($outputLog,'CreateNew','Write','ReadWrite',1,$true)
+  $errorStream=[System.IO.FileStream]::new($errorLog,'CreateNew','Write','ReadWrite',1,$true)
+  if(-not $child.Start()){throw 'Không mở được tiến trình trợ giúp AI.'}
+  $outputCopy=$child.StandardOutput.BaseStream.CopyToAsync($outputStream)
+  $errorCopy=$child.StandardError.BaseStream.CopyToAsync($errorStream)
+  if(-not $Stopping){$progress=Show-StartupProgress}
   $limit=[DateTime]::UtcNow.AddSeconds($StartupTimeoutSeconds+20)
   while(-not $child.WaitForExit(200)) {
-   $lastStage=Get-Content -LiteralPath ($prefix+'.out.log') -Tail 1 -Encoding UTF8 -ErrorAction SilentlyContinue
+   $lastStage=Get-Content -LiteralPath $outputLog -Tail 1 -Encoding UTF8 -ErrorAction SilentlyContinue
    if($lastStage -match '^AI_STAGE=(\w+)$' -and $phases.ContainsKey($Matches[1])){$phaseText=$phases[$Matches[1]]}
    Write-Progress -Activity 'MicroCAD AI' -Status $phaseText
    if($null -ne $progress){$progress.Controls['AIStartupStatus'].Text=$phaseText;[System.Windows.Forms.Application]::DoEvents()}
    if([DateTime]::UtcNow -gt $limit){throw ('Hết thời gian chờ launcher. Xem log: '+$prefix)}
   }
- } finally {if($null -ne $progress){$progress.Close();$progress.Dispose()};Write-Progress -Activity 'MicroCAD AI' -Completed}
+  $exitCode=$child.ExitCode
+  if(-not [System.Threading.Tasks.Task]::WaitAll([System.Threading.Tasks.Task[]]@($outputCopy,$errorCopy),5000)){
+   throw ('Không đọc xong log của tiến trình trợ giúp AI. Log: '+$prefix)
+  }
+ } finally {
+  if($null -ne $progress){$progress.Close();$progress.Dispose()}
+  $child.Dispose()
+  if($null -ne $outputStream){$outputStream.Dispose()}
+  if($null -ne $errorStream){$errorStream.Dispose()}
+  Write-Progress -Activity 'MicroCAD AI' -Completed
+ }
 
- if($child.ExitCode -ne 0){
-  $errorLog=$prefix+'.err.log'
+ if($exitCode -ne 0){
   $details=Get-Content -LiteralPath $errorLog -Raw -Encoding UTF8 -ErrorAction SilentlyContinue
-  if(-not $details){$details='Tiến trình trợ giúp AI kết thúc với mã '+$child.ExitCode}
+  if(-not $details){$details='Tiến trình trợ giúp AI kết thúc với mã '+$exitCode}
   throw ($details.Trim()+"`nLog launcher: "+$errorLog)
  }
- Get-Content -LiteralPath ($prefix+'.out.log') -Encoding UTF8 -ErrorAction SilentlyContinue | Where-Object {$_ -notlike 'AI_STAGE=*'}
+ Get-Content -LiteralPath $outputLog -Encoding UTF8 -ErrorAction SilentlyContinue | Where-Object {$_ -notlike 'AI_STAGE=*'}
 }
 try {
  if($StopAI){$result=Invoke-AILifecycle -Stopping;Show-Notice ("Kết quả kiểm tra/tắt AI (không tắt backend của ứng dụng khác):`n"+$result);exit 0}
