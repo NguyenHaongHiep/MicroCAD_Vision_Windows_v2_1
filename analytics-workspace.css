@@ -1,0 +1,143 @@
+/* Analytics uses the same CAD shell and scrolls inside its own workspace row. */
+#app {grid-template-rows:48px 40px minmax(0,1fr) 28px}
+#app > [hidden], .ar-pane [hidden], #arDialog [hidden] {display:none!important}
+.ar-nav {
+  display:flex;align-items:stretch;gap:5px;padding:0 13px;overflow-x:auto;
+  background:#101b2a;border-bottom:1px solid #2b3c50;
+}
+.ar-nav button {
+  border:0;border-bottom:2px solid transparent;background:transparent;color:#b0c2d6;
+  padding:0 13px;white-space:nowrap;font:600 12px "Segoe UI",sans-serif;
+}
+.ar-nav button[aria-current=true] {color:var(--cyan);border-color:var(--cyan);background:#273c4e55}
+.ar-nav button:hover,.ar-nav button:focus-visible {color:white;background:#273c4e}
+.ar-pane {min-height:0;min-width:0;overflow:auto;overscroll-behavior:contain;background:#0c1522;color:#e1ebf9}
+.ar-inner {max-width:1600px;margin:0 auto;padding:23px clamp(12px,2.3vw,36px) 34px}
+.ar-pane h1 {margin:0;font-size:27px;letter-spacing:-.035em}
+.ar-pane h2 {margin:0;font-size:16px;font-weight:650}
+.ar-pane p {margin:8px 0;color:#b0c1d6;line-height:1.5}
+.ar-heading,.ar-controls,.ar-card-head,.ar-dialog-actions {display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.ar-heading,.ar-card-head {justify-content:space-between}
+.ar-heading {margin-bottom:16px}
+.ar-overline {color:var(--cyan);letter-spacing:.12em;font-size:10px;font-weight:750;margin-bottom:5px}
+.ar-controls {align-items:flex-end}
+.ar-controls .btn,.ar-card-head .btn {min-height:31px}
+.ar-pane label,#arDialog label {color:#c0cfe2;font-size:12px}
+.ar-controls > label,.ar-report-form > label,#arDialogFields label {display:grid;gap:5px}
+.ar-pane select,.ar-pane input:not([type=checkbox]),.ar-pane textarea,#arDialog input,#arDialog textarea {
+  border:1px solid #415570;border-radius:6px;background:#0b1522;color:#e8f0fb;
+  font:inherit;min-height:32px;padding:5px 8px;max-width:100%;min-width:0;
+}
+.ar-pane textarea,#arDialog textarea {resize:vertical;min-height:66px}
+.ar-pane input[type=checkbox],#arDialog input[type=checkbox] {accent-color:#54d4de}
+.ar-pane button:focus-visible,.ar-pane select:focus-visible,.ar-pane [tabindex]:focus-visible,.ar-pane input:focus-visible,
+#arDialog :focus-visible {outline:2px solid #6ce3eb;outline-offset:2px}
+.ar-panel,.ar-card,.ar-kpi {border:1px solid #2b3e56;border-radius:9px;background:#111d2d}
+.ar-panel,.ar-card {padding:13px}
+.ar-filters {margin-bottom:11px}
+.ar-filters select {max-width:235px}
+.ar-kpis {display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;margin-bottom:12px}
+.ar-kpi {min-width:0;padding:10px 12px}
+.ar-kpi span {display:block;font-size:11px;color:#afc1d6;margin-bottom:5px}
+.ar-kpi strong {font-size:20px;color:#eaf7ff;font-variant-numeric:tabular-nums;font-weight:670;overflow-wrap:anywhere}
+.ar-chart-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.ar-plot {margin-top:8px}
+.ar-plot svg {display:block;width:100%;height:auto}
+.ar-line-toggles {display:flex;flex-wrap:wrap;align-items:center;gap:9px;padding-top:5px}
+.ar-line-toggles label,.ar-chart-checks label {display:flex;gap:4px;align-items:center}
+.ar-range {font-size:11px;color:#b8cadd}
+.ar-scroll-table {overflow:auto}
+.ar-table {width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+.ar-table caption {text-align:left;font-weight:700;margin:8px 0 5px}
+.ar-table th,.ar-table td {padding:7px 8px;text-align:left;border-bottom:1px solid #2e4158;overflow-wrap:anywhere}
+.ar-table th {background:#1b3045;color:#d4e4f5}
+.ar-table small {display:block;margin-top:4px;color:#b5c9de}
+.ar-table .btn {height:auto;min-height:27px;white-space:normal;text-align:left}
+.ar-image-list {margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(310px,100%),1fr));gap:9px}
+.ar-image-row {display:grid;grid-template-columns:auto 56px minmax(0,1fr);gap:11px;align-items:center;padding:9px;border:1px solid #2b3e56;border-radius:8px;background:#111d2d}
+.ar-image-row img {width:56px;height:42px;object-fit:contain;background:#0a1320;border-radius:4px}
+.ar-image-row button {max-width:100%;white-space:normal;height:auto;min-height:29px;overflow-wrap:anywhere;text-align:left}
+.ar-image-row small {display:block;color:#afc1d6;margin-top:4px;overflow-wrap:anywhere}
+.ar-editor-grid {display:grid;grid-template-columns:minmax(260px,310px) minmax(0,1fr);align-items:start;gap:20px}
+.ar-report-form {display:grid;gap:12px}
+.ar-chart-checks {display:grid;grid-template-columns:1fr 1fr;margin:0;padding:8px 10px;border:1px solid #3b4e66;border-radius:6px}
+.ar-chart-checks label {min-height:24px}
+.ar-chart-checks small {grid-column:1/-1;color:#aebfd4;margin-bottom:2px}
+.ar-report-actions {align-items:center}
+.ar-report-form > label.ar-full-trace {display:flex;align-items:center}
+.ar-editor-form {position:sticky;top:6px}
+.ar-editor-form .ar-controls {margin-top:12px}
+.ar-preview {min-width:0;padding:0 0 16px;overflow:auto}
+#arPages {display:grid;gap:14px;justify-content:start}
+#arDialog {
+  width:min(650px,calc(100% - 26px));max-height:85vh;overflow:auto;
+  color:#e1ebf9;background:#111d2d;border:1px solid #45627c;border-radius:9px;padding:20px;
+}
+#arDialog::backdrop {background:#020914bb}
+#arDialogTitle {margin:0 0 15px;font-size:21px}
+#arDialogFields {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.ar-dialog-actions {justify-content:flex-end;margin-top:10px}
+#arDialogError {color:#ffadb8;min-height:1em}
+.ar-page {
+  box-sizing:border-box;
+  width:210mm;height:297mm;padding:12mm 13mm 10mm;
+  color:#21374a;background:white;
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:5mm;
+  font:10pt/1.45 "Segoe UI",Arial,sans-serif;overflow-wrap:anywhere;
+}
+.ar-page-head,.ar-page-foot {display:flex;align-items:center;justify-content:space-between;gap:10px;color:#456277}
+.ar-page-head {padding-bottom:3mm;border-bottom:2px solid #207787}
+.ar-page-head strong {font-size:12pt;color:#14344d}
+.ar-page-head span {font-size:9pt;letter-spacing:.08em;text-align:right}
+.ar-page-foot {border-top:1px solid #d5e1ea;padding-top:2mm;font-size:8pt}
+.ar-page-foot span:first-child {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ar-page-foot span:last-child,.ar-page-foot span:nth-child(2) {flex-shrink:0}
+.ar-page .ar-page-content h2 {font-size:24pt;line-height:1.15;color:#12324c;margin:0 0 4mm}
+.ar-page h3 {font-size:11pt;margin:4mm 0 2mm;color:#163c56}
+.ar-page p {white-space:normal;color:#2f4b61;margin:0 0 3mm}
+.ar-page .ar-report-sub {color:#536b79;font-size:10pt}
+.ar-page .ar-source {border-left:3px solid #b47b39;background:#fff4df;padding:1mm 2mm;color:#704418}
+.ar-page .ar-table {table-layout:auto;font-size:8pt}
+.ar-page .ar-table caption {color:#164760;margin:4mm 0 1mm}
+.ar-page .ar-table th,.ar-page .ar-table td {border-color:#dce6ee;padding:1.4mm 1.5mm}
+.ar-page .ar-table th {background:#e5f0f4;color:#12384c}
+.ar-print-kpis {display:grid;grid-template-columns:repeat(3,1fr);gap:3mm;margin:3mm 0}
+.ar-print-kpis > div {border-top:2px solid #27808f;background:#eef5f8;padding:2mm 3mm}
+.ar-print-kpis strong {display:block;color:#164760;font-size:16pt}
+.ar-print-kpis span {color:#466575;font-size:8pt}
+.ar-print-charts {display:grid;grid-template-columns:1fr;gap:2mm}
+.ar-print-charts.quick {grid-template-columns:repeat(2,minmax(0,1fr));gap:4mm}
+.ar-figure,.ar-evidence {margin:0;break-inside:avoid}
+.ar-figure svg {width:100%;height:auto;display:block}
+.ar-page .ar-figure figcaption,.ar-page .ar-evidence figcaption {color:#164760;font-size:9pt;font-weight:650;margin-bottom:1mm}
+.ar-evidence {margin-top:4mm}
+.ar-evidence img {display:block;width:auto;max-width:100%;height:auto;max-height:65mm;object-fit:contain}
+.ar-evidence figcaption {padding-top:1mm}
+@media(max-height:850px){
+  .ar-inner{padding-top:14px}
+  .ar-heading{margin-bottom:9px}
+  .ar-heading p{margin:4px 0}
+  .ar-filters{padding:8px 11px;margin-bottom:8px}
+  .ar-filters p{margin:5px 0 0}
+  .ar-kpis{gap:7px;margin-bottom:8px}
+  .ar-kpi{padding:7px 10px}
+  .ar-chart-grid .ar-plot svg{max-height:200px}
+}
+@media(max-width:1200px){.ar-page{zoom:.86}}
+@media(max-width:900px){.ar-kpis{grid-template-columns:repeat(3,minmax(0,1fr))}.ar-editor-grid{grid-template-columns:1fr}.ar-editor-form{position:static}}
+@media(max-width:680px){.ar-chart-grid{grid-template-columns:1fr}.ar-nav{padding:0 5px}.ar-nav button{padding:0 7px}.ar-kpi strong{font-size:16px}.ar-page{zoom:.7}}
+@page {size:A4 portrait;margin:0}
+@media print {
+  html:has(#app[data-analytics-view=reports]),body:has(#app[data-analytics-view=reports]) {height:auto!important;overflow:visible!important;background:white!important}
+  body:has(#app[data-analytics-view=reports]) > :not(#app) {display:none!important}
+  #app[data-analytics-view=reports] {display:block!important;height:auto!important;overflow:visible!important;background:white!important}
+  #app[data-analytics-view=reports] > :not(#analyticsReport),#analyticsReport .ar-heading,#analyticsReport .ar-editor-form {display:none!important}
+  #app[data-analytics-view=reports] #analyticsReport,#analyticsReport .ar-inner,.ar-editor-grid,.ar-preview,#arPages {
+    display:block!important;max-width:none;margin:0;padding:0;overflow:visible!important;background:white;
+  }
+  .ar-page {
+    zoom:1;width:209.9mm;height:296.8mm;margin:0;
+    break-after:page;break-inside:avoid;print-color-adjust:exact;-webkit-print-color-adjust:exact;
+  }
+  .ar-page:last-child {break-after:auto}
+}

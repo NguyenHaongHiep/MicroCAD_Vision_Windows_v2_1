@@ -1,0 +1,147 @@
+/* Measurements in pt follow the A4 reference. The Analytics UI keeps its own styling. */
+.ar-page.tech {
+  --tech-navy:#163a4d;
+  --tech-teal:#168c88;
+  --tech-page:#f5f8fa;
+  --tech-white:#fff;
+  --tech-orange:#df8a35;
+  --tech-red:#c45e59;
+  --tech-blue:#268eb7;
+  --tech-muted:#526c79;
+  --tech-neutral:#a9bdc5;
+  --tech-grid:#d5e3e8;
+  --tech-teal-light:#e8f2f2;
+  --tech-orange-light:#fbf0e4;
+  --tech-stripe:#f7fafb;
+  background:var(--tech-page);
+  color:var(--tech-navy);
+  font:8.5pt/1.42 "Noto Sans","Segoe UI",Arial,sans-serif;
+  padding:0;
+  gap:0;
+  grid-template-rows:86pt minmax(0,1fr) 49pt;
+}
+.tech .tech-header {
+  border-top:4pt solid var(--tech-teal);
+  background:var(--tech-navy);
+  color:var(--tech-white);
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:15pt 40pt;
+}
+.tech-header strong,.tech-header div span {display:block}
+.tech-header strong {font-size:13pt;letter-spacing:.05em}
+.tech-header div span {font-size:8pt;color:#bed4dd;margin-top:2pt;letter-spacing:.09em}
+.tech-header .tech-header-section {margin-top:24pt;color:#8ed2d2;font-size:8pt;letter-spacing:.04em;text-align:right}
+.tech .tech-content {padding:19pt 40pt 0;min-height:0}
+.tech .tech-footer {
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12pt;
+  margin:0 40pt;padding-top:12pt;border-top:.6pt solid var(--tech-grid);
+  color:var(--tech-muted);font-size:6.6pt;text-transform:uppercase;
+}
+.tech-footer .ar-page-number {flex:none;color:var(--tech-navy);font-size:8pt}
+.tech .tech-content h2 {
+  margin:0;color:var(--tech-navy);font-size:17pt;line-height:1.2;
+  font-weight:750;text-transform:uppercase;letter-spacing:.012em;
+}
+.tech-overview .tech-content h2 {font-size:18pt}
+.tech .tech-intro {min-height:54pt}
+.tech-overview .tech-intro {min-height:88pt}
+.tech-trace .tech-intro {min-height:83pt}
+.tech .tech-intro p {margin:4pt 0 0;line-height:1.3}
+.tech .tech-intro p.tech-subtitle {
+  color:var(--tech-teal);font-size:9pt;letter-spacing:.025em;font-weight:730;text-transform:uppercase;
+}
+.tech-analysis .tech-intro p.tech-subtitle,.tech-appendix .tech-intro p.tech-subtitle {text-transform:none}
+.tech .tech-intro p.tech-intro-note {color:var(--tech-muted);font-size:8pt;margin:8pt 0 0}
+.tech-kpis,.tech-specs {display:grid;gap:13pt;grid-template-columns:repeat(3,minmax(0,1fr))}
+.tech-specs {grid-template-columns:repeat(2,minmax(0,1fr))}
+.tech-accent-teal {--tech-accent:var(--tech-teal)}
+.tech-accent-blue {--tech-accent:var(--tech-blue)}
+.tech-accent-orange {--tech-accent:var(--tech-orange)}
+.tech-accent-red {--tech-accent:var(--tech-red)}
+.tech-card {
+  background:var(--tech-white);border:.65pt solid var(--tech-grid);
+  border-left:4pt solid var(--tech-accent);border-radius:8pt;
+  padding:10pt 10pt 7pt;display:flex;flex-direction:column;justify-content:center;min-height:74pt;
+}
+.tech-overview .tech-kpis .tech-card {min-height:86pt}
+.tech-card-label {font-size:8pt;color:var(--tech-muted);text-transform:uppercase;font-weight:600}
+.tech-card strong {font-size:22pt;line-height:1.25;color:var(--tech-navy);margin:.5pt 0 2pt}
+.tech-analysis .tech-card strong {font-size:19pt}
+.tech-card small {font-size:7.5pt;color:var(--tech-muted);line-height:1.3}
+.tech-specs .tech-card {min-height:62pt;border-left:.65pt solid var(--tech-grid);padding:8pt 13pt}
+.tech-specs .tech-card strong {color:var(--tech-teal);font-size:14pt}
+.tech .tech-heading {
+  display:flex;align-items:center;gap:9pt;
+  color:var(--tech-navy);font-size:10.5pt;text-transform:uppercase;line-height:1.2;
+  border-left:4pt solid var(--tech-teal);min-height:14pt;
+  padding-left:9pt;margin:18pt 0 12pt;
+}
+.tech .tech-kpis + .tech-heading {margin-top:23pt}
+.tech .tech-table {
+  border:.65pt solid var(--tech-grid);border-radius:7pt;overflow:hidden;
+}
+.tech .ar-table {table-layout:fixed;font-size:8pt;margin:0;color:var(--tech-navy)}
+.tech .ar-table :is(th,td) {
+  padding:6pt 10pt;border:0;line-height:1.32;
+  height:33pt;vertical-align:middle;font-variant-numeric:tabular-nums;
+}
+.tech .ar-table thead th {background:var(--tech-navy);color:var(--tech-white)}
+.tech .ar-table tbody td {background:var(--tech-white);border-top:.6pt solid var(--tech-grid)}
+.tech .ar-table tbody tr:nth-child(even) td {background:var(--tech-stripe)}
+.tech .tech-stats .ar-table td {height:36pt}
+.tech .tech-stats .ar-table th:nth-child(1) {width:31%}
+.tech .tech-stats .ar-table th:nth-child(2) {width:10%}
+.tech .tech-stats .ar-table th:nth-child(3) {width:22%}
+.tech .tech-stats .ar-table :is(th,td):not(:first-child) {text-align:center}
+.tech .tech-stats .ar-table td:last-child {font-weight:700;color:var(--tech-teal)}
+.tech .tech-stats .ar-table tr:nth-child(2) td:last-child {color:#aa5c16}
+.tech .tech-table + .tech-heading {margin-top:15pt}
+.tech-stack {margin:0 0 15pt}
+.tech-stack-cap {display:flex;justify-content:space-between;gap:6pt;margin-bottom:7pt;font-size:9pt}
+.tech-stack-cap span {color:var(--tech-muted);font-size:8pt}
+.tech-stack-track {display:flex;height:16pt;background:var(--tech-grid);width:100%;overflow:hidden}
+.tech-state-below {--stack-color:var(--tech-red);--stack-label:#a0443f}
+.tech-state-within {--stack-color:var(--tech-teal);--stack-label:#0f7773}
+.tech-state-above {--stack-color:var(--tech-orange);--stack-label:#a65712}
+.tech-stack-track span {background:var(--stack-color)}
+.tech-stack-labels {display:flex;justify-content:space-between;gap:6pt;margin-top:5pt;font-size:7.8pt;color:var(--tech-muted)}
+.tech-stack-labels span {color:var(--stack-label)}
+.tech-note {
+  margin-top:18pt;border-left:4pt solid var(--tech-accent);border-radius:4pt;
+  padding:8pt 11pt;background:var(--tech-teal-light);color:var(--tech-navy);min-height:51pt;
+}
+.tech-note.tech-accent-orange {background:var(--tech-orange-light)}
+.tech .tech-note strong {display:block;text-transform:uppercase;font-size:8.4pt;margin-bottom:3pt}
+.tech .tech-note p {font-size:8.2pt;line-height:1.44;margin:0;color:var(--tech-navy);white-space:pre-line}
+.tech-plot {
+  margin:13pt 0 0;padding:9pt 13pt 8pt;min-height:228pt;
+  background:var(--tech-white);border:.65pt solid var(--tech-grid);border-radius:9pt;
+}
+.tech-plot figcaption {font-size:10pt;font-weight:700;text-transform:uppercase;line-height:1.3;margin:0 0 3pt}
+.tech-plot svg {display:block;width:100%;height:auto}
+.tech .tech-caption {font-size:7.2pt;color:var(--tech-muted);margin:4pt 0 0}
+.tech-plot-legend {display:flex;justify-content:flex-end;gap:12pt;font-size:6.7pt;color:var(--tech-muted)}
+.tech-plot-legend span::before {content:'';display:inline-block;width:12pt;margin-right:4pt;vertical-align:middle;border-top:.8pt solid var(--tech-orange)}
+.tech-plot-legend span.tech-legend-limit::before {border-top:1pt dashed var(--tech-teal)}
+.tech-analysis .tech-note {margin-top:17pt}
+.tech .tech-traces .ar-table th:not(:last-child) {width:11.5%}
+.tech .tech-traces .ar-table :is(th,td) {padding-inline:9pt}
+.tech .tech-traces .ar-table td:first-child {font-weight:700}
+.tech-trace .tech-table + .tech-heading {margin-top:25pt}
+.tech-methods {margin:0;padding:0 0 0 13pt;font-size:8pt;color:var(--tech-navy)}
+.tech-methods li {margin:0 0 6.5pt}
+.tech-methods li::marker {color:var(--tech-teal);font-size:9pt}
+.tech-trace .tech-methods + .tech-heading {margin-top:14pt}
+.tech-trace .tech-heading + .tech-note {margin-top:0;min-height:74pt}
+.tech-trace h4 {font-size:8pt;text-transform:uppercase;margin:13pt 0 1pt}
+.tech-appendix .tech-intro {min-height:54pt}
+.tech-appendix .ar-evidence img {max-height:125mm}
+.tech-appendix .ar-table th,.tech-appendix .ar-table td {height:25pt}
+.tech-appendix .ar-table th:first-child {width:33%}
+.tech-appendix .tech-full-traces .ar-table th:not(:last-child) {width:9.5%}
+.tech-appendix .tech-full-traces .ar-table td {font-size:7.8pt}
+@media print {
+  .ar-page.tech {print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}

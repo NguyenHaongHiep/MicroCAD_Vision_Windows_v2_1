@@ -23,6 +23,7 @@ backups/
 *.log
 *.tmp
 node_modules/
+/output/qa/
 
 # Windows
 Thumbs.db
