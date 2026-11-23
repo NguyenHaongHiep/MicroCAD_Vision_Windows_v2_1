@@ -213,6 +213,10 @@ async function testMockedAi(browser) {
     assert.equal(await page.locator('.ar-evidence img').count(),1);
     await page.locator('[name=evidence]').selectOption('');
     assert.equal(await page.locator('.ar-evidence img').count(),0);
+    await page.locator('[name=template]').selectOption('technical');
+    assert.equal(await page.locator('.ar-page.tech').count(),4);
+    assert.equal(await page.locator('.ar-page-number').first().innerText(),'01 / 04');
+    assert.match(await page.locator('.tech-analysis').first().innerText(),/PHÂN BỐ TRUNG BÌNH ĐƯỜNG KÍNH THEO ẢNH/i);
 
     await view(page,'measurement');
     const png=await download(page,'#exportPngBtn');
@@ -268,6 +272,8 @@ async function testMockedAi(browser) {
     await page.locator('[name=template]').selectOption('technical');
     await page.locator('[name=comparison]').check();
     assert.equal(await page.locator('.ar-page').filter({hasText:'ĐIỀU KIỆN THÍ NGHIỆM'}).count(),2);
+    await page.locator('[name=reportTitle]').fill('BÁO CÁO ĐO KIỂM LỖ LASER '.repeat(5).slice(0,120));
+    await page.locator('[name=source]').fill('Nguồn đo kiểm từng điều kiện '.repeat(6).slice(0,160));
     await validatePages(page);
     await view(page,'analytics');
 
@@ -282,9 +288,12 @@ async function testMockedAi(browser) {
     await page.locator('#arTrendMode').selectOption('average');
     await view(page,'reports');
     await page.locator('[name=template]').selectOption('technical');
+    await page.locator('[name=allTrace]').check();
     const tracePages=page.locator('.ar-page').filter({hasText:'Kết quả theo ảnh'});
     assert(await tracePages.count()>=3);
     assert.equal(await tracePages.locator('tbody tr').count(),46);
+    assert.equal(await tracePages.locator('thead').count(),await tracePages.count());
+    assert.match(await tracePages.last().innerText(),/Ảnh kiểm thử 46/);
     await validatePages(page);
     if(artifacts)await print(page,path.join(artifacts,'qa','Pagination_Test.pdf'));
     assert.deepEqual(errors,[]);

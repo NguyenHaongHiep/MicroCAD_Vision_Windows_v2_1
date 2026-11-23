@@ -64,6 +64,7 @@
 .ar-chart-checks label {min-height:24px}
 .ar-chart-checks small {grid-column:1/-1;color:#aebfd4;margin-bottom:2px}
 .ar-report-actions {align-items:center}
+.ar-report-form > label.ar-full-trace {display:flex;align-items:center}
 .ar-editor-form {position:sticky;top:6px}
 .ar-editor-form .ar-controls {margin-top:12px}
 .ar-preview {min-width:0;padding:0 0 16px;overflow:auto}
@@ -105,10 +106,6 @@
 .ar-print-kpis strong {display:block;color:#164760;font-size:16pt}
 .ar-print-kpis span {color:#466575;font-size:8pt}
 .ar-print-charts {display:grid;grid-template-columns:1fr;gap:2mm}
-.ar-print-charts:not(.quick) svg {max-height:210px}
-.ar-page .ar-trace-table {table-layout:fixed}
-.ar-trace-table th:nth-child(1) {width:7%}
-.ar-trace-table th:nth-child(2) {width:48%}
 .ar-print-charts.quick {grid-template-columns:repeat(2,minmax(0,1fr));gap:4mm}
 .ar-figure,.ar-evidence {margin:0;break-inside:avoid}
 .ar-figure svg {width:100%;height:auto;display:block}

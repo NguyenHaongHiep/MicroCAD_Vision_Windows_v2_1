@@ -12,6 +12,7 @@
   const chartKeys = ['histogram', 'trend', 'tolerance', 'comparison'];
   function report(raw, ids = new Map()) {
     return {
+      allTrace:raw?.allTrace === true,
       template:raw?.template === 'technical' ? 'technical' : 'quick',
       title:clean(raw?.title, 120), notes:clean(raw?.notes, 850),
       source:clean(raw?.source, 160),

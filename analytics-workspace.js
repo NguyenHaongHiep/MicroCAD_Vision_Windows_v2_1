@@ -204,6 +204,7 @@
       reportConfig.elements.notes.value=config.notes;
       reportConfig.elements.source.value=config.source;
       for (const key of S.chartKeys) reportConfig.elements[key].checked=config.charts[key];
+      reportConfig.elements.allTrace.checked=config.allTrace;
       syncChartOptions();
       options(reportConfig.elements.evidence,[['','Không chọn'],...m.images.map(r=>[String(r.imgId),r.imgName])],String(config.evidence));
       R.render(pages,m,config);
@@ -217,6 +218,7 @@
       const full=form.template.value==='quick'&&selected.length>=3;
       for (const key of S.chartKeys) form[key].disabled=full&&!form[key].checked;
       $('arQuickChartNote').hidden=form.template.value!=='quick';
+      $('arFullTraceOption').hidden=form.template.value==='quick';
     }
     function readReport(event) {
       const f=reportConfig.elements;
@@ -224,6 +226,7 @@
       if (event) syncChartOptions();
       if (event?.target===f.evidence) config.evidence=f.evidence.value?Number(f.evidence.value):null;
       config.template=f.template.value;
+      config.allTrace=f.allTrace.checked;
       config.title=S.clean(f.reportTitle.value,120);
       config.notes=S.clean(f.notes.value,850);
       config.source=S.clean(f.source.value,160);
@@ -343,9 +346,10 @@
     reportConfig.addEventListener('submit',event=>event.preventDefault());
     $('arSaveReport').onclick=()=>{readReport();bridge.save();};
     $('arPrint').onclick=async ()=>{
-      readReport();
-      await Promise.all([...pages.querySelectorAll('img')].map(img=>img.decode().catch(()=>{})));
-      window.print();
+      try {
+        readReport();
+        await MicroCADReportExporter.print(pages);
+      } catch(err) {bridge.toast('Không thể xuất PDF: '+err.message,true);}
     };
     $('arDownloadHistogram').onclick=async ()=>{
       try{const svg=$('arPlot-histogram').querySelector('svg'); if(svg)bridge.download(await C.png(svg),'MicroCAD_histogram_'+type+'.png');}

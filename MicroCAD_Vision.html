@@ -47,6 +47,7 @@
 #selectionMeasurePanel .side-acts select{min-width:0;flex:1;width:0}#selectionMeasurePanel .field{margin:6px 0}#planRowMembers{max-height:230px;width:100%}.plan-row-legend{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;font:11px Consolas,monospace}.plan-preview-item{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}.plan-preview-item>span{flex:1;overflow-wrap:anywhere}#planPreview{max-height:230px;overflow:auto}#planInputError:empty{display:none}#selectionMeasurePanel[hidden]{display:none}
 </style>
 <link rel="stylesheet" href="analytics-workspace.css">
+<link rel="stylesheet" href="analytics-report-technical.css">
 </head>
 <body>
 <div id="app">
@@ -191,6 +192,7 @@
       <label><input type="checkbox" name="tolerance">Dung sai</label>
       <label><input type="checkbox" name="comparison">So sánh</label>
      </fieldset>
+     <label id="arFullTraceOption" class="ar-full-trace"><input type="checkbox" name="allTrace"> Kèm bảng truy xuất toàn bộ ảnh</label>
      <label>Ảnh minh chứng<select name="evidence"></select></label>
      <label>Kết luận / ghi chú<textarea name="notes" maxlength="850"></textarea></label>
     </form>
@@ -278,6 +280,10 @@
 <script src="analytics-engine.js"></script>
 <script src="analytics-session.js"></script>
 <script src="analytics-charts.js"></script>
+<script src="analytics-report-data.js"></script>
+<script src="analytics-report-charts.js"></script>
+<script src="analytics-report-technical.js"></script>
+<script src="analytics-report-export.js"></script>
 <script src="analytics-report.js"></script>
 <script src="analytics-workspace.js"></script>
 <script>
