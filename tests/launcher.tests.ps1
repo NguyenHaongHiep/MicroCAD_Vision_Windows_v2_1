@@ -39,20 +39,21 @@ try {
  function Start-Process {
   param($FilePath,$ArgumentList,$WindowStyle,[switch]$PassThru,$RedirectStandardOutput,$RedirectStandardError)
   $script:calls+=@{file=$FilePath;args=$ArgumentList;window=$WindowStyle}
-  Set-Content -LiteralPath $RedirectStandardOutput -Value 'AI is ready'
-  Set-Content -LiteralPath $RedirectStandardError -Value 'simulated startup failure'
+  Set-Content -LiteralPath $RedirectStandardOutput -Value @('AI_STAGE=LOADING','AI is ready')
+  Set-Content -LiteralPath $RedirectStandardError -Value 'AI unavailable [CUDA]: simulated startup failure'
   $child=[pscustomobject]@{ExitCode=$script:exitCode}
   $child | Add-Member ScriptMethod WaitForExit {param($ms) return $true}
   return $child
  }
- Invoke-AILifecycle
+ $result=Invoke-AILifecycle
+ Assert ($result -eq 'AI is ready') 'Stage messages should stay out of the final result'
  Assert ($calls[-1].args.Contains('"'+$aiScript+'"')) 'Child script path must be quoted'
  Assert ($calls[-1].args.Contains('-EnsureRunning')) 'Ensure-running mode missing'
  Assert ($calls[-1].window -eq 'Hidden') 'AI must not require an interactive console'
  Invoke-AILifecycle -Stopping
  Assert ($calls[-1].args.EndsWith('-Stop')) 'Stop command missing'
  $script:exitCode=1;$failed=$false
- try{Invoke-AILifecycle}catch{$failed=$_.Exception.Message.Contains('simulated startup failure')}
+ try{Invoke-AILifecycle}catch{$failed=$_.Exception.Message.Contains('AI unavailable [CUDA]: simulated startup failure') -and $_.Exception.Message.Contains('.err.log')}
  Assert $failed 'Child startup failure was swallowed'
  $env:LOCALAPPDATA=$oldLocal
  # Exercise the real main script, with browser/Windows operations mocked.

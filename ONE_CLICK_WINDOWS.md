@@ -53,9 +53,10 @@ browser; **backend vẫn chỉ một**. Không dò/kill các cửa sổ browser 
   dụng khác không bị thay thế/kill và không tạo thêm server.
 - Helper mở `.venv` Python chạy uvicorn `server:app --host 127.0.0.1 --port 8000`.
   Chọn GPU/CUDA/device theo server và môi trường hiện có; không ép CPU hay cài CUDA.
-- Poll `/health` với deadline mặc định 90 giây, không dùng sleep cố định để đoán
-  readiness. Có thể dùng `-StartupTimeoutSeconds 180` khi model/máy cần lâu hơn
-  (1–600 giây). Poll có khoảng nghỉ ngắn, bounded; preflight dependency có timeout.
+- Launcher hiển thị giai đoạn kiểm tra Python, khởi động backend hoặc nạp model.
+  `/health` trả trạng thái nạp model ngay khi HTTP sẵn sàng. Giới hạn mặc định
+  vẫn là 90 giây. Nếu hết thời gian, thông báo cho biết đã có HTTP hay vẫn đang
+  nạp model. Chế độ đo thủ công tiếp tục mở khi AI không sẵn sàng.
 - Đóng browser **không tự tắt AI**, nhằm tái sử dụng ở lần mở sau. Để giải phóng
   RAM/GPU, nhấp đúp **Stop MicroCAD AI** hoặc **STOP_MicroCAD_AI.bat**. Bộ nhớ được
   hệ điều hành/driver thu hồi khi tiến trình đã thoát.
@@ -63,14 +64,21 @@ browser; **backend vẫn chỉ một**. Không dò/kill các cửa sổ browser 
   backend đã chạy thủ công/ứng dụng khác, Stop từ chối và yêu cầu dừng từ console
   gốc. Không taskkill theo tên Python, không kill server không xác minh được.
 
-### Thay đổi health tối thiểu, có chủ đích
+### Kiểm tra trạng thái AI
 
-Giữ nguyên mọi trường `/health` cũ và thêm `pid`, `instance_id` (ID instance ngẫu
-nhiên của launcher, null khi chạy foreground cũ). Đây là metadata phục vụ kiểm tra
-quyền sở hữu tiến trình trước khi dừng, tránh dùng riêng PID cũ có thể đã được tái
-sử dụng. State local phải khớp root, PID và instance từ backend hiện tại mới gửi
-terminate. Không đổi `/detect`, `/detect-batch`, inference, CORS hay bind address.
-Frontend đang có bỏ qua các trường bổ sung và vẫn dùng model_ready như trước.
+`/health` giữ `model_ready` và thêm `startup_state` (`loading`, `ready`,
+`failed`), `error_code` và `parent_pid`. Windows có thể dùng tiến trình chuyển
+tiếp `.venv/Scripts/python.exe`. Launcher chỉ nhận phiên mới khi `instance_id`
+và PID hoặc PID cha khớp, sau đó lưu PID thật của backend. Lệnh Stop vẫn yêu
+cầu đúng thư mục, PID và phiên khởi động trước khi dừng.
+
+- `PYTHON`. Kiểm tra Python 3.11/3.12 mà `.venv/pyvenv.cfg` tham chiếu.
+- `MODEL_MISSING` hoặc `MODEL_LOAD`. Kiểm tra đường dẫn và checkpoint đã huấn luyện.
+- `DEPENDENCY` hoặc `CUDA`. Xem tên thư viện hoặc lỗi GPU trong thông báo và log.
+  Có thể đặt `MICROCAD_DEVICE=cpu` khi chủ động chọn CPU.
+- `PORT_IN_USE`. Xác định ứng dụng đang dùng 8000 và đóng từ ứng dụng gốc nếu cần.
+- `BACKEND_EXIT`, `BACKEND_TIMEOUT` hoặc `MODEL_TIMEOUT`. Xem log để biết tiến
+  trình đã thoát, chưa phản hồi HTTP hay còn nạp model tại thời điểm hết hạn.
 
 Log/state lưu tại `%LOCALAPPDATA%\MicroCADVision`, ngoài checkout, không bị Git
 track. `backend-8000.log` giữ output startup; wrapper log riêng cho từng lần gọi.
